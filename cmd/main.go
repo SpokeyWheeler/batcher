@@ -1,4 +1,0 @@
-package batcher
-
-func main () {
-}

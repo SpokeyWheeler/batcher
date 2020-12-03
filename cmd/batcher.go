@@ -111,14 +111,14 @@ func do_main() {
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
-	// rowsleft := countRows(conn, jobConfig.database, jobConfig.table, jobConfig.where)
+	rowsleft := countRows(conn, jobConfig.database, jobConfig.table, jobConfig.where)
 	// fmt.Println("Rows left: ", rowsleft)
 
-	while countRows(conn, jobConfig.database, jobConfig.table, jobConfig.where) > 0 {
+	for rowsleft > 0 {
+		rowsleft = countRows(conn, jobConfig.database, jobConfig.table, jobConfig.where)
 	}
 }
 
 func main() {
 	do_main()
 }
-

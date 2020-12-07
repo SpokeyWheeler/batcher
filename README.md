@@ -10,8 +10,8 @@ A utility to perform large updates or deletes in batches to improve performance.
 $ ./batcher help
 'update', 'delete', 'version' or 'help' subcommand is required
 flags:
-  -batch int
-    	batch size (default 100)
+  -concurrency int
+    	concurrency (default 20)
   -database string
     	database name
   -execute

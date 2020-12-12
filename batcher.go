@@ -34,7 +34,7 @@ type primaryKey struct {
 }
 
 var (
-	VERSION = "0.1.0"
+	VERSION = "0.1.1"
 )
 
 func parseArgs() *jobConfig {
@@ -155,14 +155,6 @@ func getPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey) 
 		os.Exit(2)
 	}
 
-	if rowcount > 1 {
-		if rowcount > 3 {
-			fmt.Println("Your key is excessively complex, inject a surrogate")
-		} else {
-			fmt.Println("Your key is complex, consider injecting a surrogate")
-		}
-	}
-
 	sqlStr := fmt.Sprintf("with a as (select column_name, udt_name from information_schema.columns where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), b as (select column_name, constraint_name from information_schema.constraint_column_usage where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), c as (select constraint_name from information_schema.table_constraints where constraint_type = 'PRIMARY KEY' and table_catalog = '%s' and table_schema = 'public' and table_name = '%s') select b.column_name, a.udt_name from b join c on b.constraint_name = c.constraint_name join a on a.column_name = b.column_name;", database, table, database, table, database, table)
 
 	rows, err := db.Query(sqlStr)
@@ -258,7 +250,12 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 				for i, col := range cols {
 					var t string
 					colassoc[col] = *colvals[i].(*interface{})
-					t = fmt.Sprintf("%s", colassoc[col])
+					switch colassoc[col].(type) {
+					case int, int64:
+						t = fmt.Sprintf("%d", colassoc[col])
+					default:
+						t = fmt.Sprintf("%s", colassoc[col])
+					}
 					retStr.WriteString(col)
 					retStr.WriteString(" = '")
 					retStr.WriteString(t)
@@ -282,11 +279,15 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 		go func() {
 			defer wg.Done()
 			for execution := range cmd {
-				_, err := db.Exec(execution)
-				if err != nil {
-					log.Fatal(err)
+				if jc.verbose {
+					fmt.Println(execution)
 				}
-				fmt.Println(execution)
+				if jc.execute {
+					_, err := db.Exec(execution)
+					if err != nil {
+						log.Fatal(err)
+					}
+				}
 			}
 		}()
 	}
@@ -299,9 +300,13 @@ func doMain() int {
 
 	switch jc.command {
 	case "update":
-		fmt.Printf("UPDATE %s SET %s WHERE %s;\n", jc.table, jc.set, jc.where)
+		if jc.verbose {
+			fmt.Printf("UPDATE %s SET %s WHERE %s;\n", jc.table, jc.set, jc.where)
+		}
 	case "delete":
-		fmt.Printf("DELETE FROM %s WHERE %s;\n", jc.table, jc.where)
+		if jc.verbose {
+			fmt.Printf("DELETE FROM %s WHERE %s;\n", jc.table, jc.where)
+		}
 	default:
 		fmt.Printf("Invalid command '%s'\n", jc.command)
 		os.Exit(3)
@@ -315,7 +320,9 @@ func doMain() int {
 	pk := getPrimaryKey(db, jc.database, jc.table)
 
 	rowsleft := countRows(db, jc.database, jc.table, jc.where)
-	fmt.Println("Starting row count: ", rowsleft)
+	if jc.verbose {
+		fmt.Println("Starting row count: ", rowsleft)
+	}
 	doCmd(db, pk, *jc)
 	return 0
 }

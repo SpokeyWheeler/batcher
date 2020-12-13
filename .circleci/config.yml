@@ -35,7 +35,7 @@ jobs:
       - run: sudo apt update -y
       - run: sudo apt install -y postgresql-13
       - run: sudo pg_ctlcluster 13 main start
-      - run: systemctl status postgresql@13-main.service
+      - run: sudo pg_ctlcluster 13 main status
       - run: sudo apt install -y postgresql-client-13
       - run: whoami
       - run: go get -v -t -d ./...

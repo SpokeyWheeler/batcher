@@ -7,9 +7,12 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.15
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
         environment:
           TEST_DATABASE_URL: postgresql://root@localhost/postgres
-          PGDATA: /var/lib/postgresql/13/main
+          PGDATA: /var/lib/postgresql/11/main
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -27,7 +30,7 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y postgresql
-      - run: pg_ctlcluster 11 main start
+      - run: sudo pg_ctlcluster 11 main start
       - run: sudo apt-get install -y postgresql-client
       - run: whoami
       - run: go get -v -t -d ./...

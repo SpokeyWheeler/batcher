@@ -11,7 +11,7 @@ jobs:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
         environment:
-          TEST_DATABASE_URL: postgresql://root@localhost/postgres
+          TEST_DATABASE_URL: postgresql://root@localhost:5432/postgres
           PGDATA: /var/lib/postgresql/11/main
 
       # Specify service dependencies here if necessary
@@ -36,5 +36,5 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go build batcher.go
-      - run: createuser -h localhost root
+      - run: sudo createuser root
       - run: cd test; ./test.sh

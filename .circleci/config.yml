@@ -36,5 +36,5 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go build batcher.go
-      - run: createuser -U postgres -h localhost -s root
+      # - run: createuser -U postgres -h localhost -s root
       - run: cd test; ./test.sh

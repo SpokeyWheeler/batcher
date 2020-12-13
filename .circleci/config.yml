@@ -36,5 +36,5 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go build batcher.go
-      - run: createuser -h localhost root
+      - run: sudo -u $POSTGRES_USER createuser -h localhost root
       - run: cd test; ./test.sh

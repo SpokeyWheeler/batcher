@@ -27,8 +27,7 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y postgresql
-      - run: pg_ctl init -o "--username=postgres"
-      - run: pg_ctl start
+      - run: pg_ctlcluster 11 main start
       - run: sudo apt-get install -y postgresql-client
       - run: whoami
       - run: go get -v -t -d ./...

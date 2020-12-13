@@ -81,7 +81,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-psql -q "postgresql://root@localhost:5432" < /tmp/$$
+psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" < /tmp/$$
 
 echo "done"
 printf "Starting tests"
@@ -89,17 +89,17 @@ printf "Starting tests"
 exptot=1000
 expa=100
 
-sertot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
+sertot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
 comp "Initial serial total" $exptot $sertot
-sera=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" )
+sera=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" )
 comp "Initial serial a" $expa $sera
-uidtot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
+uidtot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
 comp "Initial UUID total" $exptot $uidtot
-uida=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" )
+uida=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" )
 comp "Initial UUID a" $expa $uida
-cmptot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
+cmptot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
 comp "Initial composite total" $exptot $cmptot
-cmpa=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" )
+cmpa=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" )
 comp "Initial composite a" $expa $cmpa
 
 exptot=900
@@ -107,49 +107,49 @@ expa=0
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -set "strcol='b'"  -table serialtest -user $DBUSER -where "strcol='a'" -execute
 
-sera=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" )
+sera=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" )
 comp "Updated serial a" $expa $sera
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table serialtest -user $DBUSER -where "intcol<101" -execute
 
-sertot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
+sertot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
 comp "Small delete serial total" $exptot $sertot
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -set "strcol='b'"  -table uuidtest -user $DBUSER -where "strcol='a'" -execute
 
-uida=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" )
+uida=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" )
 comp "Updated UUID a" $expa $uida
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table uuidtest -user $DBUSER -where "intcol<101" -execute
 
-uidtot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
+uidtot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
 comp "Small delete UUID total" $exptot $uidtot
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -set "strcol='b'"  -table compositetest -user $DBUSER -where "strcol='a'" -execute
 
-cmpa=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" )
+cmpa=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" )
 comp "Updated composite a" $expa $cmpa
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table compositetest -user $DBUSER -where "intcol<101" -execute
 
-cmptot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
+cmptot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
 comp "Small delete composite total" $exptot $cmptot
 
 exptot=0
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table serialtest -user $DBUSER -where "1=1" -execute
 
-sertot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
+sertot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" )
 comp "Full delete serial total" $exptot $sertot
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table uuidtest -user $DBUSER -where "1=1" -execute
 
-uidtot=$( psql -q "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
+uidtot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432" -t -A -c "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" )
 comp "Full delete UUID total" $exptot $uidtot
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=require" -password $DBPASSWORD -portnum 5432 -table compositetest -user $DBUSER -where "1=1" -execute
 
-cmptot=$( psql -q "postgresql://root@localhost:5432"USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
+cmptot=$( psql -q -u $POSTGRES_USER "postgresql://root@localhost:5432"USE batchertestdb; SELECT COUNT(1) FROM compositetest;" )
 comp "Full delete composite total" $exptot $cmptot
 
 rm /tmp/$$

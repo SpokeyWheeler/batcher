@@ -29,12 +29,12 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - run: sudo apt-get update -y
-      - run: sudo apt-get install -y postgresql
-      - run: sudo pg_ctlcluster 11 main start
-      - run: sudo apt-get install -y postgresql-client
+      - run: sudo apt-get install -y postgresql-13
+      - run: sudo pg_ctl start
+      - run: sudo apt-get install -y postgresql-client-13
       - run: whoami
       - run: go get -v -t -d ./...
-      - run: go test -v ./...
+      # - run: go test -v ./...
       - run: go build batcher.go
       # - run: createuser -U postgres -h localhost -s root
       - run: cd test; ./test.sh

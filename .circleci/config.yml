@@ -8,14 +8,13 @@ jobs:
       # specify the version
       - image: circleci/golang:1.15
         environment:
-          TEST_DATABASE_URL: postgresql://root@localhost/circle_test
+          TEST_DATABASE_URL: postgresql://root@localhost/postgres
+          PGDATA: /var/lib/postgresql/13/main
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/postgres:9.6
-        environment:
-          POSTGRES_USER=postgres
+      # they don't bloody work though!
 
     #### TEMPLATE_NOTE: go expects specific checkout path representing url
     #### expecting it in the form of
@@ -27,19 +26,13 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - run: sudo apt-get update -y
+      - run: sudo apt-get install -y postgresql
+      - run: initdb --username=postgres
+      - run: pg_ctl start
       - run: sudo apt-get install -y postgresql-client
-      - run:
-          name: install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.3.0
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: whoami
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go build batcher.go
-      - run: createuser -h localhost circleci
       - run: createuser -h localhost root
       - run: cd test; ./test.sh

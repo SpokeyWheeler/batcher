@@ -36,5 +36,5 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go test -v ./...
       - run: go build batcher.go
-      - run: sudo createuser root
+      - run: createuser root
       - run: cd test; ./test.sh

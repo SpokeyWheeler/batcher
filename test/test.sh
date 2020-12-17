@@ -16,8 +16,8 @@ passcount=0
 errorcount=0
 
 # SQLCMD="psql -q \"postgresql://root@localhost:5432\" -t -A -c "
-SQLCMD0="cockroach sql --certs-dir=/tmp/certs "
-SQLCMD="cockroach sql --certs-dir=/tmp/certs --format tsv -e "
+SQLCMD0="cockroach sql --certs-dir=/tmp/certs --user=$DBUSER "
+SQLCMD="cockroach sql --certs-dir=/tmp/certs --format tsv --user=$DBUSER -e "
 
 comp () {
 
@@ -85,7 +85,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$ > /dev/null 2>&1
+$SQLCMD0 < /tmp/$$ # > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

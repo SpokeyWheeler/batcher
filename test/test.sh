@@ -15,7 +15,7 @@ testcount=0
 passcount=0
 errorcount=0
 
-# SQLCMD="psql -q \"postgresql://root@localhost:5432\" "
+# SQLCMD="psql -q \"postgresql://root@localhost:5432\" -t -A -c "
 SQLCMD0="cockroach sql --insecure "
 SQLCMD="cockroach sql --insecure --format tsv -e "
 
@@ -93,17 +93,17 @@ printf "Starting tests"
 exptot=1000
 expa=100
 
-sertot=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' | tr -d '\r' )
+sertot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' | tr -d '\r' )
 comp "Initial serial total" $exptot $sertot
-sera=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+sera=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Initial serial a" $expa $sera
-uidtot=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
+uidtot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Initial UUID total" $exptot $uidtot
-uida=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+uida=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Initial UUID a" $expa $uida
-cmptot=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" | grep -iv count | grep -iv row | tr -d '\r' )
+cmptot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Initial composite total" $exptot $cmptot
-cmpa=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+cmpa=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Initial composite a" $expa $cmpa
 
 exptot=900
@@ -111,44 +111,44 @@ expa=0
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -set "strcol='b'"  -e DBUSER -where "strcol='a'" -execute
 
-sera=$( $SQLCMD -e  "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+sera=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Updated serial a" $expa $sera
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table serialtest -user $DBUSER -where "intcol<101" -execute
 
-sertot=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' )
+sertot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Small delete serial total" $exptot $sertot
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -set "strcol='b'"  -table uuidtest -user $DBUSER -where "strcol='a'" -execute
 
-uida=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+uida=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM uuidtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Updated UUID a" $expa $uida
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table uuidtest -user $DBUSER -where "intcol<101" -execute
 
-uidtot=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
+uidtot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Small delete UUID total" $exptot $uidtot
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -set "strcol='b'"  -table compositetest -user $DBUSER -where "strcol='a'" -execute
 
-cmpa=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
+cmpa=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM compositetest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Updated composite a" $expa $cmpa
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table compositetest -user $DBUSER -where "intcol<101" -execute
 
-cmptot=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" | grep -iv count | grep -iv row | tr -d '\r' )
+cmptot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM compositetest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Small delete composite total" $exptot $cmptot
 
 exptot=0
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table serialtest -user $DBUSER -where "1=1" -execute
 
-sertot=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' )
+sertot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Full delete serial total" $exptot $sertot
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table uuidtest -user $DBUSER -where "1=1" -execute
 
-uidtot=$( $SQLCMD -e "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
+uidtot=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM uuidtest;" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Full delete UUID total" $exptot $uidtot
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=disable" -password $DBPASSWORD -portnum 26257 -table compositetest -user $DBUSER -where "1=1" -execute

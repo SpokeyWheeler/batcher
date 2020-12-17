@@ -42,6 +42,6 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go build batcher.go
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
-      - run: cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
+      - run: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
       - run: cockroach start-single node --insecure
       - run: cd test; ./test.sh

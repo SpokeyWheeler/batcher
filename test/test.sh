@@ -16,7 +16,7 @@ passcount=0
 errorcount=0
 
 # SQLCMD="psql -q \"postgresql://root@localhost:5432\" -t -A -c "
-SQLCMD0="cockroach sql --url=postgres://btest:btest@localhost:26257/postgres?sslmode=verify-full&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key "
+SQLCMD0="cockroach sql --url=postgres://root@localhost:26257/postgres?sslmode=verify-full&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key "
 SQLCMD="cockroach sql --url=postgres://btest:btest@localhost:26257/postgres?sslmode=verify-full&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key --format tsv -e "
 
 comp () {

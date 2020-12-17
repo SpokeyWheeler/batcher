@@ -16,8 +16,8 @@ passcount=0
 errorcount=0
 
 # SQLCMD="psql -q \"postgresql://root@localhost:5432\" -t -A -c "
-SQLCMD0="cockroach sql --insecure "
-SQLCMD="cockroach sql --insecure --format tsv -e "
+SQLCMD0="cockroach sql --certs-dir=/tmp/certs "
+SQLCMD="cockroach sql --certs-dir=/tmp/certs --format tsv -e "
 
 comp () {
 
@@ -37,8 +37,8 @@ printf "Preparing load script..."
 echo "DROP DATABASE IF EXISTS batchertestdb;
 CREATE DATABASE IF NOT EXISTS batchertestdb;
 USE batchertestdb;
--- CREATE USER $DBUSER WITH PASSWORD '$DBPASSWORD';
--- GRANT admin TO $DBUSER;
+CREATE USER $DBUSER WITH PASSWORD '$DBPASSWORD';
+GRANT admin TO $DBUSER;
 CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));" > /tmp/$$
 
 for i in {1..1000}

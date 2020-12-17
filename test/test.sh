@@ -36,8 +36,8 @@ printf "Preparing load script..."
 echo "DROP DATABASE IF EXISTS batchertestdb;
 CREATE DATABASE IF NOT EXISTS batchertestdb;
 USE batchertestdb;
-CREATE USER $DBUSER WITH PASSWORD '$DBPASSWORD';
-GRANT admin TO $DBUSER;
+-- CREATE USER $DBUSER WITH PASSWORD '$DBPASSWORD';
+-- GRANT admin TO $DBUSER;
 CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));" > /tmp/$$
 
 for i in {1..1000}

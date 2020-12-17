@@ -46,7 +46,7 @@ jobs:
       - run: mkdir -p /tmp/certs
       - run: cockroach cert create-ca --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
       - run: cockroach cert create-node localhost --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-      - run: cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
+      - run: cockroach cert create-client root --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
       - run: cockroach cert list --certs-dir=/tmp/certs
       - run: cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost
       - run: cd test; ./test.sh

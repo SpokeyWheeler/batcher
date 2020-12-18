@@ -151,6 +151,7 @@ func getPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey) 
 	}
 
 	if rowcount < 1 {
+		fmt.Println(cntStr)
 		fmt.Println("No primary key found")
 		os.Exit(2)
 	}

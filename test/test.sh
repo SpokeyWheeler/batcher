@@ -110,7 +110,7 @@ comp "Initial composite a" $expa $cmpa
 exptot=900
 expa=0
 
-../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=verify-full&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" -password btest -portnum 26257 -set "strcol='b'" -user btest -where "strcol='a'" -execute
+../batcher update -concurrency 4 -database batchertestdb -dbtype postgres -host localhost -opts "sslmode=verify-full&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" -password btest -portnum 26257 -table serialtest -set "strcol='b'" -user btest -where "strcol='a'" -execute
 
 sera=$( $SQLCMD "USE batchertestdb; SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | grep -iv count | grep -iv row | tr -d '\r' )
 comp "Updated serial a" $expa $sera

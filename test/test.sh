@@ -28,6 +28,7 @@ comp () {
 	else
 		passcount=$(( passcount + 1 ))
 		printf "."
+		printf "($1: expected $2, got $3)"
 	fi
 	testcount=$(( testcount + 1 ))
 

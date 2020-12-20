@@ -38,6 +38,7 @@ jobs:
       - run: sudo pg_ctlcluster 13 main start
       # just to check
       - run: sudo pg_ctlcluster 13 main status
+      - run: sudo ls -la $PGDATA
       - run: sudo apt install -y postgresql-client-13
       - run: sudo createuser -d -r -s root
       - run: sudo createuser -d -r -s btest

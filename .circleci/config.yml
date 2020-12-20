@@ -12,17 +12,13 @@ jobs:
           password: $DOCKER_PASSWORD
         environment:
           TEST_DATABASE_URL: postgresql://root@localhost:5432/postgres
-          PGDATA: /var/lib/postgresql/11/main
+          PGDATA: /var/lib/postgresql/13/main
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # they don't bloody work though!
 
-    #### TEMPLATE_NOTE: go expects specific checkout path representing url
-    #### expecting it in the form of
-    ####   /go/src/github.com/circleci/go-tool
-    ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
@@ -30,24 +26,20 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: sudo apt update -y
       - run: sudo apt install -y wget
-      # - run: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-      # - run: echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
-      # - run: sudo apt update -y
-      # - run: sudo apt install -y postgresql-13
-      # - run: sudo pg_ctlcluster 13 main start
-      # - run: sudo pg_ctlcluster 13 main status
-      # - run: sudo apt install -y postgresql-client-13
-      # - run: whoami
-      # - run: createuser -U postgres -h localhost -s root
+      - run: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+      - run: echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
+      - run: sudo apt update -y
+      - run: sudo apt install -y postgresql-13
+      - run: sudo pg_ctlcluster 13 main start
+      # just to check
+      - run: sudo pg_ctlcluster 13 main status
+      - run: sudo apt install -y postgresql-client-13
+      # just to check
+      - run: whoami
       - run: go get -v -t -d ./...
       - run: go build batcher.go
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
       - run: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
-      - run: mkdir -p /tmp/certs
-      - run: cockroach cert create-ca --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-      - run: cockroach cert create-node localhost --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-      - run: cockroach cert create-client root --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-      - run: cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-      - run: cockroach cert list --certs-dir=/tmp/certs
-      - run: cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost
-      - run: cd test; ./test.sh
+      - run: cd test; ./cockroach.sh; cd ..
+      - run: cd test; ./postgres.sh; cd ..
+      - run: sudo pg_ctlcluster 13 main stop

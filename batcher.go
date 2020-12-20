@@ -34,7 +34,7 @@ type primaryKey struct {
 }
 
 var (
-	VERSION = "0.1.1"
+	VERSION = "0.2.1"
 )
 
 func parseArgs() *jobConfig {
@@ -46,7 +46,7 @@ func parseArgs() *jobConfig {
 	wherePtr := fs.String("where", "", "e.g. 'column=value AND column IS NOT NULL ...'")
 	concurrencyPtr := fs.Int("concurrency", 20, "concurrency")
 	executePtr := fs.Bool("execute", false, "execute the operation ('dry-run' only by default)")
-	verbosePtr := fs.Bool("verbose", false, "provide detailed output")
+	verbosePtr := fs.Bool("verbose", false, "provide detailed output (will output all statements to the screen)")
 	userPtr := fs.String("user", "", "user name")
 	passwordPtr := fs.String("password", "", "password")
 	databasePtr := fs.String("database", "", "database name")
@@ -59,25 +59,25 @@ func parseArgs() *jobConfig {
 
 	if len(os.Args) > 1 {
 		jc.command = os.Args[1]
-	}
 
-	fs.Parse(os.Args[2:])
+		fs.Parse(os.Args[2:])
 
-	jc.table = *tablePtr
-	jc.where = *wherePtr
-	jc.concurrency = *concurrencyPtr
-	jc.execute = *executePtr
-	jc.verbose = *verbosePtr
-	jc.user = *userPtr
-	jc.password = *passwordPtr
-	jc.database = *databasePtr
-	jc.host = *hostPtr
-	jc.dbtype = *dbtypePtr
-	jc.portnum = *portnumPtr
-	jc.opts = *optsPtr
+		jc.table = *tablePtr
+		jc.where = *wherePtr
+		jc.concurrency = *concurrencyPtr
+		jc.execute = *executePtr
+		jc.verbose = *verbosePtr
+		jc.user = *userPtr
+		jc.password = *passwordPtr
+		jc.database = *databasePtr
+		jc.host = *hostPtr
+		jc.dbtype = *dbtypePtr
+		jc.portnum = *portnumPtr
+		jc.opts = *optsPtr
 
-	if jc.dbtype == "postgresql" {
-		jc.dbtype = "postgres"
+		if jc.dbtype == "postgresql" {
+			jc.dbtype = "postgres"
+		}
 	}
 
 	switch jc.command {
@@ -119,43 +119,38 @@ func getConnection(dbtype string, database string, user string, password string,
 }
 
 func countRows(db *sql.DB, database string, table string, where string) (rowcount int) {
-	sqlStr := fmt.Sprintf("SELECT COUNT(1) FROM %s.%s WHERE %s;\n", database, table, where)
-	rows, err := db.Query(sqlStr)
-	if err != nil {
-		log.Fatal("error counting rows: ", err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		if err := rows.Scan(&rowcount); err != nil {
-			log.Fatal(err)
-		}
-	}
+	sqlStr := fmt.Sprintf("SELECT COUNT(1) FROM %s WHERE %s;\n", table, where)
+	crow := db.QueryRow(sqlStr)
+switch err := crow.Scan(&rowcount); err {
+case sql.ErrNoRows:
+  fmt.Println("No rows were returned!")
+case nil:
+default:
+  panic(err)
+}
 	return rowcount
 }
 
-func getPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey) {
+func pgGetPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey) {
 	var rowcount int
 	var currentKey primaryKey
 
-	cntStr := fmt.Sprintf("with a as (select column_name, udt_name from information_schema.columns where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), b as (select column_name, constraint_name from information_schema.constraint_column_usage where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), c as (select constraint_name from information_schema.table_constraints where constraint_type = 'PRIMARY KEY' and table_catalog = '%s' and table_schema = 'public' and table_name = '%s') select count(1) from b join c on b.constraint_name = c.constraint_name join a on a.column_name = b.column_name;", database, table, database, table, database, table)
+	cntStr := fmt.Sprintf("WITH a AS (SELECT column_name, udt_name FROM information_schema.columns WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), b AS (SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), c AS (SELECT constraint_name FROM information_schema.table_constraints WHERE constraint_type = 'PRIMARY KEY' AND table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s') SELECT COUNT(1) FROM b JOIN c ON b.constraint_name = c.constraint_name JOIN a ON a.column_name = b.column_name;", database, table, database, table, database, table)
 
-	crows, err := db.Query(cntStr)
-	if err != nil {
-		log.Fatal("error counting primary key elements: ", err)
-	}
-	defer crows.Close()
-	for crows.Next() {
-		if err := crows.Scan(&rowcount); err != nil {
-			log.Fatal(err)
-		}
-	}
-
+	crow := db.QueryRow(cntStr)
+switch err := crow.Scan(&rowcount); err {
+case sql.ErrNoRows:
+  log.Println("No rows were returned!")
+case nil:
+default:
+  panic(err)
+}
 	if rowcount < 1 {
 		fmt.Println("No primary key found")
 		os.Exit(2)
 	}
 
-	sqlStr := fmt.Sprintf("with a as (select column_name, udt_name from information_schema.columns where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), b as (select column_name, constraint_name from information_schema.constraint_column_usage where table_catalog = '%s' and table_schema = 'public' and table_name = '%s'), c as (select constraint_name from information_schema.table_constraints where constraint_type = 'PRIMARY KEY' and table_catalog = '%s' and table_schema = 'public' and table_name = '%s') select b.column_name, a.udt_name from b join c on b.constraint_name = c.constraint_name join a on a.column_name = b.column_name;", database, table, database, table, database, table)
+	sqlStr := fmt.Sprintf("WITH a AS (SELECT column_name, udt_name FROM information_schema.columns WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), b AS (SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), c AS (SELECT constraint_name FROM information_schema.table_constraints WHERE constraint_type = 'PRIMARY KEY' AND table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s') SELECT b.column_name, a.udt_name FROM b JOIN c ON b.constraint_name = c.constraint_name JOIN a ON a.column_name = b.column_name;", database, table, database, table, database, table)
 
 	rows, err := db.Query(sqlStr)
 	if err != nil {
@@ -203,7 +198,7 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 				sqlStr.WriteString(jc.table)
 				sqlStr.WriteString(" WHERE ")
 				sqlStr.WriteString(jc.where)
-				sqlStr.WriteString(";\n")
+				sqlStr.WriteString(";")
 				prepStr.WriteString(";")
 			}
 		}
@@ -266,6 +261,9 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 					}
 				}
 				retStr.WriteString(";")
+				if jc.verbose {
+					fmt.Println(retStr.String())
+				}
 				out <- retStr.String()
 			}
 		}()
@@ -279,9 +277,6 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 		go func() {
 			defer wg.Done()
 			for execution := range cmd {
-				if jc.verbose {
-					fmt.Println(execution)
-				}
 				if jc.execute {
 					_, err := db.Exec(execution)
 					if err != nil {
@@ -296,15 +291,16 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 }
 
 func doMain() int {
+	var pk []primaryKey
 	jc := parseArgs()
 
 	switch jc.command {
 	case "update":
-		if jc.verbose {
+		if !jc.execute || jc.verbose {
 			fmt.Printf("UPDATE %s SET %s WHERE %s;\n", jc.table, jc.set, jc.where)
 		}
 	case "delete":
-		if jc.verbose {
+		if !jc.execute || jc.verbose {
 			fmt.Printf("DELETE FROM %s WHERE %s;\n", jc.table, jc.where)
 		}
 	default:
@@ -317,11 +313,17 @@ func doMain() int {
 		log.Fatal("error connecting to the database: ", err)
 	}
 
-	pk := getPrimaryKey(db, jc.database, jc.table)
+	switch jc.dbtype {
+	case "postgres":
+		pk = pgGetPrimaryKey(db, jc.database, jc.table)
+	default:
+		fmt.Printf("Unknown database type (or not implemented yet) - %s\n", jc.dbtype)
+		os.Exit(1)
+	}
 
 	rowsleft := countRows(db, jc.database, jc.table, jc.where)
-	if jc.verbose {
-		fmt.Println("Starting row count: ", rowsleft)
+	if !jc.execute || jc.verbose {
+		fmt.Printf("Will %s %d row(s)\n", jc.command, rowsleft)
 	}
 	doCmd(db, pk, *jc)
 	return 0

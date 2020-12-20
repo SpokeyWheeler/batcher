@@ -11,18 +11,15 @@
 # 8. Delete all rows where 1=1
 # 7. Count all rows - should be 0
 
-createuser -d -r -s root
-createuser -d -r -s btest
+# createuser -d -r -s root
+# createuser -d -r -s btest
 
 testcount=0
 passcount=0
 errorcount=0
 
-# SQLCMD0='psql -q "postgresql://root@localhost:5432/postgres" '
-# SQLCMD='psql -q "postgresql://root@localhost:5432/batchertestdb" -t -A -c '
-SQLCMD0='psql -h localhost -p 5432 -U root -d postgres '
-SQLCMD1='psql -h localhost -p 5432 -U root -d batchertestdb '
-SQLCMD='psql -h localhost -p 5432 -U root -d batchertestdb -t -A -c '
+SQLCMD0='psql -w -h localhost -p 5432 -U root -d batchertestdb '
+SQLCMD='psql -w -h localhost -p 5432 -U root -d batchertestdb -t -A -c '
 
 comp () {
 
@@ -41,8 +38,6 @@ comp () {
 
 printf "Preparing load script..."
 echo "ALTER USER btest PASSWORD 'btest';
-DROP DATABASE IF EXISTS batchertestdb;
-CREATE DATABASE batchertestdb;
 GRANT ALL ON DATABASE batchertestdb TO PUBLIC;" > /tmp/$$
 
 $SQLCMD0 < /tmp/$$ > /dev/null 2>&1
@@ -94,7 +89,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD1 < /tmp/$$ > /tmp/out 2>&1 # > /dev/null 2>&1
+$SQLCMD0 < /tmp/$$ > /tmp/out 2>&1 # > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

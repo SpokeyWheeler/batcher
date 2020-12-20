@@ -18,8 +18,8 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0='psql -w -h localhost -p 5432 -U root -d batchertestdb '
-SQLCMD='psql -w -h localhost -p 5432 -U root -d batchertestdb -t -A -c '
+SQLCMD0='psql -w -h localhost -p 5432 -U btest -d batchertestdb '
+SQLCMD='psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c '
 
 comp () {
 
@@ -37,11 +37,6 @@ comp () {
 }
 
 printf "Preparing load script..."
-echo "ALTER USER btest PASSWORD 'btest';
-GRANT ALL ON DATABASE batchertestdb TO PUBLIC;" > /tmp/$$
-
-$SQLCMD0 < /tmp/$$ > /dev/null 2>&1
-
 echo "CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));" > /tmp/$$
 echo "GRANT ALL ON serialtest TO PUBLIC;" >> /tmp/$$
 
@@ -90,6 +85,11 @@ echo "done"
 printf "Populating test database..."
 
 $SQLCMD0 < /tmp/$$ > /tmp/out 2>&1 # > /dev/null 2>&1
+echo "ALTER USER btest PASSWORD 'btest';
+GRANT ALL ON DATABASE batchertestdb TO PUBLIC;" > /tmp/$$
+
+$SQLCMD0 < /tmp/$$ > /dev/null 2>&1
+
 
 echo "done"
 printf "Starting tests"

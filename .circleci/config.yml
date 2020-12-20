@@ -40,9 +40,9 @@ jobs:
       - run: sudo pg_ctlcluster 13 main status
       - run: sudo ls -la $PGDATA
       - run: sudo apt install -y postgresql-client-13
-      - run: sudo createuser -d -r -s root
-      - run: sudo createuser -d -r -s btest
-      - run: sudo createdb -O btest batchertestdb
+      - run: sudo createuser -U postgres -d -r -s root
+      - run: sudo createuser -U postgres -d -r -s btest
+      - run: sudo createdb -U postgres -O btest batchertestdb
       # just to check
       - run: whoami
       - run: cd test; ./postgres.sh; cd ..

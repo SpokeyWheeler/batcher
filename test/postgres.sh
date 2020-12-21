@@ -52,7 +52,7 @@ do
 done
 
 # same test but with a UUID key
-echo "CREATE TABLE IF NOT EXISTS uuidtest (pk UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));" >> /tmp/$$
+echo "CREATE EXTENSION IF NOT EXISTS pgcrypto; CREATE TABLE IF NOT EXISTS uuidtest (pk UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));" >> /tmp/$$
 echo "GRANT ALL ON uuidtest TO PUBLIC;" >> /tmp/$$
 
 for i in {1..1000}

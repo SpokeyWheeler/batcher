@@ -49,3 +49,7 @@ jobs:
       - run: cd test; ./cockroach.sh; cd ..
       - run: cd test; ./postgres.sh; cd ..
       - run: cd test; ./mysql.sh; cd ..
+
+      - store_artifacts:
+          path: batcher
+          destination: batcher

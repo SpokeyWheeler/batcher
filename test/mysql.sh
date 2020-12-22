@@ -15,8 +15,8 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0="mysql mysql -uroot "
-SQLCMD="mysql batchertestdb -s -ubtest -pbtest -e"
+SQLCMD0="mysql mysql -uroot -P3306 -hlocalhost "
+SQLCMD="mysql batchertestdb -s -ubtest -pbtest -P3306 -hlocalhost -e"
 
 comp () {
 

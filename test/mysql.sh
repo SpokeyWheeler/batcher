@@ -74,7 +74,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$.sql # > /dev/null 2>&1
+$SQLCMD0 < /tmp/$$.sql > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"
@@ -82,7 +82,7 @@ printf "Starting tests"
 exptot=1000
 expa=100
 
-sertot=$( $SQLCMD "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'; SELECT COUNT(*) FROM serialtest;" ) # 2> /dev/null | grep -iv count | grep -iv row )
+sertot=$( $SQLCMD "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial total" $exptot $sertot
 sera=$( $SQLCMD "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial a" $expa $sera
@@ -109,8 +109,10 @@ comp "Small delete serial total" $exptot $sertot
 cmpa=$( $SQLCMD "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Updated composite a" $expa $cmpa
 
+echo B
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table compositetest -user btest -where "intcol<101" -execute
 
+echo Q
 cmptot=$( $SQLCMD "SET NAMES 'utf8' COLLATE 'utf8_unicode_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Small delete composite total" $exptot $cmptot
 

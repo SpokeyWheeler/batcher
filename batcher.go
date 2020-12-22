@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	"log"
 	"os"
@@ -34,7 +35,7 @@ type primaryKey struct {
 }
 
 var (
-	VERSION = "0.2.1"
+	VERSION = "0.3.1"
 )
 
 func parseArgs() *jobConfig {
@@ -102,6 +103,8 @@ func buildConnectionString(dbtype string, database string, user string, password
 	switch dbtype {
 	case "postgres":
 		builtStr = fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?%s", user, password, host, portnum, database, opts)
+	case "mysql":
+		builtStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, portnum, database, opts)
 	default:
 		fmt.Printf("Unknown database type (or not implemented yet) - %s\n", dbtype)
 		os.Exit(1)
@@ -121,14 +124,55 @@ func getConnection(dbtype string, database string, user string, password string,
 func countRows(db *sql.DB, database string, table string, where string) (rowcount int) {
 	sqlStr := fmt.Sprintf("SELECT COUNT(1) FROM %s WHERE %s;\n", table, where)
 	crow := db.QueryRow(sqlStr)
-switch err := crow.Scan(&rowcount); err {
-case sql.ErrNoRows:
-  fmt.Println("No rows were returned!")
-case nil:
-default:
-  panic(err)
-}
+	switch err := crow.Scan(&rowcount); err {
+	case sql.ErrNoRows:
+		fmt.Println("No rows were returned!")
+	case nil:
+	default:
+		panic(err)
+	}
 	return rowcount
+}
+
+func myGetPrimaryKey(db *sql.DB, database string, table string) (mk []primaryKey) {
+	var rowcount int
+	var currentKey primaryKey
+
+	cntStr := fmt.Sprintf("WITH a AS (SELECT column_name, data_type FROM information_schema.columns WHERE table_schema = '%s' AND table_name = '%s'), b AS (SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_schema = '%s' AND table_name = '%s'), c AS (SELECT constraint_name FROM information_schema.table_constraints WHERE constraint_type = 'PRIMARY KEY' AND table_schema = '%s' AND table_name = '%s') SELECT COUNT(1) FROM b JOIN c ON b.constraint_name = c.constraint_name JOIN a ON a.column_name = b.column_name;", database, table, database, table, database, table)
+
+	_, seterr := db.Exec("SET NAMES 'utf8mb4';")
+	if seterr != nil {
+		log.Fatal("error setting character set: ", seterr)
+	}
+
+	crow := db.QueryRow(cntStr)
+	switch err := crow.Scan(&rowcount); err {
+	case sql.ErrNoRows:
+		log.Println("No rows were returned!")
+	case nil:
+	default:
+		panic(err)
+	}
+	if rowcount < 1 {
+		fmt.Println("No primary key found")
+		os.Exit(2)
+	}
+
+	sqlStr := fmt.Sprintf("WITH a AS (SELECT column_name, data_type FROM information_schema.columns WHERE table_schema = '%s' AND table_name = '%s'), b AS (SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_schema = '%s' AND table_name = '%s'), c AS (SELECT constraint_name FROM information_schema.table_constraints WHERE constraint_type = 'PRIMARY KEY' AND table_schema = '%s' AND table_name = '%s') SELECT b.column_name, a.data_type FROM b JOIN c ON b.constraint_name = c.constraint_name JOIN a ON a.column_name = b.column_name;", database, table, database, table, database, table)
+
+	rows, err := db.Query(sqlStr)
+	if err != nil {
+		log.Fatal("error getting key: ", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		if err := rows.Scan(&currentKey.colname, &currentKey.coltype); err != nil {
+			log.Println("Bazinga")
+			log.Fatal(err)
+		}
+		mk = append(mk, currentKey)
+	}
+	return mk
 }
 
 func pgGetPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey) {
@@ -138,13 +182,13 @@ func pgGetPrimaryKey(db *sql.DB, database string, table string) (pk []primaryKey
 	cntStr := fmt.Sprintf("WITH a AS (SELECT column_name, udt_name FROM information_schema.columns WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), b AS (SELECT column_name, constraint_name FROM information_schema.key_column_usage WHERE table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s'), c AS (SELECT constraint_name FROM information_schema.table_constraints WHERE constraint_type = 'PRIMARY KEY' AND table_catalog = '%s' AND table_schema = 'public' AND table_name = '%s') SELECT COUNT(1) FROM b JOIN c ON b.constraint_name = c.constraint_name JOIN a ON a.column_name = b.column_name;", database, table, database, table, database, table)
 
 	crow := db.QueryRow(cntStr)
-switch err := crow.Scan(&rowcount); err {
-case sql.ErrNoRows:
-  log.Println("No rows were returned!")
-case nil:
-default:
-  panic(err)
-}
+	switch err := crow.Scan(&rowcount); err {
+	case sql.ErrNoRows:
+		log.Println("No rows were returned!")
+	case nil:
+	default:
+		panic(err)
+	}
 	if rowcount < 1 {
 		fmt.Println("No primary key found")
 		os.Exit(2)
@@ -252,10 +296,26 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 						t = fmt.Sprintf("%s", colassoc[col])
 					}
 					retStr.WriteString(col)
-					retStr.WriteString(" = '")
-					retStr.WriteString(t)
-					retStr.WriteString("'::")
-					retStr.WriteString(pk[i].coltype)
+					switch jc.dbtype {
+					case "mysql":
+						retStr.WriteString(" = CAST('")
+						retStr.WriteString(t)
+						retStr.WriteString("' AS ")
+						switch pk[i].coltype {
+						case "bigint":
+							retStr.WriteString("UNSIGNED INTEGER")
+						case "int":
+							retStr.WriteString("SIGNED INTEGER")
+						default:
+							retStr.WriteString("CHAR")
+						}
+						retStr.WriteString(")")
+					default:
+						retStr.WriteString(" = '")
+						retStr.WriteString(t)
+						retStr.WriteString("'::")
+						retStr.WriteString(pk[i].coltype)
+					}
 					if i+1 < len(cols) {
 						retStr.WriteString(" AND ")
 					}
@@ -316,6 +376,8 @@ func doMain() int {
 	switch jc.dbtype {
 	case "postgres":
 		pk = pgGetPrimaryKey(db, jc.database, jc.table)
+	case "mysql":
+		pk = myGetPrimaryKey(db, jc.database, jc.table)
 	default:
 		fmt.Printf("Unknown database type (or not implemented yet) - %s\n", jc.dbtype)
 		os.Exit(1)
@@ -325,7 +387,9 @@ func doMain() int {
 	if !jc.execute || jc.verbose {
 		fmt.Printf("Will %s %d row(s)\n", jc.command, rowsleft)
 	}
+
 	doCmd(db, pk, *jc)
+
 	return 0
 }
 

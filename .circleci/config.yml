@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       # specify the version
-      - image: circleci/golang:1.15
+      - image: cimg/go:1.15
         auth:
           username: $DOCKERUSER
           password: $DOCKERPASS
@@ -15,7 +15,7 @@ jobs:
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
 
-      - image: circleci/postgres:9.6-alpine
+      - image: circleci/postgres:9.6-alpine-ram
         auth:
           username: $DOCKERUSER
           password: $DOCKERPASS
@@ -24,6 +24,16 @@ jobs:
           POSTGRES_DB: batchertestdb
           TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
           PGDATA: /var/lib/postgresql/9.6/main
+
+      - image: circleci/mysql:latest-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          MYSQL_ROOT_PASSWORD: btestroot
+          MYSQL_DATABASE: batchertestdb
+          MYSQL_USER: btest
+          MYSQL_PASSWORD: btest
 
     working_directory: /go/src/github.com/SpokeyWheeler/batcher
     steps:
@@ -37,19 +47,5 @@ jobs:
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
       - run: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
       - run: cd test; ./cockroach.sh; cd ..
-      # - run: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-      # - run: echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
-      # - run: sudo apt update -y
-      # - run: sudo apt install -y postgresql-13
-      # - run: sudo pg_ctlcluster 13 main start
-      # just to check
-      # - run: sudo pg_ctlcluster 13 main status
-      # - run: sudo ls -la $PGDATA
-      # - run: sudo apt install -y postgresql-client-13
-      # - run: sudo su -l -c 'sudo -u postgres createuser -w -h localhost -d -r -s root'
-      # - run: createuser -w -h localhost -d -r -s btest
-      # - run: createdb -w -h localhost -O btest batchertestdb
-      # just to check
-      - run: whoami
       - run: cd test; ./postgres.sh; cd ..
-      # - run: sudo pg_ctlcluster 13 main stop
+      - run: cd test; ./mysql.sh; cd ..

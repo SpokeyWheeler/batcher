@@ -84,7 +84,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$ # > /tmp/out 2>&1 # > /dev/null 2>&1
+time $SQLCMD0 < /tmp/$$ # > /tmp/out 2>&1 # > /dev/null 2>&1
 echo "ALTER USER btest PASSWORD 'btest';
 GRANT ALL ON DATABASE batchertestdb TO PUBLIC;" > /tmp/$$
 

@@ -75,7 +75,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$.sql > /dev/null 2>&1
+time $SQLCMD0 < /tmp/$$.sql > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

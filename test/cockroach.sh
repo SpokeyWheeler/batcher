@@ -16,8 +16,8 @@ cockroach cert create-ca --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-node localhost --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-client root --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
-cockroach cert list --certs-dir=/tmp/certs
-cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost
+# cockroach cert list --certs-dir=/tmp/certs
+cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost 2> /dev/null
 
 testcount=0
 passcount=0
@@ -93,7 +93,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$ > /dev/null 2>&1
+time $SQLCMD0 < /tmp/$$ > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

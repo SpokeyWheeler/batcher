@@ -15,8 +15,8 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0="mysql mysql -uroot -P3306 -hlocalhost "
-SQLCMD="mysql batchertestdb -s -ubtest -pbtest -P3306 -hlocalhost -e"
+SQLCMD0="mysql mysql -uroot --bind-address=localhost -P3306 -hlocalhost "
+SQLCMD="mysql batchertestdb -s -ubtest -pbtest --bind-address=localhost -P3306 -hlocalhost -e"
 
 comp () {
 
@@ -73,7 +73,7 @@ done
 echo "done"
 printf "Populating test database..."
 
-$SQLCMD0 < /tmp/$$.sql > /dev/null 2>&1
+$SQLCMD0 < /tmp/$$.sql # > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

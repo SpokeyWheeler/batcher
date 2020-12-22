@@ -15,7 +15,7 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0="mysql mysql -uroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD0="mysql mysql -uroot -Pbtestroot --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e"
 
 comp () {

@@ -15,8 +15,8 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0="mysql mysql -uroot --bind-address=localhost -P3306 -hlocalhost "
-SQLCMD="mysql batchertestdb -s -ubtest -pbtest --bind-address=localhost -P3306 -hlocalhost -e"
+SQLCMD0="mysql mysql -uroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e"
 
 comp () {
 

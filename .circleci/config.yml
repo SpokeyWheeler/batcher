@@ -41,7 +41,7 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - run: sudo apt update -y
-      - run: sudo apt install -y wget postgresql-client mysql-community-client
+      - run: sudo apt install -y wget postgresql-client mysql-client
       - run: go get -v -t -d ./...
       - run: go build batcher.go
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

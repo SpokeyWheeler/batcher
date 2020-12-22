@@ -81,7 +81,7 @@ printf "Starting tests"
 exptot=1000
 expa=100
 
-sertot=$( $SQLCMD "SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
+sertot=$( $SQLCMD "SELECT COUNT(*) FROM serialtest;" ) # 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial total" $exptot $sertot
 sera=$( $SQLCMD "SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial a" $expa $sera

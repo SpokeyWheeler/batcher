@@ -34,7 +34,8 @@ comp () {
 }
 
 printf "Preparing load script..."
-echo "DROP DATABASE IF EXISTS batchertestdb;
+echo "SET NAMES 'utf8mb4';
+DROP DATABASE IF EXISTS batchertestdb;
 CREATE DATABASE IF NOT EXISTS batchertestdb;
 USE batchertestdb;
 CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));
@@ -81,13 +82,13 @@ printf "Starting tests"
 exptot=1000
 expa=100
 
-sertot=$( $SQLCMD "SELECT COUNT(*) FROM serialtest;" ) # 2> /dev/null | grep -iv count | grep -iv row )
+sertot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM serialtest;" ) # 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial total" $exptot $sertot
-sera=$( $SQLCMD "SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
+sera=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial serial a" $expa $sera
-cmptot=$( $SQLCMD "SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
+cmptot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial composite total" $exptot $cmptot
-cmpa=$( $SQLCMD "SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
+cmpa=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Initial composite a" $expa $cmpa
 
 exptot=900
@@ -95,34 +96,34 @@ expa=0
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table serialtest -set "strcol='b'" -user btest -where "strcol='a'" -execute
 
-sera=$( $SQLCMD "SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
+sera=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Updated serial a" $expa $sera
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table serialtest -user btest -where "intcol<101" -execute
 
-sertot=$( $SQLCMD "SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
+sertot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Small delete serial total" $exptot $sertot
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -set "strcol='b'"  -table compositetest -user btest -where "strcol='a'" -execute
 
-cmpa=$( $SQLCMD "SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
+cmpa=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Updated composite a" $expa $cmpa
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table compositetest -user btest -where "intcol<101" -execute
 
-cmptot=$( $SQLCMD "SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
+cmptot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Small delete composite total" $exptot $cmptot
 
 exptot=0
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table serialtest -user btest -where "1=1" -execute
 
-sertot=$( $SQLCMD "SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
+sertot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Full delete serial total" $exptot $sertot
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8mb4_0900_ai_ci" -password btest -portnum 3306 -table compositetest -user btest -where "1=1" -execute
 
-cmptot=$( $SQLCMD "SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
+cmptot=$( $SQLCMD "SET NAMES 'utf8mb4'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 comp "Full delete composite total" $exptot $cmptot
 
 echo "done"

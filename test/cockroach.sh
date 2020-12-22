@@ -166,7 +166,6 @@ comp "Full delete composite total" $exptot $cmptot
 
 echo "done"
 echo "CockroachDB Tests: $testcount Passed: $passcount Failed: $errorcount"
-cockroach quit --certs-dir=/tmp/certs
-rm -rf §/tmp/$$ /tmp/certs /tmp/cockroach* /tmp/logs /tmp/[A-Z]* /tmp/000*
+cockroach quit --certs-dir=/tmp/certs 2> /dev/null
 
 exit $errorcount

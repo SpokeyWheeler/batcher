@@ -17,7 +17,7 @@ cockroach cert create-node localhost --certs-dir=/tmp/certs --ca-key=/tmp/certs/
 cockroach cert create-client root --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert list --certs-dir=/tmp/certs
-cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost --store=/tmp
+cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost
 
 testcount=0
 passcount=0

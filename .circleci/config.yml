@@ -35,7 +35,7 @@ jobs:
           MYSQL_USER: btest
           MYSQL_PASSWORD: btest
 
-    working_directory: /go/src/github.com/SpokeyWheeler/batcher
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
 

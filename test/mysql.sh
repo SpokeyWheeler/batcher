@@ -20,7 +20,7 @@ SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost
 
 comp () {
 
-	if [ $2 != $3 ]
+	if [ "$2" != "$3" ]
 	then
 		errorcount=$(( errorcount + 1 ))
 		printf "F($1: expected $2, got $3)"

@@ -2,7 +2,11 @@
 
 # batcher
 
-A utility to perform large updates or deletes in batches to improve performance.
+A utility to perform large updates or deletes in batches to improve performance. `TRUNCATE TABLE` is obviously a faster way to purge an entire table, but in many cases, you have an enormous table, of which you need to remove or update a chunk. Copying the rows you want to keep (for a mass delete) can have all sorts of referential constraint issues.
+
+After testing many different approaches, I've created this, which generates singleton updates or deletes of the rows in question. If you want to, you can output the generated SQL to a flat file and process it in some other way. If you use the `-execute` option, batcher will use Go's internal concurrency to perform your mass update without having to worry about long transactions or the excruciating slowness of some databases when doing set operations.
+
+No names, no packdrill.
 
 ## Usage
 
@@ -32,6 +36,6 @@ flags:
     	e.g. 'column=value AND column IS NOT NULL ...'
 ```
 
-## CAUTION!
+## CAUTION
 
 This can seriously mess up your day if you get it wrong. Please dry run first to make sure the statement that will run is the one you want!

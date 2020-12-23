@@ -10,7 +10,7 @@ No names, no packdrill.
 
 ## Usage
 
-```
+```bash
 $ ./batcher help
 'update', 'delete', 'version' or 'help' subcommand is required
 flags:

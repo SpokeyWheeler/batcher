@@ -1,19 +1,41 @@
 # Golang CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
-version: 2
+version: 2.1
+orbs:
+  goreleaser: hubci/goreleaser@1.0.0
+workflows:
+  main:
+    jobs:
+      - test
+      - gor/release:
+          version: 0.147.1
+          go-version: 1.15.5
+          dry-run: true
+  release:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - gor/release:
+          version: 0.147.1
+          go-version: 1.15.5
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
 jobs:
   build:
     docker:
       # specify the version
-      - image: cimg/go:1.15
+      - image: cimg/go:1.15.5
         auth:
           username: $DOCKERUSER
           password: $DOCKERPASS
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
 
       - image: circleci/postgres:9.6-alpine-ram
         auth:
@@ -38,18 +60,59 @@ jobs:
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
-
-      # specify any bash command here prefixed with `run: `
-      - run: sudo apt update -y
-      - run: sudo apt install -y wget postgresql-client mysql-client
       - run: go get -v -t -d ./...
       - run: go build batcher.go
+
+      # - store_artifacts:
+          # path: batcher
+          # destination: batcher
+  test:
+    docker:
+      - image: 'cimg/go:1.15.5'
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+
+      - image: circleci/postgres:9.6-alpine-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          POSTGRES_USER: btest
+          POSTGRES_DB: batchertestdb
+          TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
+          PGDATA: /var/lib/postgresql/9.6/main
+
+      - image: circleci/mysql:latest-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          MYSQL_ROOT_PASSWORD: btestroot
+          MYSQL_DATABASE: batchertestdb
+          MYSQL_USER: btest
+          MYSQL_PASSWORD: btest
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v1
+      - run:
+          name: Download Dependancies
+          command: cd src && go mod download
+      - run:
+          name: Run Tests
+          command: cd src && go test
+      - run: sudo apt update -y
+      - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
       - run: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
       - run: cd test; ./cockroach.sh; cd ..
       - run: cd test; ./postgres.sh; cd ..
       - run: cd test; ./mysql.sh; cd ..
+      - save_cache:
+          key: go-mod-v1
+          paths:
+            - /go/pkg/mod
 
-      - store_artifacts:
-          path: batcher
-          destination: batcher

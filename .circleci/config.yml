@@ -100,10 +100,7 @@ jobs:
             - go-mod-v1
       - run:
           name: Download Dependancies
-          command: cd src && go mod download
-      - run:
-          name: Run Tests
-          command: cd src && go test
+          command: go mod download
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

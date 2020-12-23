@@ -95,12 +95,8 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-mod-v1
-      - run:
-          name: Download Dependancies
-          command: go mod download
+      - run: go get -v -t -d ./...
+      - run: go build batcher.go
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

@@ -48,7 +48,7 @@ FLUSH PRIVILEGES;" > /tmp/$$.sql
 
 for i in {1..1000}
 do
-	if [ $i -le 100 ]
+	if [ "$i" -le 100 ]
 	then
 		s='a'
 	else
@@ -63,7 +63,7 @@ done
 
 for i in {1..1000}
 do
-	if [ $i -le 100 ]
+	if [ "$i" -le 100 ]
 	then
 		s='a'
 	else
@@ -84,13 +84,13 @@ exptot=1000
 expa=100
 
 sertot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Initial serial total" $exptot $sertot
+comp "Initial serial total" "$exptot" "$sertot"
 sera=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Initial serial a" $expa $sera
+comp "Initial serial a" "$expa" "$sera"
 cmptot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Initial composite total" $exptot $cmptot
+comp "Initial composite total" "$exptot" "$cmptot"
 cmpa=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a' COLLATE 'utf8_general_ci';" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Initial composite a" $expa $cmpa
+comp "Initial composite a" "$expa" "$cmpa"
 
 exptot=900
 expa=0
@@ -98,34 +98,34 @@ expa=0
 ../batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -table serialtest -set "strcol='b'" -user btest -where "strcol='a'" -execute
 
 sera=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Updated serial a" $expa $sera
+comp "Updated serial a" "$expa" "$sera"
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -table serialtest -user btest -where "intcol<101" -execute
 
 sertot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Small delete serial total" $exptot $sertot
+comp "Small delete serial total" "$exptot" "$sertot"
 
 ../batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -set "strcol='b'"  -table compositetest -user btest -where "strcol='a'" -execute
 
 cmpa=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Updated composite a" $expa $cmpa
+comp "Updated composite a" "$expa" "$cmpa"
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -table compositetest -user btest -where "intcol<101" -execute
 
 cmptot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Small delete composite total" $exptot $cmptot
+comp "Small delete composite total" "$exptot" "$cmptot"
 
 exptot=0
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -table serialtest -user btest -where "1=1" -execute
 
 sertot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Full delete serial total" $exptot $sertot
+comp "Full delete serial total" "$exptot" "$sertot"
 
 ../batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts "collation=utf8_general_ci" -password btest -portnum 3306 -table compositetest -user btest -where "1=1" -execute
 
 cmptot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
-comp "Full delete composite total" $exptot $cmptot
+comp "Full delete composite total" "$exptot" "$cmptot"
 
 echo "done"
 echo "MySQL Tests: $testcount Passed: $passcount Failed: $errorcount"

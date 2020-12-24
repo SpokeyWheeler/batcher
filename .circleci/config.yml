@@ -40,34 +40,13 @@ jobs:
           username: $DOCKERUSER
           password: $DOCKERPASS
 
-      - image: circleci/postgres:9.6-alpine-ram
-        auth:
-          username: $DOCKERUSER
-          password: $DOCKERPASS
-        environment:
-          POSTGRES_USER: btest
-          POSTGRES_DB: batchertestdb
-          TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
-          PGDATA: /var/lib/postgresql/9.6/main
-
-      - image: circleci/mysql:latest-ram
-        auth:
-          username: $DOCKERUSER
-          password: $DOCKERPASS
-        environment:
-          MYSQL_ROOT_PASSWORD: btestroot
-          MYSQL_DATABASE: batchertestdb
-          MYSQL_USER: btest
-          MYSQL_PASSWORD: btest
-
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
       - run: go get -v -t -d ./...
-      - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
-      - codecov/upload:
-          file: /tmp/artifacts/coverage.html
-      - snyk/scan
+      - run: go get github.com/caarlos0/svu
+      - run: VER=$( svu n )
+      - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
 
   test:
     docker:
@@ -99,7 +78,9 @@ jobs:
     steps:
       - checkout
       - run: go get -v -t -d ./...
-      - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
+      - run: go get github.com/caarlos0/svu
+      - run: VER=$( svu n )
+      - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run:
           name: "Create a temp directory for artifacts"
           command: |
@@ -118,6 +99,9 @@ jobs:
       - run: cd test; ./cockroach.sh; cd ..
       - run: cd test; ./postgres.sh; cd ..
       - run: cd test; ./mysql.sh; cd ..
+      - codecov/upload:
+          file: /tmp/artifacts/coverage.html
+      - snyk/scan
       - save_cache:
           key: go-mod-v1
           paths:

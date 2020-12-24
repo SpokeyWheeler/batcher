@@ -35,7 +35,7 @@ type primaryKey struct {
 }
 
 var (
-	VERSION = "0.3.1"
+	version = "undefined"
 )
 
 func parseArgs() *jobConfig {
@@ -87,7 +87,7 @@ func parseArgs() *jobConfig {
 	case "delete":
 		jc.set = ""
 	case "version":
-		fmt.Printf("%s Version: %s\n", os.Args[0], VERSION)
+		fmt.Printf("%s Version: %s\n", os.Args[0], version)
 		os.Exit(0)
 	default:
 		fmt.Println("'update', 'delete', 'version' or 'help' subcommand is required")

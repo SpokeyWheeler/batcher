@@ -61,7 +61,7 @@ jobs:
     steps:
       - checkout
       - run: go get -v -t -d ./...
-      - run: go build batcher.go
+      - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
 
       # - store_artifacts:
           # path: batcher
@@ -96,7 +96,7 @@ jobs:
     steps:
       - checkout
       - run: go get -v -t -d ./...
-      - run: go build batcher.go
+      - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

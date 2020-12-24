@@ -9,7 +9,6 @@ workflows:
   main:
     jobs:
       - build
-      - snyk/scan
       - test
       - gor/release:
           version: 0.147.1

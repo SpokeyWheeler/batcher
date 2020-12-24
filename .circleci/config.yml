@@ -9,6 +9,7 @@ workflows:
   main:
     jobs:
       - build
+      - snyk/scan
       - test
       - gor/release:
           version: 0.147.1
@@ -64,7 +65,6 @@ jobs:
       - checkout
       - run: go get -v -t -d ./...
       - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
-      - run: snyk/scan
 
   test:
     docker:

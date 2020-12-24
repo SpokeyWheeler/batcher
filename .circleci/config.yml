@@ -4,7 +4,6 @@
 version: 2.1
 orbs:
   gor: hubci/goreleaser@1.0.0
-  snyk: snyk/snyk@0.0.12
 workflows:
   main:
     jobs:
@@ -64,7 +63,6 @@ jobs:
       - checkout
       - run: go get -v -t -d ./...
       - run: go build -i -v -ldflags="-X main.version=$(git describe --tags)" github.com/SpokeyWheeler/batcher
-      - run: snyk/scan
 
   test:
     docker:

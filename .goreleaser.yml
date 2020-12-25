@@ -66,9 +66,13 @@ nfpms:
 
 brews:
   - name: batcher
-    folder; homebrew-tap
-    github:
+    goarm: 6
+    tap:
       owner: SpokeyWheeler
       name: homebrew-tap
+    caveats: "Execute 'batcher help' to get started"
+    license: "MIT"
     description: "batcher does mass database updates and deletes in a database-friendly, concurrent manner"
+    test: |
+      system "#{bin}/batcher version"
 

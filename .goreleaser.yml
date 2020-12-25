@@ -1,11 +1,10 @@
-# This is an example goreleaser.yaml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod download
 builds:
-  - env:
+  - 
+    id: "batcher"
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -18,7 +17,7 @@ builds:
       - arm64
     goarm:
       - 6
-      - 7
+      # - 7
 
 archives:
   - wrap_in_directory: true
@@ -54,7 +53,8 @@ release:
     name: batcher
   disable: false
   draft: false
-  prerelease: false
+  prerelease: auto
+
 nfpms:
   - maintainer: Spokey Wheeler <spokeymon@hotmail.com>
     homepage: https://github.com/SpokeyWheeler/batcher/
@@ -63,11 +63,13 @@ nfpms:
     formats:
       - deb
       - rpm
+      - apk
 
 brews:
-  - name: batcher
+  -
+    name: batcher
     goarm: 6
-    tap:
+    github:
       owner: SpokeyWheeler
       name: homebrew-tap
     caveats: "Execute 'batcher help' to get started"

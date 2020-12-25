@@ -15,7 +15,9 @@ testcount=0
 passcount=0
 errorcount=0
 
-SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
+#SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD0="mysql mysql -uroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e"
 
 comp () {
@@ -30,21 +32,7 @@ comp () {
 		#printf "($1: expected $2, got $3)"
 	fi
 	testcount=$(( testcount + 1 ))
-
 }
-
-printf "Preparing load script..."
-echo "SET NAMES 'utf8' COLLATE 'utf8_general_ci';
-SET CHARACTER SET 'utf8';
-DROP DATABASE IF EXISTS batchertestdb;
-CREATE DATABASE IF NOT EXISTS batchertestdb CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
-USE batchertestdb;
-CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));
-CREATE TABLE IF NOT EXISTS compositetest (pk1 INT NOT NULL, pk2 VARCHAR(10) NOT NULL, intcol INT, strcol VARCHAR(20), PRIMARY KEY(pk1, pk2));
-DROP USER IF EXISTS 'btest'@'localhost';
-CREATE USER IF NOT EXISTS 'btest'@'localhost' IDENTIFIED BY 'btest';
-GRANT ALL PRIVILEGES ON *.* TO 'btest'@'localhost';
-FLUSH PRIVILEGES;" > /tmp/$$.sql
 
 for i in {1..1000}
 do
@@ -72,10 +60,9 @@ do
 	echo "INSERT INTO compositetest (pk1, pk2, intcol, strcol) VALUES ($i, '$s', $i, '$s');" >> /tmp/$$.sql
 done
 
-echo "done"
+$SQLCMD0 < mysql1.sql # > /dev/null 2>&1
 printf "Populating test database..."
-
-$SQLCMD0 < /tmp/$$.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/$$.sql # > /dev/null 2>&1
 
 echo "done"
 printf "Starting tests"

@@ -1,0 +1,9 @@
+DROP DATABASE IF EXISTS batchertestdb;
+CREATE DATABASE IF NOT EXISTS batchertestdb;
+USE batchertestdb;
+DROP USER IF EXISTS btest;
+CREATE USER IF NOT EXISTS btest WITH PASSWORD 'btest';
+GRANT admin TO btest;
+CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));
+CREATE TABLE IF NOT EXISTS uuidtest (pk UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY, intcol INT, strcol VARCHAR(20));
+CREATE TABLE IF NOT EXISTS compositetest (pk1 INT NOT NULL, pk2 VARCHAR(10) NOT NULL, intcol INT, strcol VARCHAR(20), PRIMARY KEY(pk1, pk2));

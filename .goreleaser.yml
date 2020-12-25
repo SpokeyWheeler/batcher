@@ -71,11 +71,9 @@ nfpms:
 
 brews:
   -
-    ids:
-    - batcher
     name: batcher
     goarm: 6
-    github:
+    tap:
       owner: SpokeyWheeler
       name: homebrew-tap
     caveats: "Execute 'batcher help' to get started"

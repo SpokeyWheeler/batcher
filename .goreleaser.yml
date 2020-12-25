@@ -65,8 +65,8 @@ nfpms:
       - rpm
 
 brews:
-  - # name: batcher
-    # folder; homebrew-tap
+  - name: batcher
+    folder; homebrew-tap
     github:
       owner: SpokeyWheeler
       name: homebrew-tap

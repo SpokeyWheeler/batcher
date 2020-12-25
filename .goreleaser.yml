@@ -20,6 +20,7 @@ builds:
       # - 7
 
 archives:
+  - id: batcher
   - builds:
     - batcher
   - wrap_in_directory: true
@@ -35,10 +36,13 @@ archives:
       windows: Windows
       386: i386
       amd64: x86_64
+
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
   name_template: "{{ .Tag }}-SNAPSHOT"
+
 changelog:
   sort: asc
   filters:
@@ -49,6 +53,7 @@ changelog:
       - '^Fix a problem with Postgres connectivity'
       - '^Add Releases link'
       - typo
+
 release:
   github:
     owner: SpokeyWheeler

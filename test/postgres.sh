@@ -12,10 +12,10 @@
 # 7. Count all rows - should be 0
 
 # createuser -d -r -s root
-dropdb batchertestdb
-dropuser btest
-createuser -d -r -s btest
-createdb -U btest batchertestdb
+# dropdb batchertestdb
+# dropuser btest
+# createuser -d -r -s btest
+# createdb -U btest batchertestdb
 
 testcount=0
 passcount=0

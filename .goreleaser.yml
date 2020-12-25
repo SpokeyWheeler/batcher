@@ -20,7 +20,8 @@ builds:
       # - 7
 
 archives:
-  - ids: batcher
+  - ids:
+    - batcher
   - wrap_in_directory: true
     format_overrides:
       - goos: windows

@@ -14,7 +14,7 @@ workflows:
       - gor/release:
           version: 0.147.1
           go-version: 1.15.5
-          dry-run: true
+          dry-run: false
   release:
     jobs:
       - test:

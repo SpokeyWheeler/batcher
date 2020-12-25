@@ -20,7 +20,7 @@ builds:
       # - 7
 
 archives:
-  - ids:
+  - builds:
     - batcher
   - wrap_in_directory: true
     format_overrides:
@@ -69,6 +69,8 @@ nfpms:
 
 brews:
   -
+    ids:
+    - batcher
     name: batcher
     goarm: 6
     github:

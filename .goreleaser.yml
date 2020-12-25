@@ -4,9 +4,6 @@ before:
   hooks:
     # You may remove this if you don't use go modules.
     - go mod download
-    # you may remove this if you don't need go generate
-    - go generate ./...
-    - echo TEST
 builds:
   - env:
       - CGO_ENABLED=0
@@ -14,7 +11,23 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+
 archives:
+  - wrap_in_directory: true
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
   - replacements:
       darwin: Darwin
       linux: Linux
@@ -34,7 +47,26 @@ changelog:
       - '^Update README.md'
       - '^Fix a problem with Postgres connectivity'
       - '^Add Releases link'
+      - typo
 release:
   github:
     owner: SpokeyWheeler
     name: batcher
+  disable: false
+  draft: false
+  prerelease: false
+nfpms:
+  - maintainer: Spokey Wheeler <spokeymon@hotmail.com>
+    homepage: https://github.com/SpokeyWheeler/batcher/
+    description: batcher does mass database updates and deletes in a database-friendly, concurrent manner
+    license: MIT
+    formats:
+      - deb
+      - rpm
+
+brews:
+    github:
+      owner: SpokeyWheeler
+      name: homebrew-tap
+    description: "batcher does mass database updates and deletes in a database-friendly, concurrent manner"
+

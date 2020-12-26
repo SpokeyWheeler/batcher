@@ -1,0 +1,275 @@
+# Orb 'hubci/goreleaser@1.0.0' resolved to 'hubci/goreleaser@1.0.0'
+# Orb 'codecov/codecov@1.0.2' resolved to 'codecov/codecov@1.0.2'
+# Orb 'snyk/snyk@0.0.12' resolved to 'snyk/snyk@0.0.12'
+version: 2
+jobs:
+  build:
+    docker:
+    - image: cimg/go:1.15.5
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
+    steps:
+    - checkout
+    - run:
+        command: go get -v -t -d ./...
+    - run:
+        command: go get github.com/caarlos0/svu
+    - run:
+        command: svu c ; svu n
+    - run:
+        command: VER=$( svu n )
+    - run:
+        command: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+  test:
+    docker:
+    - image: cimg/go:1.15.5
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+    - image: circleci/postgres:9.6-alpine-ram
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+      environment:
+        POSTGRES_USER: btest
+        POSTGRES_DB: batchertestdb
+        TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
+        PGDATA: /var/lib/postgresql/9.6/main
+    - image: circleci/mysql:latest-ram
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+      environment:
+        MYSQL_ROOT_PASSWORD: btestroot
+        MYSQL_DATABASE: batchertestdb
+        MYSQL_USER: btest
+        MYSQL_PASSWORD: btest
+    steps:
+    - checkout
+    - run:
+        command: go get -v -t -d ./...
+    - run:
+        command: go get github.com/caarlos0/svu
+    - run:
+        command: VER=$( svu n )
+    - run:
+        command: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+    - run:
+        name: Create a temp directory for artifacts
+        command: |
+          mkdir -p /tmp/artifacts
+    - run:
+        command: |
+          go test -coverprofile=c.out
+          go tool cover -html=c.out -o coverage.html
+          mv coverage.html /tmp/artifacts
+    - store_artifacts:
+        path: /tmp/artifacts
+    - run:
+        command: sudo apt update -y
+    - run:
+        command: sudo apt install -y wget postgresql-client mysql-client
+    - run:
+        command: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
+    - run:
+        command: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
+    - run:
+        command: cd test; ./cockroach.sh; cd ..
+    - run:
+        command: cd test; ./postgres.sh; cd ..
+    - run:
+        command: cd test; ./mysql.sh; cd ..
+    - run:
+        name: Upload Coverage Results
+        command: |
+          bash <(curl -s https://codecov.io/bash) \
+            -f /tmp/artifacts/coverage.html \
+            -n ${CIRCLE_BUILD_NUM} \
+            -t ${CODECOV_TOKEN} \
+            -y .codecov.yml \
+            -F  \
+    - run:
+        command: |
+          if [[ ! -x "/usr/local/bin/snyk" ]]; then
+            if [[ "linux" == "alpine" && "true" == "true" ]]; then
+              apk add -q --no-progress --no-cache curl wget libstdc++ sudo
+            fi
+            curl -s https://api.github.com/repos/snyk/snyk/releases/latest | grep "browser_download_url" | grep linux | cut -d '"' -f 4 | xargs -n 1 curl -LO
+            sha256sum -c snyk-linux.sha256
+            sudo mv snyk-linux /usr/local/bin/snyk
+            sudo chmod +x /usr/local/bin/snyk
+          fi
+          snyk config set disableSuggestions=true
+          snyk auth $SNYK_TOKEN
+        environment:
+          SNYK_INTEGRATION_NAME: CIRCLECI_ORB
+          SNYK_INTEGRATION_VERSION: 0.0.12
+        name: Download Snyk CLI
+    - run:
+        command: "snyk test  --severity-threshold=low    \n"
+        environment:
+          SNYK_INTEGRATION_NAME: CIRCLECI_ORB
+          SNYK_INTEGRATION_VERSION: 0.0.12
+        name: Run Snyk test to scan app for vulnerabilities
+    - run:
+        command: "snyk monitor     \n"
+        environment:
+          SNYK_INTEGRATION_NAME: CIRCLECI_ORB
+          SNYK_INTEGRATION_VERSION: 0.0.12
+        name: Run Snyk monitor for continuous monitoring on snyk.io
+    - save_cache:
+        key: go-mod-v1
+        paths:
+        - /go/pkg/mod
+  gor/release:
+    docker:
+    - image: cimg/go:1.15.5
+    steps:
+    - checkout
+    - run:
+        name: Init OS Detection
+        command: "# Start with family detection.\nfamily=$(uname -s | tr '[:upper:]' '[:lower:]')\n\ncase $family in\n  linux)\n    osID=$(grep -e \"^ID=\" /etc/os-release | cut -c4-)\n    ;;\n  darwin)\n    osID=macos\n    ;;\n  *)\n    echo \"Unsupported operating system.\"\n    exit 1\n    ;;\nesac\n\n# Version number\ncase $osID in\n  ubuntu)\n    osVersion=$(grep -e \"^DISTRIB_RELEASE=\" /etc/lsb-release | cut -c17-)\n    ;;\n  debian)\n    osVersion=$(cat /etc/debian_version)\n    ;;\n  alpine)\n    osVersion=$(cat /etc/alpine-release)\n    ;;\n  macos)\n    osVersion=$(sw_vers -productVersion)\n    ;;\n  *)\n    echo \"Unsupported operating system ID.\"\n    exit 1\n    ;;\nesac\n\n# Determine if sudo is available and/or neccessary\nSUDO=\"\"\nif [[ $EUID -ne 0 ]]; then\n  SUDO=sudo\nfi\ncommand -v sudo >/dev/null 2>&1 || { SUDO=\"\"; }\n\n# Export new variables.\n# This section can be replaced by the possible Bash/envar orb in \n# the future.\necho \"export OSD_FAMILY=$(echo $family)\" >> $BASH_ENV\necho \"export OSD_ID=$(echo $osID)\" >> $BASH_ENV\necho \"export OSD_VERSION=$(echo $osVersion)\" >> $BASH_ENV\necho \"export SUDO=$(echo $SUDO)\" >> $BASH_ENV\n"
+    - run:
+        name: Install GoReleaser
+        command: |
+          # This line and assuming this path is in PATH should move to os-detect at some point.
+          mkdir -p ~/bin
+
+          dlURL="https://github.com/goreleaser/goreleaser/releases/download/v0.147.1/goreleaser_Linux_x86_64.tar.gz"
+          curl -sSL $dlURL | $SUDO tar -xz -C ~/bin goreleaser
+    - run:
+        command: goreleaser
+workflows:
+  main:
+    jobs:
+    - build
+    - test
+    - gor/release
+  release:
+    jobs:
+    - test:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v\d+\.\d+\.\d+$/
+    - gor/release:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v\d+\.\d+\.\d+$/
+  version: 2
+
+# Original config.yml file:
+# # Golang CircleCI 2.0 configuration file
+# #
+# # Check https://circleci.com/docs/2.0/language-go/ for more details
+# version: 2.1
+# orbs:
+#   gor: hubci/goreleaser@1.0.0
+#   codecov: codecov/codecov@1.0.2
+#   snyk: snyk/snyk@0.0.12
+# workflows:
+#   main:
+#     jobs:
+#       - build
+#       - test
+#       - gor/release:
+#           version: 0.147.1
+#           go-version: 1.15.5
+#           dry-run: false
+#   release:
+#     jobs:
+#       - test:
+#           filters:
+#             branches:
+#               ignore: /.*/
+#             tags:
+#               only: /^v\\d+\\.\\d+\\.\\d+$/
+#       - gor/release:
+#           version: 0.147.1
+#           go-version: 1.15.5
+#           filters:
+#             branches:
+#               ignore: /.*/
+#             tags:
+#               only: /^v\\d+\\.\\d+\\.\\d+$/
+# jobs:
+#   build:
+#     docker:
+#       # specify the version
+#       - image: cimg/go:1.15.5
+#         auth:
+#           username: $DOCKERUSER
+#           password: $DOCKERPASS
+# 
+#     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
+#     steps:
+#       - checkout
+#       - run: go get -v -t -d ./...
+#       - run: go get github.com/caarlos0/svu
+#       - run: svu c ; svu n
+#       - run: VER=$( svu n )
+#       - run: go build -i -v -ldflags=\"-X main.version=$VER\" github.com/SpokeyWheeler/batcher
+# 
+#   test:
+#     docker:
+#       - image: 'cimg/go:1.15.5'
+#         auth:
+#           username: $DOCKERUSER
+#           password: $DOCKERPASS
+# 
+#       - image: circleci/postgres:9.6-alpine-ram
+#         auth:
+#           username: $DOCKERUSER
+#           password: $DOCKERPASS
+#         environment:
+#           POSTGRES_USER: btest
+#           POSTGRES_DB: batchertestdb
+#           TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
+#           PGDATA: /var/lib/postgresql/9.6/main
+# 
+#       - image: circleci/mysql:latest-ram
+#         auth:
+#           username: $DOCKERUSER
+#           password: $DOCKERPASS
+#         environment:
+#           MYSQL_ROOT_PASSWORD: btestroot
+#           MYSQL_DATABASE: batchertestdb
+#           MYSQL_USER: btest
+#           MYSQL_PASSWORD: btest
+# 
+#     steps:
+#       - checkout
+#       - run: go get -v -t -d ./...
+#       - run: go get github.com/caarlos0/svu
+#       - run: VER=$( svu n )
+#       - run: go build -i -v -ldflags=\"-X main.version=$VER\" github.com/SpokeyWheeler/batcher
+#       - run:
+#           name: \"Create a temp directory for artifacts\"
+#           command: |
+#             mkdir -p /tmp/artifacts
+#       - run:
+#           command: |
+#             go test -coverprofile=c.out
+#             go tool cover -html=c.out -o coverage.html
+#             mv coverage.html /tmp/artifacts
+#       - store_artifacts:
+#           path: /tmp/artifacts
+#       - run: sudo apt update -y
+#       - run: sudo apt install -y wget postgresql-client mysql-client
+#       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
+#       - run: sudo cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
+#       - run: cd test; ./cockroach.sh; cd ..
+#       - run: cd test; ./postgres.sh; cd ..
+#       - run: cd test; ./mysql.sh; cd ..
+#       - codecov/upload:
+#           file: /tmp/artifacts/coverage.html
+#       - snyk/scan
+#       - save_cache:
+#           key: go-mod-v1
+#           paths:
+#             - /go/pkg/mod

@@ -80,6 +80,7 @@ jobs:
       - checkout
       - run: go get -v -t -d ./...
       - run: go get github.com/caarlos0/svu
+      - run: svu c ; svu n
       - run: VER=$( svu n )
       - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run:

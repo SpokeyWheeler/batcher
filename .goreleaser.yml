@@ -11,13 +11,7 @@ builds:
     - windows
     - darwin
   goarch:
-    - 386
     - amd64
-    - arm
-    - arm64
-  goarm:
-    - 6
-    # - 7
 
 archives:
 - wrap_in_directory: true
@@ -31,7 +25,6 @@ archives:
     darwin: Darwin
     linux: Linux
     windows: Windows
-    386: i386
     amd64: x86_64
 
 checksum:
@@ -59,20 +52,9 @@ release:
   draft: false
   prerelease: auto
 
-nfpms:
-  - maintainer: Spokey Wheeler <spokeymon@hotmail.com>
-    homepage: https://github.com/SpokeyWheeler/batcher/
-    description: batcher does mass database updates and deletes in a database-friendly, concurrent manner
-    license: MIT
-    formats:
-      - deb
-      - rpm
-      - apk
-
 brews:
   -
     name: batcher
-    goarm: 6
     tap:
       owner: SpokeyWheeler
       name: homebrew-tap

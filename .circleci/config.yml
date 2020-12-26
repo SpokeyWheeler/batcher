@@ -46,10 +46,7 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
-      - run: VER=$( svu n )
-      - run: git tag $VER
-      - run: git push origin --tags
-      - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
 
   test:
     docker:

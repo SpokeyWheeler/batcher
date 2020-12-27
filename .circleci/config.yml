@@ -46,7 +46,7 @@ jobs:
       - run: go get -v -t -d ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
-      - run: export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
 
   test:
     docker:
@@ -82,6 +82,7 @@ jobs:
       - run: svu c ; svu n
       - run: VER=$( svu n )
       - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      # - run: export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run:
           name: "Create a temp directory for artifacts"
           command: |

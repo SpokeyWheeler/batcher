@@ -97,16 +97,26 @@ jobs:
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
-      - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags
-      - gor/release:
-          # version: 0.147.1
-          # go-version: 1.15.6
-          dry-run: false
+      - run: curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+      - run: 
+          name: Gorelease (with new version or snapshot)
+          command: |
+            if [ $( svu c ) -ne $( svu n ) ]
+            then
+              export VER=$( svu n )
+              echo $VER
+              go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+              git add --all; export VER=$( svu n )
+              echo $VER
+              git tag $VER
+              git push origin --tags
+              goreleaser
+            else
+              goreleaser --snapshot --skip-publish --rm-dist
+            fi
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
 orbs:
-  gor: hubci/goreleaser@1.0.0
   snyk: snyk/snyk@0.0.12
   sonarcloud: sonarsource/sonarcloud@1.0.2
 

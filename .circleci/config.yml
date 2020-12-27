@@ -23,8 +23,8 @@ workflows:
               # ignore: /.*/
             # tags:
               # only: /^v\d+\.\d+\.\d+$/
-  # release:
-    # jobs:
+  release:
+    jobs:
       # - queue/block_workflow:
           # time: '10'
       # - test:

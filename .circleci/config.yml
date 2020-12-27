@@ -71,8 +71,8 @@ jobs:
           MYSQL_USER: btest
           MYSQL_PASSWORD: btest
 
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - checkout
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

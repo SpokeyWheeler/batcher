@@ -125,13 +125,13 @@ jobs:
         MYSQL_USER: btest
         MYSQL_PASSWORD: btest
 
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
       - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-      - run: batcher version
       - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags
       - gor/release:
           # version: 0.147.1

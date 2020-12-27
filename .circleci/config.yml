@@ -19,7 +19,7 @@ workflows:
           requires:
             - test
           version: 0.147.1
-          go-version: 1.15.5
+          go-version: 1.15.6
           dry-run: false
           filters:
             branches:

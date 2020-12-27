@@ -7,19 +7,24 @@ orbs:
   snyk: snyk/snyk@0.0.12
   sonarcloud: sonarsource/sonarcloud@1.0.2
 workflows:
+  version: 2
   main:
     jobs:
       - build
       - test
+          requires:
+            - build
   release:
     jobs:
       - test:
           filters:
             branches:
-              ignore: /.*/
+              only: main
             tags:
               only: /^v\d+\.\d+\.\d+$/
-      - gor/release:
+      - release:
+          requires:
+            - test
           version: 0.147.1
           go-version: 1.15.6
           dry-run: false
@@ -38,11 +43,7 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - checkout
-      - run: go get -v -t -d ./...
-      - run: go get github.com/caarlos0/svu
-      - run: svu c ; svu n
-      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: ./batcher version
 
   test:
     docker:
@@ -73,6 +74,9 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
+      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      # - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: ./batcher version
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
@@ -87,3 +91,9 @@ jobs:
           key: go-mod-v1
           paths:
             - /go/pkg/mod
+
+  release:
+    executor: gor/default
+    steps:
+      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - gor/release

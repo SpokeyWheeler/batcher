@@ -1,3 +1,4 @@
+---
 jobs:
   build:
     docker:
@@ -69,37 +70,37 @@ jobs:
 
   release:
     docker:
-    - image: 'cimg/go:1.15.6'
-      auth:
-        username: $DOCKERUSER
-        password: $DOCKERPASS
+      - image: 'cimg/go:1.15.6'
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
 
-    - image: circleci/postgres:9.6-alpine-ram
-      auth:
-        username: $DOCKERUSER
-        password: $DOCKERPASS
-      environment:
-        POSTGRES_USER: btest
-        POSTGRES_DB: batchertestdb
-        TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
-        PGDATA: /var/lib/postgresql/9.6/main
+      - image: circleci/postgres:9.6-alpine-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          POSTGRES_USER: btest
+          POSTGRES_DB: batchertestdb
+          TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
+          PGDATA: /var/lib/postgresql/9.6/main
 
-    - image: circleci/mysql:latest-ram
-      auth:
-        username: $DOCKERUSER
-        password: $DOCKERPASS
-      environment:
-        MYSQL_ROOT_PASSWORD: btestroot
-        MYSQL_DATABASE: batchertestdb
-        MYSQL_USER: btest
-        MYSQL_PASSWORD: btest
+      - image: circleci/mysql:latest-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          MYSQL_ROOT_PASSWORD: btestroot
+          MYSQL_DATABASE: batchertestdb
+          MYSQL_USER: btest
+          MYSQL_PASSWORD: btest
 
     steps:
       - attach_workspace:
           at: .
       - run: go get github.com/caarlos0/svu
       - run: curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
-      - run: 
+      - run:
           name: Gorelease (with new version or snapshot)
           command: |
             if [ $( svu c ) != $( svu n ) ]

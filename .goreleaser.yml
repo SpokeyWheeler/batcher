@@ -1,28 +1,29 @@
+---
 project_name: batcher
 
 builds:
-- env:
-    - CGO_ENABLED=0
-  goos:
-    - linux
-    - windows
-    - darwin
-  goarch:
-    - amd64
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
 
 archives:
-- wrap_in_directory: true
-  format_overrides:
-    - goos: windows
-      format: zip
-  files:
-    - LICENSE
-    - README.md
-  replacements:
-    darwin: Darwin
-    linux: Linux
-    windows: Windows
-    amd64: x86_64
+  - wrap_in_directory: true
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
 
 checksum:
   name_template: 'checksums.txt'
@@ -57,7 +58,7 @@ brews:
       name: homebrew-tap
     caveats: "Execute 'batcher help' to get started"
     # license: "MIT"
-    description: "batcher does mass database updates and deletes in a database-friendly, concurrent manner"
+    description: "batcher does concurrent mass updates and deletes in a database-friendly way"
     test: |
       system "#{bin}/batcher version"
 

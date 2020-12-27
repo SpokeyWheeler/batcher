@@ -9,33 +9,26 @@ orbs:
   queue: eddiewebb/queue@1.5.0
   sonarcloud: sonarsource/sonarcloud@1.0.2
 workflows:
-  main:
-    jobs:
-      - build
+  # main:
+    # jobs:
+      # - build
   release:
     jobs:
-      - queue/block_workflow:
-          time: '10'
+      - build
+      # - queue/block_workflow:
+          # time: '10'
       - test:
           requires:
-            - queue/block_workflow
+            # - queue/block_workflow
+            - build
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+\.\d+$/
-      - name: release
-          requires:
-            - test
-          gor/release:
-            version: 0.147.1
-            go-version: 1.15.6
-            dry-run: false
-            filters:
-              branches:
-                ignore: /.*/
-              tags:
-                only: /^v\d+\.\d+\.\d+$/
+      # - name: release
+          # requires:
+            # - test
 jobs:
   build:
     docker:
@@ -81,12 +74,12 @@ jobs:
           MYSQL_PASSWORD: btest
 
     steps:
-      - checkout
-      - run: go get -v -t -d ./...
-      - run: go get github.com/caarlos0/svu
-      - run: svu c ; svu n
-      - run: VER=$( svu n )
-      - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      # - checkout
+      # - run: go get -v -t -d ./...
+      # - run: go get github.com/caarlos0/svu
+      # - run: svu c ; svu n
+      # - run: VER=$( svu n )
+      # - run: go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       # - run: export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run:
           name: "Create a temp directory for artifacts"
@@ -111,6 +104,15 @@ jobs:
           file: /tmp/artifacts/coverage.html
       - snyk/scan
       - sonarcloud/scan
+      - gor/release:
+          version: 0.147.1
+          go-version: 1.15.6
+          dry-run: false
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - save_cache:
           key: go-mod-v1
           paths:

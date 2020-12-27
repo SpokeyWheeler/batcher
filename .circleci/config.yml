@@ -22,12 +22,12 @@ workflows:
               # only: /^v\d+\.\d+\.\d+$/
   release:
     jobs:
-      # - test:
-          # filters:
-            # branches:
-              # ignore: /.*/
-            # tags:
-              # only: /^v\d+\.\d+\.\d+$/
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - gor/release:
           version: 0.147.1
           go-version: 1.15.5

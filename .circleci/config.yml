@@ -62,9 +62,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - *
-            - .g*
-            - test/*
+            - "*"
+            - .g"*"
+            - test/"*"
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
   release:

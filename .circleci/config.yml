@@ -14,15 +14,17 @@ workflows:
       - test:
           requires:
             - build
-      # - gor/release:
-          # version: 0.147.1
-          # go-version: 1.15.5
-          # dry-run: false
-          # filters:
-            # branches:
-              # ignore: /.*/
-            # tags:
-              # only: /^v\d+\.\d+\.\d+$/
+      - gor/release:
+          requires:
+            - test
+          version: 0.147.1
+          go-version: 1.15.5
+          dry-run: false
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
   # release:
     # jobs:
       # - queue/block_workflow:
@@ -35,9 +37,6 @@ workflows:
               # ignore: /.*/
             # tags:
               # only: /^v\d+\.\d+\.\d+$/
-      - release:
-          requires:
-            - test
 jobs:
   build:
     docker:
@@ -116,14 +115,3 @@ jobs:
           key: go-mod-v1
           paths:
             - /go/pkg/mod
-
-  release:
-    steps:
-      - gor/release:
-          version: 0.147.1
-          go-version: 1.15.5
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+$/

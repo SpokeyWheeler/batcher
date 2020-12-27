@@ -105,11 +105,8 @@ jobs:
             then
               export VER=$( svu n )
               echo $VER
-              go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-              git add --all; export VER=$( svu n )
-              echo $VER
               git tag $VER
-              git push origin --tags
+              git push origin $VER
               ./bin/goreleaser
             else
               ./bin/goreleaser --snapshot --skip-publish --rm-dist

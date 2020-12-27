@@ -101,7 +101,7 @@ jobs:
       - run: 
           name: Gorelease (with new version or snapshot)
           command: |
-            if [ $( svu c ) -ne $( svu n ) ]
+            if [ $( svu c ) != $( svu n ) ]
             then
               export VER=$( svu n )
               echo $VER

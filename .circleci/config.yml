@@ -11,7 +11,7 @@ workflows:
   main:
     jobs:
       - build
-      - test
+      - test:
           requires:
             - build
   release:
@@ -25,14 +25,12 @@ workflows:
       - release:
           requires:
             - test
-          version: 0.147.1
-          go-version: 1.15.6
-          dry-run: false
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+\.\d+$/
+
 jobs:
   build:
     docker:
@@ -43,7 +41,12 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - run: ./batcher version
+      - run: checkout
+      - run: go get -v -t -d . ./...
+      - run: go get github.com/caarlos0/svu
+      - run: svu c ; svu n
+      - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: batcher version
 
   test:
     docker:
@@ -74,8 +77,11 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-      # - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: checkout
+      - run: go get -v -t -d . ./...
+      - run: go get github.com/caarlos0/svu
+      - run: svu c ; svu n
+      - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run: ./batcher version
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
@@ -93,7 +99,41 @@ jobs:
             - /go/pkg/mod
 
   release:
-    executor: gor/default
+    docker:
+    - image: 'cimg/go:1.15.6'
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+
+    - image: circleci/postgres:9.6-alpine-ram
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+      environment:
+        POSTGRES_USER: btest
+        POSTGRES_DB: batchertestdb
+        TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
+        PGDATA: /var/lib/postgresql/9.6/main
+
+    - image: circleci/mysql:latest-ram
+      auth:
+        username: $DOCKERUSER
+        password: $DOCKERPASS
+      environment:
+        MYSQL_ROOT_PASSWORD: btestroot
+        MYSQL_DATABASE: batchertestdb
+        MYSQL_USER: btest
+        MYSQL_PASSWORD: btest
+
     steps:
-      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-      - gor/release
+      - run: checkout
+      - run: go get -v -t -d . ./...
+      - run: go get github.com/caarlos0/svu
+      - run: svu c ; svu n
+      - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
+      - run: batcher version
+      - run: git add --all; export VER=$( svu n ) ; echo $VER ; git tag $VER ; git push origin --tags
+      - gor/release:
+          # version: 0.147.1
+          # go-version: 1.15.6
+          dry-run: false

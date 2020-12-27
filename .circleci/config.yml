@@ -72,6 +72,7 @@ jobs:
           MYSQL_PASSWORD: btest
 
     steps:
+      - checkout
       - run: sudo apt update -y
       - run: sudo apt install -y wget postgresql-client mysql-client
       - run: wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz

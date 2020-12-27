@@ -19,3 +19,5 @@ bin
 batcher
 cockroach*
 test/cockroach-data
+test/pop*
+snyk*

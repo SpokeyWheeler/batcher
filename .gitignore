@@ -15,3 +15,7 @@
 # vendor/
 
 bin
+.scannerwork
+batcher
+cockroach*
+test/cockroach-data

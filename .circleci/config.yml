@@ -12,7 +12,7 @@ jobs:
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
       - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
-      - run: batcher version
+      - run: ./batcher version
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
   test:

@@ -110,9 +110,9 @@ jobs:
               echo $VER
               git tag $VER
               git push origin --tags
-              goreleaser
+              ./bin/goreleaser
             else
-              goreleaser --snapshot --skip-publish --rm-dist
+              ./bin/goreleaser --snapshot --skip-publish --rm-dist
             fi
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
@@ -124,12 +124,10 @@ version: 2.1
 
 workflows:
   version: 2
-  main:
+  build::
     jobs:
       - build
-      - test:
-          requires:
-            - build
+      - test
 
   release:
     jobs:

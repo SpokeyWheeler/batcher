@@ -111,10 +111,10 @@ jobs:
             git status
             if [ $( svu c ) != $( svu n ) ]
             then
+              git add --all
               export VER=$( svu n )
               echo $VER
               git tag $VER
-              git add --all
               git push origin --tags
               git status
               ./bin/goreleaser

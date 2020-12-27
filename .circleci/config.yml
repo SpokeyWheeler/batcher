@@ -23,19 +23,18 @@ workflows:
               # ignore: /.*/
             # tags:
               # only: /^v\d+\.\d+\.\d+$/
-  release:
-    jobs:
-      - queue/block_workflow:
-          only-on-branch: main
-          time: '10'
-      - test:
-          requires:
-            - queue/block_workflow
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+$/
+  # release:
+    # jobs:
+      # - queue/block_workflow:
+          # time: '10'
+      # - test:
+          # requires:
+            # - queue/block_workflow
+          # filters:
+            # branches:
+              # ignore: /.*/
+            # tags:
+              # only: /^v\d+\.\d+\.\d+$/
       - gor/release:
           requires:
             - test

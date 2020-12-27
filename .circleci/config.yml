@@ -94,8 +94,8 @@ jobs:
 
     steps:
       - checkout
-      - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
+      - run: go get -v -t -d . ./...
       - run: svu c ; svu n
       - run: curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
       - run: 
@@ -106,7 +106,8 @@ jobs:
               export VER=$( svu n )
               echo $VER
               git tag $VER
-              git push origin $VER
+              git add --all
+              git push origin --tags
               ./bin/goreleaser
             else
               ./bin/goreleaser --snapshot --skip-publish --rm-dist

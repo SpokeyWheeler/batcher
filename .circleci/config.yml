@@ -1,36 +1,3 @@
-# Golang CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-go/ for more details
-version: 2.1
-orbs:
-  gor: hubci/goreleaser@1.0.0
-  snyk: snyk/snyk@0.0.12
-  sonarcloud: sonarsource/sonarcloud@1.0.2
-workflows:
-  version: 2
-  main:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-  release:
-    jobs:
-      - test:
-          filters:
-            branches:
-              only: main
-            tags:
-              only: /^v\d+\.\d+\.\d+$/
-      - release:
-          requires:
-            - test
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+$/
-
 jobs:
   build:
     docker:
@@ -39,7 +6,6 @@ jobs:
           username: $DOCKERUSER
           password: $DOCKERPASS
 
-    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
       - run: go get -v -t -d . ./...
@@ -47,6 +13,7 @@ jobs:
       - run: svu c ; svu n
       - run: export VER=$( svu n ) ; echo $VER ; go build -i -v -ldflags="-X main.version=$VER" github.com/SpokeyWheeler/batcher
       - run: batcher version
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
   test:
     docker:
@@ -75,7 +42,6 @@ jobs:
           MYSQL_USER: btest
           MYSQL_PASSWORD: btest
 
-    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
       - run: go get -v -t -d . ./...
@@ -97,6 +63,7 @@ jobs:
           key: go-mod-v1
           paths:
             - /go/pkg/mod
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
   release:
     docker:
@@ -125,7 +92,6 @@ jobs:
         MYSQL_USER: btest
         MYSQL_PASSWORD: btest
 
-    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
       - checkout
       - run: go get -v -t -d . ./...
@@ -137,3 +103,37 @@ jobs:
           # version: 0.147.1
           # go-version: 1.15.6
           dry-run: false
+    working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
+
+orbs:
+  gor: hubci/goreleaser@1.0.0
+  snyk: snyk/snyk@0.0.12
+  sonarcloud: sonarsource/sonarcloud@1.0.2
+
+version: 2.1
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+
+  release:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only: main
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - release:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
+            tags:
+              only: /^v\d+\.\d+\.\d+$/

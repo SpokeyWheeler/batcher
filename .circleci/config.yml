@@ -59,10 +59,6 @@ jobs:
       - run: cd test; ./mysql.sh; cd ..
       - snyk/scan
       - sonarcloud/scan
-      - save_cache:
-          key: go-mod-v1
-          paths:
-            - /go/pkg/mod
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
 
   release:

@@ -41,7 +41,7 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - run: checkout
+      - checkout
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
@@ -77,7 +77,7 @@ jobs:
 
     working_directory: ~/go/src/github.com/SpokeyWheeler/batcher
     steps:
-      - run: checkout
+      - checkout
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n
@@ -126,7 +126,7 @@ jobs:
         MYSQL_PASSWORD: btest
 
     steps:
-      - run: checkout
+      - checkout
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu
       - run: svu c ; svu n

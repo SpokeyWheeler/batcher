@@ -6,11 +6,14 @@ orbs:
   gor: hubci/goreleaser@1.0.0
   codecov: codecov/codecov@1.1.3
   snyk: snyk/snyk@0.0.12
+  queue: eddiewebb/queue@1.5.0
 workflows:
   main:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
       # - gor/release:
           # version: 0.147.1
           # go-version: 1.15.5
@@ -22,13 +25,20 @@ workflows:
               # only: /^v\d+\.\d+\.\d+$/
   release:
     jobs:
+      - queue/block_workflow:
+          only-on-branch: main
+          time: '10'
       - test:
+          requires:
+            - queue/block_workflow
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - gor/release:
+          requires:
+            - test
           version: 0.147.1
           go-version: 1.15.5
           filters:

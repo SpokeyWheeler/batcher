@@ -33,6 +33,17 @@ jobs:
           TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
           PGDATA: /var/lib/postgresql/9.6/main
 
+      - image: circleci/mariadb:latest-ram
+        auth:
+          username: $DOCKERUSER
+          password: $DOCKERPASS
+        environment:
+          MYSQL_ROOT_PASSWORD: btestroot
+          MYSQL_DATABASE: batchertestdb
+          MYSQL_USER: btest
+          MYSQL_PASSWORD: btest
+          MYSQL_PORT: 4306
+
       - image: circleci/mysql:latest-ram
         auth:
           username: $DOCKERUSER
@@ -58,6 +69,7 @@ jobs:
       - run: cd test; ./cockroach.sh; cd ..
       - run: cd test; ./postgres.sh; cd ..
       - run: cd test; ./mysql.sh; cd ..
+      - run: cd test; ./mariadb.sh; cd ..
       - snyk/scan
       - sonarcloud/scan
       - persist_to_workspace:

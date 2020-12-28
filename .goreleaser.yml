@@ -30,6 +30,7 @@ brews:
 builds:
   - env:
       - CGO_ENABLED=0
+    binary: batcher
     goos:
       - linux
       - windows
@@ -52,8 +53,13 @@ checksum:
   name_template: 'checksums.txt'
 
 dockers:
-  image_templates:
-    - spokey/batcher:latest
+  - image_templates:
+      - spokey/batcher:latest
+    binaries:
+      - batcher
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/amd64"
 
 release:
   github:

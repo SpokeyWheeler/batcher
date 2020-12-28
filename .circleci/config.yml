@@ -126,8 +126,12 @@ jobs:
             git config user.name "Spokey Wheeler"
             if [ $( svu c ) != $( svu n ) ]
             then
+              export VER=$( svu n )
+              echo $VER
+              git tag $VER
+              git push origin --tags
               git add --all
-              git commit -m "CI updates $( svu n )"
+              git commit -m "CI updates $VER"
               export VER=$( svu n )
               echo $VER
               git tag $VER

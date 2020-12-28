@@ -33,7 +33,7 @@ jobs:
           TEST_DATABASE_URL: postgresql://btest@localhost:5432/postgres
           PGDATA: /var/lib/postgresql/9.6/main
 
-      - image: circleci/mariadb:latest-ram
+      - image: spokey/circleci-mariadb:latest
         auth:
           username: $DOCKERUSER
           password: $DOCKERPASS

@@ -55,6 +55,8 @@ jobs:
           MYSQL_PASSWORD: btest
 
     steps:
+      # IBM Legal strikes again!
+      - run: docker run -td --name ifx --privileged -p 9088:9088 -p 9089:9089 -p 27017:27017 -p 27018:27018 -p 27883:27883 -e LICENSE=accept ibmcom/informix-innovator-c:latest
       - checkout
       - run: go get -v -t -d . ./...
       - run: go get github.com/caarlos0/svu

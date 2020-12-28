@@ -11,27 +11,33 @@ No names, no packdrill.
 ## Usage
 
 ```bash
-$ ./batcher help
+$ ./batcher
 'update', 'delete', 'version' or 'help' subcommand is required
 flags:
   -concurrency int
     	concurrency (default 20)
   -database string
     	database name
+  -dbtype string
+    	database type, e.g. postgres, informix, oracle, mysql (default "postgres")
   -execute
     	execute the operation ('dry-run' only by default)
   -host string
     	host name or IP (default "localhost")
+  -opts string
+    	JDBC URL options (e.g. sslmode=disable) (default "sslmode=require")
   -password string
     	password
   -portnum string
-    	port number
+    	port number (default "26257")
   -set string
     	e.g. 'column_name=value, column_name=value ...' (ignored if provided with delete subcommand)
   -table string
     	table name
   -user string
     	user name
+  -verbose
+    	provide detailed output (will output all statements to the screen)
   -where string
     	e.g. 'column=value AND column IS NOT NULL ...'
 ```

@@ -1,16 +1,6 @@
 ---
 project_name: batcher
 
-builds:
-  - env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin
-    goarch:
-      - amd64
-
 archives:
   - wrap_in_directory: true
     format_overrides:
@@ -25,11 +15,27 @@ archives:
       windows: Windows
       amd64: x86_64
 
-checksum:
-  name_template: 'checksums.txt'
+brews:
+  -
+    name: batcher
+    tap:
+      owner: SpokeyWheeler
+      name: homebrew-tap
+    caveats: "Execute 'batcher help' to get started"
+    # license: "MIT"
+    description: "batcher does concurrent mass updates and deletes in a database-friendly way"
+    test: |
+      system "#{bin}/batcher version"
 
-snapshot:
-  name_template: "{{ .Tag }}-SNAPSHOT"
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
 
 changelog:
   sort: asc
@@ -42,6 +48,13 @@ changelog:
       - '^Add Releases link'
       - typo
 
+checksum:
+  name_template: 'checksums.txt'
+
+dockers:
+  image_templates:
+    - spokey/batcher:latest
+
 release:
   github:
     owner: SpokeyWheeler
@@ -50,15 +63,6 @@ release:
   draft: false
   prerelease: auto
 
-brews:
-  -
-    name: batcher
-    tap:
-      owner: SpokeyWheeler
-      name: homebrew-tap
-    caveats: "Execute 'batcher help' to get started"
-    # license: "MIT"
-    description: "batcher does concurrent mass updates and deletes in a database-friendly way"
-    test: |
-      system "#{bin}/batcher version"
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"
 

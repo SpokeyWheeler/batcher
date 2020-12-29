@@ -35,6 +35,9 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+    - name: Check installed Docker version
+      run: docker version
+
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..
 

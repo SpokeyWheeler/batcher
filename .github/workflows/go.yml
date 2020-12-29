@@ -35,6 +35,9 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+    - name: Create data load scripts
+      run: cd test ; ./create_pops.sh ; cd ..
+
     - name: Cockroach integration tests
       run: cd test ; ./cockroach.sh ; cd ..
 

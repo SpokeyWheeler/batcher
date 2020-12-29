@@ -40,7 +40,7 @@ comp () {
 }
 
 # Wait for Postgres to come up
-goss --gossfile pggoss.yaml add port tcp:5432 
+goss --gossfile pggoss.yaml add port tcp6:5432 
 goss --gossfile pggoss.yaml validate --retry-timeout 60s --sleep 1s
 
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1

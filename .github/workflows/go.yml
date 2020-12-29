@@ -42,7 +42,7 @@ jobs:
         postgresql db: 'batchertestdb'
 
     - name: Setup goss
-      run: sudo curl -fsSL https://goss.rocks/install | sh
+      run: curl -fsSL https://goss.rocks/install | sudo sh
 
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..

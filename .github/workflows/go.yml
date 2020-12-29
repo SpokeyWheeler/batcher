@@ -41,8 +41,8 @@ jobs:
         postgresql user: 'btest'
         postgresql db: 'batchertestdb'
 
-    - name: Setup dockerize
-      uses: zcong1993/setup-dockerize@v1.1.0
+    - name: Setup goss
+      run: curl -fsSL https://goss.rocks/install | sh
 
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..

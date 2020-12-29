@@ -34,3 +34,16 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Cockroach integration tests
+      run: cd test && ./cockroach.sh
+
+    - name: MariaDB integration tests
+      run: cd test && ./mariadb.sh
+
+    - name: MySQL integration tests
+      run: cd test && ./mysql.sh
+
+    - name: PostgreSQL integration tests
+      run: cd test && ./postgres.sh
+

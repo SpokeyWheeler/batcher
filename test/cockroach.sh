@@ -11,12 +11,21 @@
 # 8. Delete all rows where 1=1
 # 7. Count all rows - should be 0
 
+# install cockroach
+
+wget -qO- https://binaries.cockroachdb.com/cockroach-v20.1.10.linux-amd64.tgz | tar xvz
+cp -i cockroach-v20.1.10.linux-amd64/cockroach /usr/local/bin/
+
+# set up certs
 mkdir -p /tmp/certs
 cockroach cert create-ca --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-node localhost --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-client root --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca.key
 # cockroach cert list --certs-dir=/tmp/certs
+pwd
+cd $HOME
+pwd
 cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost 2> /dev/null
 
 testcount=0

@@ -39,6 +39,8 @@ comp () {
 
 }
 
+dockerize -wait tcp://localhost:5432 -timeout 60s
+
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1
 printf "Populating test database..."
 $SQLCMD0 < pop_serial.sql > /dev/null 2>&1

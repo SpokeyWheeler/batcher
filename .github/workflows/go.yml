@@ -41,6 +41,9 @@ jobs:
         postgresql user: 'btest'
         postgresql db: 'batchertestdb'
 
+    - name: Setup dockerize
+      uses: zcong1993/setup-dockerize@v1.1.0
+
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..
 

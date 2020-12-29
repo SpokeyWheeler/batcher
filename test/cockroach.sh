@@ -27,6 +27,8 @@ pwd
 cd $HOME
 pwd
 cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost 2> /dev/null
+cd -
+pwd
 
 testcount=0
 passcount=0

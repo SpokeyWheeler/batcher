@@ -35,8 +35,11 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: Check installed Docker version
-      run: docker version
+    - name: Set up PostgreSQL
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql user: 'btest'
+        postgresql db: 'batchertestdb'
 
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..

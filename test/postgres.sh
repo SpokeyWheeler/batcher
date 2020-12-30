@@ -41,6 +41,9 @@ comp () {
 
 # Wait for Postgres to come up
 
+netstat -an | grep 5432
+netstat -an | head -50
+
 goss --gossfile pggoss.yaml add tcp6:5432
 goss --gossfile pggoss.yaml add tcp:5432
 cat pggoss.yaml

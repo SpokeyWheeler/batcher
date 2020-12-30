@@ -43,7 +43,7 @@ comp () {
 
 goss --gossfile pggoss.yaml add tcp6:5432
 goss --gossfile pggoss.yaml add tcp:5432
-cat pggoss.yamL
+cat pggoss.yaml
 goss --gossfile pggoss.yaml validate --retry-timeout 60s --sleep 1s
 
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1

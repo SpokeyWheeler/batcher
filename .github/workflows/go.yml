@@ -52,8 +52,6 @@ jobs:
       with:
         postgresql user: 'btest'
         postgresql db: 'batchertestdb'
-      run: netstat -an | grep 5432
-      run: netstat -an | head -50
 
     - name: PostgreSQL integration tests
       run: cd test ; ./postgres.sh ; cd ..

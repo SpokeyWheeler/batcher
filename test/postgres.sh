@@ -39,16 +39,6 @@ comp () {
 
 }
 
-# Wait for Postgres to come up
-
-netstat -an | grep 5432
-netstat -an | head -50
-
-goss --gossfile pggoss.yaml add tcp6:5432
-goss --gossfile pggoss.yaml add tcp:5432
-cat pggoss.yaml
-goss --gossfile pggoss.yaml validate --retry-timeout 60s --sleep 1s
-
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1
 printf "Populating test database..."
 $SQLCMD0 < pop_serial.sql > /dev/null 2>&1

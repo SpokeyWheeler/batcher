@@ -41,9 +41,6 @@ jobs:
         postgresql user: 'btest'
         postgresql db: 'batchertestdb'
 
-    - name: Setup goss
-      run: curl -fsSL https://goss.rocks/install | sudo sh
-
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..
 
@@ -57,5 +54,9 @@ jobs:
       run: cd test ; ./mysql.sh ; cd ..
 
     - name: PostgreSQL integration tests
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql user: 'btest'
+        postgresql db: 'batchertestdb'
       run: cd test ; ./postgres.sh ; cd ..
 

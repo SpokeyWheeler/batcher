@@ -40,11 +40,10 @@ comp () {
 }
 
 # Wait for Postgres to come up
-echo "
-tcp6:5432:
-  listening: true
-  ip: ::
-" > pggoss.yaml
+
+goss --gossfile pggoss.yaml add tcp6:5432
+goss --gossfile pggoss.yaml add tcp:5432
+cat pggoss.yamL
 goss --gossfile pggoss.yaml validate --retry-timeout 60s --sleep 1s
 
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1

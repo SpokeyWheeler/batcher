@@ -39,6 +39,8 @@ comp () {
 
 }
 
+docker ps -a
+
 $SQLCMD0 < postgres1.sql > /dev/null 2>&1
 printf "Populating test database..."
 $SQLCMD0 < pop_serial.sql > /dev/null 2>&1

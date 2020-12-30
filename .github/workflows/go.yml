@@ -35,12 +35,6 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: Set up PostgreSQL
-      uses: harmon758/postgresql-action@v1
-      with:
-        postgresql user: 'btest'
-        postgresql db: 'batchertestdb'
-
     - name: Create data load scripts
       run: cd test ; ./create_pops.sh ; cd ..
 
@@ -53,10 +47,14 @@ jobs:
     - name: MySQL integration tests
       run: cd test ; ./mysql.sh ; cd ..
 
-    - name: PostgreSQL integration tests
+    - name: Set up PostgreSQL
       uses: harmon758/postgresql-action@v1
       with:
         postgresql user: 'btest'
         postgresql db: 'batchertestdb'
+      run: netstat -an | grep 5432
+      run: netstat -an | head -50
+
+    - name: PostgreSQL integration tests
       run: cd test ; ./postgres.sh ; cd ..
 

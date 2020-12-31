@@ -7,12 +7,49 @@ on:
     branches: [ main ]
 
 jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:10.18-jessie
+
+  services:
+    mariadb:
+      image: mariadb:latest
+      ports:
+        - 4306:4306
+      env:
+        MYSQL_ROOT_PASSWORD: btestroot
+	MYSQL_DATABASE: batchertestdb
+	MYSQL_USER: btest
+	MYSQL_PASSWORD: btest
+
+    mysql:
+      image: mysql:latest
+      ports:
+        - 3306:3306
+      env:
+        MYSQL_ROOT_PASSWORD: btestroot
+	MYSQL_DATABASE: batchertestdb
+	MYSQL_USER: btest
+	MYSQL_PASSWORD: btest
+
+    postgres:
+      image: postgres:latest
+      ports:
+        - 5432:5432
+      env:
+        POSTGRES_USER: btest
+        POSTGRES_PASSWORD: btest
+        POSTGRES_DB: batchertestdb
+      options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
@@ -46,12 +83,6 @@ jobs:
 
     - name: MySQL integration tests
       run: cd test ; ./mysql.sh ; cd ..
-
-    - name: Set up PostgreSQL
-      uses: harmon758/postgresql-action@v1
-      with:
-        postgresql user: 'btest'
-        postgresql db: 'batchertestdb'
 
     - name: PostgreSQL integration tests
       run: cd test ; ./postgres.sh ; cd ..

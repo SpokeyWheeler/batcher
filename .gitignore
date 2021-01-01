@@ -17,7 +17,5 @@
 bin
 .scannerwork
 batcher
-cockroach*
-test/cockroach-data
-test/pop*
 snyk*
+dist/

@@ -1,6 +1,10 @@
 #!/bin/bash
 
+# fail fast
+set -eo pipefail
+
 . ./libs.sh
+test/create_pops.sh
 
 testcount=0
 passcount=0
@@ -11,12 +15,12 @@ SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhos
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
 
 printf "Creating test database..."
-$SQLCMD0 < mysql1.sql > /dev/null 2>&1
+$SQLCMD0 < test/mysql1.sql > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database..."
-$SQLCMD1 < pop_serial.sql > /dev/null 2>&1
-$SQLCMD1 < pop_composite.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_serial.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_composite.sql > /dev/null 2>&1
 echo "done"
 
 printf "Starting tests"

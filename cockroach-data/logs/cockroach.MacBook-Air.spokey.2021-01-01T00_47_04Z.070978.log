@@ -1,0 +1,128 @@
+I210101 00:47:04.370050 1 util/log/sync_buffer.go:70  [config] file created at: 2021/01/01 00:47:04
+I210101 00:47:04.370050 1 util/log/sync_buffer.go:70  [config] running on machine: MacBook-Air
+I210101 00:47:04.370050 1 util/log/sync_buffer.go:70  [config] binary: CockroachDB CCL v20.1.3 (x86_64-apple-darwin14, built 2020/06/23 08:38:34, go1.13.9)
+I210101 00:47:04.370050 1 util/log/sync_buffer.go:70  [config] arguments: [cockroach start-single-node --certs-dir=/tmp/certs --listen-addr=localhost]
+I210101 00:47:04.370050 1 util/log/sync_buffer.go:70  line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid file:line msg utf8=✓
+I210101 00:47:04.370047 1 cli/start.go:1223  logging to directory /Users/spokey/workspace/batcher/cockroach-data/logs
+W210101 00:47:04.370571 1 cli/start.go:1144  Using the default setting for --cache (128 MiB).
+  A significantly larger value is usually needed for good performance.
+  If you have a dedicated server a reasonable setting is --cache=.25 (1.0 GiB).
+I210101 00:47:04.370599 1 cli/start.go:1286  CockroachDB CCL v20.1.3 (x86_64-apple-darwin14, built 2020/06/23 08:38:34, go1.13.9)
+I210101 00:47:04.372634 1 server/config.go:404  system total memory: 4.0 GiB
+I210101 00:47:04.372734 1 server/config.go:406  server configuration:
+max offset             500000000
+cache size             128 MiB
+SQL memory pool size   1.0 GiB
+scan interval          10m0s
+scan min idle time     10ms
+scan max idle time     1s
+event log enabled      true
+I210101 00:47:04.372769 1 cli/start.go:1122  using local environment variables: COCKROACH_BACKGROUND_RESTART=1
+I210101 00:47:04.372838 1 cli/start.go:1129  process identity: uid 501 euid 501 gid 20 egid 20
+I210101 00:47:04.374501 1 cli/start.go:697  starting cockroach node
+I210101 00:47:04.378291 37 base/addr_validation.go:296  [n?] server certificate addresses: IP=; DNS=localhost; CN=node
+I210101 00:47:04.378313 37 base/addr_validation.go:342  [n?] web UI certificate addresses: IP=; DNS=localhost; CN=node
+I210101 00:47:04.379096 37 storage/rocksdb.go:606  opening rocksdb instance at "/Users/spokey/workspace/batcher/cockroach-data/cockroach-temp385014641"
+I210101 00:47:04.409758 37 server/server.go:1066  [n?] monitoring forward clock jumps based on server.clock.forward_jump_check_enabled
+W210101 00:47:04.410385 37 server/config_unix.go:112  soft open file descriptor limit 10240 is under the recommended limit 15000; this may decrease performance
+please see https://www.cockroachlabs.com/docs/v20.1/recommended-production-settings.html for more details
+I210101 00:47:04.410608 37 storage/rocksdb.go:606  opening rocksdb instance at "/Users/spokey/workspace/batcher/cockroach-data"
+I210101 00:47:04.419754 37 server/config.go:578  [n?] 1 storage engine initialized
+I210101 00:47:04.419768 37 server/config.go:581  [n?] RocksDB cache size: 128 MiB
+I210101 00:47:04.419774 37 server/config.go:581  [n?] store 0: RocksDB, max size 0 B, max open file limit 9984
+I210101 00:47:04.421521 37 server/server.go:1514  [n?] no stores bootstrapped and --join flag specified, awaiting init command or join with an already initialized node.
+I210101 00:47:04.421570 37 server/server.go:1524  [n?] **** add additional nodes by specifying --join=localhost:26257
+I210101 00:47:04.452438 37 server/node.go:324  [n?] **** cluster d860e0d9-b521-43b8-a033-9b09282ee048 has been created
+I210101 00:47:04.452872 37 gossip/gossip.go:395  [n1] NodeDescriptor set to node_id:1 address:<network_field:"tcp" address_field:"localhost:26257" > attrs:<> locality:<> ServerVersion:<major_val:20 minor_val:1 patch:0 unstable:0 > build_tag:"v20.1.3" started_at:1609462024452632000 cluster_name:"" sql_address:<network_field:"tcp" address_field:"localhost:26257" > 
+W210101 00:47:04.463771 174 kv/kvserver/store.go:1631  [n1,s1,r6/1:/Table/{SystemCon…-11}] could not gossip system config: [NotLeaseHolderError] r6: replica (n1,s1):1 not lease holder; lease holder unknown
+I210101 00:47:04.464756 37 server/node.go:428  [n1] initialized store [n1,s1]: disk (capacity=234 GiB, available=17 GiB, used=77 KiB, logicalBytes=16 KiB), ranges=32, leases=0, queries=0.00, writes=0.00, bytesPerReplica={p10=0.00 p25=0.00 p50=0.00 p75=0.00 p90=166.00 pMax=13304.00}, writesPerReplica={p10=0.00 p25=0.00 p50=0.00 p75=0.00 p90=0.00 pMax=0.00}
+I210101 00:47:04.464904 37 kv/kvserver/stores.go:247  [n1] read 0 node addresses from persistent storage
+I210101 00:47:04.465132 37 server/node.go:649  [n1] connecting to gossip network to verify cluster ID...
+I210101 00:47:04.465157 37 server/node.go:669  [n1] node connected via gossip and verified as part of cluster "d860e0d9-b521-43b8-a033-9b09282ee048"
+I210101 00:47:04.465241 37 server/node.go:512  [n1] node=1: started with [<no-attributes>=/Users/spokey/workspace/batcher/cockroach-data] engine(s) and attributes []
+I210101 00:47:04.465439 197 sql/temporary_schema.go:452  [n1] skipping temporary object cleanup run as it is not the leaseholder
+I210101 00:47:04.465467 197 sql/temporary_schema.go:453  [n1] completed temporary object cleanup job
+I210101 00:47:04.465496 197 sql/temporary_schema.go:575  [n1] temporary object cleaner next scheduled to run at 2021-01-01 01:17:04.465326 +0000 UTC
+I210101 00:47:04.465750 37 server/server.go:1630  [n1] starting https server at 127.0.0.1:8080 (use: localhost:8080)
+I210101 00:47:04.465775 37 server/server.go:1637  [n1] starting grpc/postgres server at 127.0.0.1:26257
+I210101 00:47:04.465798 37 server/server.go:1638  [n1] advertising CockroachDB node at localhost:26257
+W210101 00:47:04.522249 174 kv/kvserver/store.go:1631  [n1,s1,r6/1:/Table/{SystemCon…-11}] could not gossip system config: [NotLeaseHolderError] r6: replica (n1,s1):1 not lease holder; lease holder unknown
+I210101 00:47:04.548997 215 sql/event_log.go:132  [n1,intExec=optInToDiagnosticsStatReporting] Event: "set_cluster_setting", target: 0, info: {SettingName:diagnostics.reporting.enabled Value:true User:root}
+I210101 00:47:04.559851 311 sql/event_log.go:132  [n1,intExec=set-setting] Event: "set_cluster_setting", target: 0, info: {SettingName:version Value:20.1 User:root}
+I210101 00:47:04.578591 651 sql/event_log.go:132  [n1,intExec=initializeClusterSecret] Event: "set_cluster_setting", target: 0, info: {SettingName:cluster.secret Value:755e1d4c-03ef-44be-a007-e8d8119ba93c User:root}
+I210101 00:47:04.585667 529 sql/event_log.go:132  [n1,intExec=create-default-db] Event: "create_database", target: 50, info: {DatabaseName:defaultdb Statement:CREATE DATABASE IF NOT EXISTS defaultdb User:root}
+I210101 00:47:04.590371 756 sql/event_log.go:132  [n1,intExec=create-default-db] Event: "create_database", target: 51, info: {DatabaseName:postgres Statement:CREATE DATABASE IF NOT EXISTS postgres User:root}
+I210101 00:47:04.612475 37 server/server.go:1798  [n1] done ensuring all necessary migrations have run
+I210101 00:47:04.612504 37 server/server.go:2040  [n1] serving sql connections
+I210101 00:47:04.612571 901 sqlmigrations/migrations.go:668  [n1] starting wait for upgrade finalization before schema change job migration
+I210101 00:47:04.612850 901 sqlmigrations/migrations.go:700  [n1] starting schema change job migration
+I210101 00:47:04.616143 899 server/server_update.go:55  [n1] no need to upgrade, cluster already at the newest version
+I210101 00:47:04.622350 902 sql/event_log.go:132  [n1] Event: "node_join", target: 1, info: {Descriptor:{NodeID:1 Address:localhost:26257 Attrs: Locality: ServerVersion:20.1 BuildTag:v20.1.3 StartedAt:1609462024452632000 LocalityAddress:[] ClusterName: SQLAddress:localhost:26257} ClusterID:d860e0d9-b521-43b8-a033-9b09282ee048 StartedAt:1609462024452632000 LastUp:1609462024452632000}
+I210101 00:47:04.625944 901 sqlmigrations/migrations.go:1124  [schema-change-job-migration] evaluating tables for creating jobs
+I210101 00:47:04.626000 901 sqlmigrations/migrations.go:719  [n1] schema change job migration completed
+I210101 00:47:04.642290 921 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 0, info: {Target:RANGE default Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.648116 964 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 1, info: {Target:DATABASE system Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.659860 969 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 16, info: {Target:RANGE meta Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.682278 1109 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 17, info: {Target:RANGE system Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.688607 1100 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 22, info: {Target:RANGE liveness Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.693897 1266 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 25, info: {Target:TABLE system.public.replication_constraint_stats Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.699538 1346 sql/event_log.go:132  [intExec=set-zone] Event: "set_zone_config", target: 27, info: {Target:TABLE system.public.replication_stats Config: Options:num_replicas = 1 User:root}
+I210101 00:47:04.699655 37 cli/start.go:790  Replication was disabled for this cluster.
+When/if adding nodes in the future, update zone configurations to increase the replication factor.
+I210101 00:47:04.699845 37 cli/start.go:857  [config] clusterID: d860e0d9-b521-43b8-a033-9b09282ee048
+I210101 00:47:04.699892 37 cli/start.go:866  node startup completed:
+CockroachDB node starting at 2021-01-01 00:47:04.699665 +0000 UTC (took 0.3s)
+build:               CCL v20.1.3 @ 2020/06/23 08:38:34 (go1.13.9)
+webui:               https://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslcert=%2Ftmp%2Fcerts%2Fclient.root.crt&sslkey=%2Ftmp%2Fcerts%2Fclient.root.key&sslmode=verify-full&sslrootcert=%2Ftmp%2Fcerts%2Fca.crt
+RPC client flags:    cockroach <client cmd> --host=localhost:26257 --certs-dir=/tmp/certs
+logs:                /Users/spokey/workspace/batcher/cockroach-data/logs
+temp dir:            /Users/spokey/workspace/batcher/cockroach-data/cockroach-temp385014641
+external I/O path:   /Users/spokey/workspace/batcher/cockroach-data/extern
+store[0]:            path=/Users/spokey/workspace/batcher/cockroach-data
+storage engine:      rocksdb
+status:              initialized new cluster
+clusterID:           d860e0d9-b521-43b8-a033-9b09282ee048
+nodeID:              1
+I210101 00:47:06.235097 904 server/updates.go:268  [n1] A new version is available: 20.2.3, details: https://www.cockroachlabs.com/docs/releases/v20.2.3.html
+I210101 00:47:06.622736 108 gossip/gossip.go:1527  [n1] node has connected to cluster via gossip
+I210101 00:47:06.622967 108 kv/kvserver/stores.go:266  [n1] wrote 0 node addresses to persistent storage
+W210101 00:47:14.467156 199 server/status/runtime.go:420  [n1] unable to get file descriptor usage (will not try again): not implemented on darwin
+I210101 00:47:14.486301 199 server/status/runtime.go:498  [n1] runtime stats: 86 MiB RSS, 155 goroutines, 69 MiB/54 MiB/82 MiB GO alloc/idle/total, 14 MiB/20 MiB CGO alloc/total, 0.0 CGO/sec, 0.0/0.0 %(u/s)time, 0.0 %gc (8x), 34 KiB/156 KiB (r/w)net
+I210101 00:47:21.538784 1851 kv/kvserver/replica_consistency.go:255  [n1,consistencyChecker,s1,r4/1:/System{/tsd-tse}] triggering stats recomputation to resolve delta of {ContainsEstimates:2900 LastUpdateNanos:1609462034661264000 IntentAge:0 GCBytesAge:0 LiveBytes:-8445 LiveCount:-698 KeyBytes:-34017 KeyCount:-698 ValBytes:25572 ValCount:-698 IntentBytes:0 IntentCount:0 SysBytes:0 SysCount:0}
+I210101 00:47:24.478213 129 kv/kvserver/store.go:2474  [n1,s1] sstables (read amplification = 0):
+I210101 00:47:24.483780 129 kv/kvserver/store.go:2475  [n1,s1] 
+** Compaction Stats [default] **
+Level    Files   Size     Score Read(GB)  Rn(GB) Rnp1(GB) Write(GB) Wnew(GB) Moved(GB) W-Amp Rd(MB/s) Wr(MB/s) Comp(sec) CompMergeCPU(sec) Comp(cnt) Avg(sec) KeyIn KeyDrop
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sum      0/0    0.00 KB   0.0      0.0     0.0      0.0       0.0      0.0       0.0   0.0      0.0      0.0      0.00              0.00         0    0.000       0      0
+ Int      0/0    0.00 KB   0.0      0.0     0.0      0.0       0.0      0.0       0.0   0.0      0.0      0.0      0.00              0.00         0    0.000       0      0
+
+** Compaction Stats [default] **
+Priority    Files   Size     Score Read(GB)  Rn(GB) Rnp1(GB) Write(GB) Wnew(GB) Moved(GB) W-Amp Rd(MB/s) Wr(MB/s) Comp(sec) CompMergeCPU(sec) Comp(cnt) Avg(sec) KeyIn KeyDrop
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Uptime(secs): 20.1 total, 20.1 interval
+Flush(GB): cumulative 0.000, interval 0.000
+AddFile(GB): cumulative 0.000, interval 0.000
+AddFile(Total Files): cumulative 0, interval 0
+AddFile(L0 Files): cumulative 0, interval 0
+AddFile(Keys): cumulative 0, interval 0
+Cumulative compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.0 seconds
+Interval compaction: 0.00 GB write, 0.00 MB/s write, 0.00 GB read, 0.00 MB/s read, 0.0 seconds
+Stalls(count): 0 level0_slowdown, 0 level0_slowdown_with_compaction, 0 level0_numfiles, 0 level0_numfiles_with_compaction, 0 stop for pending_compaction_bytes, 0 slowdown for pending_compaction_bytes, 0 memtable_compaction, 0 memtable_slowdown, interval 0 total count
+estimated_pending_compaction_bytes: 0 B
+I210101 00:47:24.484116 199 server/status/runtime.go:498  [n1] runtime stats: 94 MiB RSS, 157 goroutines, 79 MiB/44 MiB/91 MiB GO alloc/idle/total, 13 MiB/20 MiB CGO alloc/total, 238.3 CGO/sec, 1.7/1.3 %(u/s)time, 0.0 %gc (0x), 47 KiB/137 KiB (r/w)net
+I210101 00:47:34.483259 199 server/status/runtime.go:498  [n1] runtime stats: 98 MiB RSS, 157 goroutines, 52 MiB/64 MiB/95 MiB GO alloc/idle/total, 13 MiB/20 MiB CGO alloc/total, 102.7 CGO/sec, 1.7/1.2 %(u/s)time, 0.0 %gc (1x), 18 KiB/152 KiB (r/w)net
+I210101 00:47:44.484101 199 server/status/runtime.go:498  [n1] runtime stats: 99 MiB RSS, 156 goroutines, 59 MiB/58 MiB/95 MiB GO alloc/idle/total, 13 MiB/20 MiB CGO alloc/total, 43.4 CGO/sec, 1.1/0.9 %(u/s)time, 0.0 %gc (0x), 17 KiB/138 KiB (r/w)net
+I210101 00:47:47.166597 2202 server/drain.go:74  [n1] drain request received with doDrain = true, shutdown = false
+I210101 00:47:47.172372 2202 server/drain.go:173  [n1] drain remaining: 3
+I210101 00:47:47.172392 2202 server/drain.go:175  [n1] drain details: table leases: 2, liveness record: 1
+I210101 00:47:47.172453 2202 server/drain.go:99  [n1] drain request completed without server shutdown
+I210101 00:47:47.376117 2288 server/drain.go:74  [n1] drain request received with doDrain = true, shutdown = false
+I210101 00:47:47.386202 2288 server/drain.go:173  [n1] drain remaining: 0
+I210101 00:47:47.386255 2288 server/drain.go:99  [n1] drain request completed without server shutdown
+I210101 00:47:47.387056 2298 server/drain.go:74  [n1] drain request received with doDrain = false, shutdown = true
+I210101 00:47:47.387667 2299 util/stop/stopper.go:539  [n1] quiescing
+W210101 00:47:47.387748 114 vendor/google.golang.org/grpc/clientconn.go:1206  grpc: addrConn.createTransport failed to connect to {localhost:26257 0  <nil>}. Err :connection error: desc = "transport: Error while dialing loopback listener: mux: listener closed". Reconnecting...
+I210101 00:47:47.389125 2299 storage/rocksdb.go:746  closing rocksdb instance at "/Users/spokey/workspace/batcher/cockroach-data/cockroach-temp385014641"
+I210101 00:47:47.393212 2299 storage/rocksdb.go:746  closing rocksdb instance at "/Users/spokey/workspace/batcher/cockroach-data"

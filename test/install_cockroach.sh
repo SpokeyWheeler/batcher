@@ -19,6 +19,7 @@ cockroach cert create-client btest --certs-dir=/tmp/certs --ca-key=/tmp/certs/ca
 
 # start it in /tmp so the data files are here
 cockroach start-single-node --certs-dir=/tmp/certs --background --listen-addr=localhost 2> /dev/null
+cd -
 
 # done
 exit 0

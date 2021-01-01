@@ -13,6 +13,7 @@ sudo chown mysql:mysql mariadb
 sudo chmod 750 mariadb
 sudo systemctl start mariadb
 # sudo -s "cd mariadb ; mariadbd --initialize-insecure --user=mysql --datadir=$ pwd )/data"
+cd -
 
 # done
 exit 0

@@ -12,6 +12,7 @@ sudo chown mysql:mysql mysql
 sudo chmod 750 mysql
 sudo systemctl start mysql
 # sudo -s "cd mysql ; mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data"
+cd -
 
 # done
 exit 0

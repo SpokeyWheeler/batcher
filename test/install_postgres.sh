@@ -23,12 +23,21 @@ export PGDATABASE=batchertestdb
 export PGUSER=btest
 export PGPASSWORD=btest
 sudo apt install postgresql-13 postgresql-client-13
-psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c "SELECT version();"
 sudo pg_ctlcluster 13 main start
 sudo pg_ctlcluster 13 main status
-sleep 30
-sudo pg_ctlcluster 13 main status
-cd -
+printf "Waiting for PostgreSQL to become available"
+while :
+do
+	psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c "SELECT version();" > /dev/null 2>&1
+	if [ $? -eq 0 ]
+	then
+		break
+	fi
+	printf "."
+	sleep 1
+done
+echo "done"
+# cd -
 
 # done
 exit 0

@@ -13,7 +13,6 @@ test/install_postgres.sh
 export SQLCMD0='psql -w -h localhost -p 5432 -U btest -d batchertestdb '
 export SQLCMD='psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c '
 
-sleep 1
 $SQLCMD "SELECT version();"
 
 printf "Creating test database..."

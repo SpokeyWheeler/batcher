@@ -3,10 +3,12 @@
 # fail fast
 set -eo pipefail
 
+./build.sh
+test/create_pops.sh
+
 test/install_mysql.sh
 
 . test/libs.sh
-test/create_pops.sh
 
 testcount=0
 passcount=0

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+./build.sh
 test/create_pops.sh
 
 . test/libs.sh
@@ -14,14 +15,14 @@ SQLCMD1="cockroach sql --url=postgres://root@localhost:26257/batchertestdb?sslmo
 SQLCMD="cockroach sql --url=postgres://btest:btest@localhost:26257/batchertestdb?sslmode=verify-ca&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key --format tsv -e "
 
 printf "Creating test database..."
-$SQLCMD0 < cockroach1.sql > /dev/null 2>&1
+$SQLCMD0 < test/cockroach1.sql > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database..."
 
-$SQLCMD1 < pop_serial.sql > /dev/null 2>&1
-$SQLCMD1 < pop_uuid.sql > /dev/null 2>&1
-$SQLCMD1 < pop_composite.sql > /dev/null 2>&1
+$SQLCMD1 < test/pop_serial.sql > /dev/null 2>&1
+$SQLCMD1 < test/pop_uuid.sql > /dev/null 2>&1
+$SQLCMD1 < test/pop_composite.sql > /dev/null 2>&1
 
 echo "done"
 

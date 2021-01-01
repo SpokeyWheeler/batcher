@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# fail fast
+set -eo pipefail
+
+test/install_postgres.sh
+
 . test/libs.sh
 
 export SQLCMD0='psql -w -h localhost -p 5432 -U btest -d batchertestdb '

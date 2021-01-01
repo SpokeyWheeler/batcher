@@ -1,6 +1,11 @@
 #!/bin/bash
 
+# fail fast
+set -eo pipefail
+
 . test/libs.sh
+
+test/install_mariadb.sh
 
 SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P4306 -hlocalhost "
 SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P4306 -hlocalhost "
@@ -14,10 +19,11 @@ printf "Creating test database..."
 $SQLCMD0 < test/mysql1.sql > /dev/null 2>&1
 echo "done"
 
-printf "Populating test database..."
+printf "Populating test database."
 $SQLCMD1 < /tmp/pop_serial.sql > /dev/null 2>&1
+printf "."
 $SQLCMD1 < /tmp/pop_composite.sql > /dev/null 2>&1
-echo "done"
+echo ".done"
 
 printf "Starting tests"
 myruntests 4306 "collation=utf8_general_ci"

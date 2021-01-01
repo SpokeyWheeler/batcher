@@ -10,7 +10,8 @@ cd /tmp
 mkdir -p mysql
 sudo chown mysql:mysql mysql
 sudo chmod 750 mysql
-sudo -s "cd mysql ; mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data"
+sudo systemctl start mysql
+# sudo -s "cd mysql ; mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data"
 
 # done
 exit 0

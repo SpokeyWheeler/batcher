@@ -61,9 +61,6 @@ dockers:
     build_flag_templates:
       - "--platform=linux/amd64"
 
-env_files:
-  github_token: ../github.pat
-
 release:
   github:
     owner: SpokeyWheeler

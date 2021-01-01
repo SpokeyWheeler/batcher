@@ -3,6 +3,8 @@
 # fail fast
 set -eo pipefail
 
+test/install_mysql.sh
+
 . test/libs.sh
 test/create_pops.sh
 

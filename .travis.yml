@@ -9,14 +9,10 @@ jobs:
   include:
     - stage: build
       script: ./build.sh
-    - stage: test setup
-      script: test/create_pops.sh
-    - script: test/install_cockroach.sh
-    - script: test/install_mariadb.sh
-    - script: test/install_mysql.sh
-    - script: test/install_postgres.sh
     - stage: test
-      script: test/cockroach.sh
+      script: ./build.sh
+    - script: test/create_pops.sh
+    - script: test/cockroach.sh
     - script: test/mariadb.sh
     - script: test/mysql.sh
     - script: test/postgres.sh

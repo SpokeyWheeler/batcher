@@ -7,12 +7,11 @@ set -eo pipefail
 test/create_pops.sh
 
 . test/libs.sh
-
 test/install_mariadb.sh
 
-SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P4306 -hlocalhost "
-SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P4306 -hlocalhost "
-SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P4306 -hlocalhost -e "
+SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
+SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
 
 testcount=0
 passcount=0
@@ -29,7 +28,7 @@ $SQLCMD1 < /tmp/pop_composite.sql > /dev/null 2>&1
 echo ".done"
 
 printf "Starting tests"
-myruntests 4306 "collation=utf8_general_ci"
+myruntests 3306 "collation=utf8_general_ci"
 echo "done"
 
 echo "MariaDB Tests: $testcount Passed: $passcount Failed: $errorcount"

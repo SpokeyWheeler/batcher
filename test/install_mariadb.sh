@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # fail fast
-set -eo pipefail
+# set -eo pipefail
 
 # install MariaDB
 # sudo cp test/my.cnf /etc/mysql/my.cnf

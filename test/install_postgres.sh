@@ -24,6 +24,7 @@ PGUSER=btest
 PGPASSWORD=btest
 PGDATA=/tmp/postgres
 sudo apt install postgresql-13 postgresql-client-13
+sudo pg_ctlcluster 13 main start
 cd -
 
 # done

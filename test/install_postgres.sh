@@ -26,10 +26,11 @@ export PGPORT=5432
 sudo apt install postgresql-13 postgresql-client-13
 sudo pg_ctlcluster 13 main start
 sudo pg_ctlcluster 13 main status
+cat /etc/postgresql/13/main/postgresql.conf
 printf "Waiting for PostgreSQL to become available"
 while :
 do
-	psql -w -h localhost -p 5432 -U btest -l
+	psql -w -h localhost -p 5432 -U btest -l > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
 		break

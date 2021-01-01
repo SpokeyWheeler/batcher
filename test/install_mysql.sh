@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # fail fast
-set -eo pipefile
+set -eo pipefail
 
 sudo cp test/my.cnf /etc/my.cnf
 sudo apt-get install -y mysql-server

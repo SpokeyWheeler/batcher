@@ -11,8 +11,8 @@ mkdir -p mariadb
 chown mysql:mysql mariadb
 chmod 750 mariadb
 cd mariadb
-cp test/my.cnf /etc/my.cnf
-mariadbd --initialize-insecure --user=mysql --datadir=$ pwd )/data
+sudo cp test/my.cnf /etc/my.cnf
+sudo mariadbd --initialize-insecure --user=mysql --datadir=$ pwd )/data
 
 # done
 exit 0

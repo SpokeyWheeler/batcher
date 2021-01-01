@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./libs.sh
+. test/libs.sh
 
 export SQLCMD0='psql -w -h localhost -p 5432 -U btest -d batchertestdb '
 export SQLCMD='psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c '

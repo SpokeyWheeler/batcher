@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./libs.sh
+. test/libs.sh
 
 # install cockroach
 

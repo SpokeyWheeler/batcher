@@ -3,7 +3,7 @@
 # fail fast
 set -eo pipefail
 
-. ./libs.sh
+. test/libs.sh
 test/create_pops.sh
 
 testcount=0

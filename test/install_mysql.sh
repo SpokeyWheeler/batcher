@@ -10,8 +10,8 @@ mkdir -p mysql
 chown mysql:mysql mysql
 chmod 750 mysql
 cd mysql
-cp test/my.cnf /etc/my.cnf
-mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data
+sudo cp test/my.cnf /etc/my.cnf
+sudo mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data
 
 # done
 exit 0

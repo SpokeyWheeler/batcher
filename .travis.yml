@@ -7,20 +7,19 @@ language: go
 os: linux
 jobs:
   include:
-    - stage:
-      name: build
+    - stage: build
       script: ./build.sh
-    - name: test setup
+    - stage: test setup
       script: test/create_pops.sh
     - script: test/install_cockroach.sh
     - script: test/install_mariadb.sh
     - script: test/install_mysql.sh
     - script: test/install_postgres.sh
-    - name: test
+    - stage: test
       script: test/cockroach.sh
     - script: test/mariadb.sh
     - script: test/mysql.sh
     - script: test/postgres.sh
-    - name: release
+    - stage: release
       script: ./release.sh
       if: branch = main

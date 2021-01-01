@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./libs.sh
+. test/libs.sh
 
 SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P4306 -hlocalhost "
 SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P4306 -hlocalhost "

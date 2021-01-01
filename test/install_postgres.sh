@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # fail fast
-set -eo pipefail
+# set -eo pipefail
 
 # don't mess up my project directory
-cd /tmp
+# cd /tmp
 
 # put the data in /tmp
-mkdir -p /tmp/postgres
+# mkdir -p /tmp/postgres
 
 # Create the file repository configuration:
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
@@ -19,10 +19,11 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-
 sudo apt-get update
 
 # install
-PGDATABASE=batchertestdb
-PGUSER=btest
-PGPASSWORD=btest
+export PGDATABASE=batchertestdb
+export PGUSER=btest
+export PGPASSWORD=btest
 sudo apt install postgresql-13 postgresql-client-13
+psql -w -h localhost -p 5432 -U btest -d batchertestdb -t -A -c "SELECT version();"
 sudo pg_ctlcluster 13 main start
 sudo pg_ctlcluster 13 main status
 sleep 30

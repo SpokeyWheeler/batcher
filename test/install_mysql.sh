@@ -13,6 +13,7 @@ sudo apt-get install -y mysql-server
 # sudo chown mysql:mysql mysql
 # sudo chmod 750 mysql
 sudo systemctl start mysql
+sleep 10
 systemctl status mysql.service
 # sudo -s "cd mysql ; mysqld --initialize-insecure --user=mysql --datadir=$ pwd )/data"
 # cd -

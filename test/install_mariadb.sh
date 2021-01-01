@@ -19,7 +19,8 @@ sudo apt install -y mariadb-server
 # mkdir -p mariadb
 # sudo chown mysql:mysql mariadb
 # sudo chmod 750 mariadb
-sudo systemctl start mariadb
+# sudo systemctl start mariadb
+systemctl status mariadb
 # sudo -s "cd mariadb ; mariadbd --initialize-insecure --user=mysql --datadir=$ pwd )/data"
 # cd -
 

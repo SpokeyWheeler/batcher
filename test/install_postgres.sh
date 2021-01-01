@@ -22,11 +22,12 @@ sudo apt-get update
 sudo apt install postgresql-13 postgresql-client-13
 sudo pg_ctlcluster 13 main start
 sudo pg_ctlcluster 13 main status
-cat /etc/postgresql/13/main/postgresql.conf
+sudo createuser -d -i -s btest
+sudo createdb -O btest batchertestdb 
 printf "Waiting for PostgreSQL to become available"
 while :
 do
-	psql -w -h localhost -p 5433 -U root -l > /dev/null 2>&1
+	sudo psql -w -h localhost -p 5433 -U root -l # > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
 		break
@@ -35,8 +36,6 @@ do
 	sleep 1
 done
 echo "done"
-createuser -d -i -s btest
-createdb -U btest -w -h localhost -p 5433 batchertestdb 
 # cd -
 
 # done

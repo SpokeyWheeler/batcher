@@ -1,6 +1,5 @@
 before_install:
   - sudo apt update
-  - sudo apt -y upgrade
 dist: bionic
 go: 1.15.6
 language: go

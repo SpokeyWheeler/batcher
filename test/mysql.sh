@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # fail fast
-set -eo pipefail
+# set -eo pipefail
 
 ./build.sh
 test/create_pops.sh

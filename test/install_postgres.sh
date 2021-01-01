@@ -19,10 +19,6 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-
 sudo apt-get update
 
 # install
-export PGDATABASE=batchertestdb
-export PGUSER=btest
-export PGPASSWORD=btest
-export PGPORT=5432
 sudo apt install postgresql-13 postgresql-client-13
 sudo pg_ctlcluster 13 main start
 sudo pg_ctlcluster 13 main status
@@ -30,7 +26,7 @@ cat /etc/postgresql/13/main/postgresql.conf
 printf "Waiting for PostgreSQL to become available"
 while :
 do
-	psql -w -h localhost -p 5432 -U btest -l > /dev/null 2>&1
+	psql -w -h localhost -p 5433 -U root -l > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
 		break
@@ -39,6 +35,8 @@ do
 	sleep 1
 done
 echo "done"
+createuser -d -i -s btest
+createdb -U btest -w -h localhost -p 5433 batchertestdb 
 # cd -
 
 # done

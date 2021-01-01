@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # fail fast
-set -eo pipefail
+# set -eo pipefail
 
 # wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb
 # sudo dpkg -i mysql-apt-config_0.8.11-1_all.deb

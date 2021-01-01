@@ -22,9 +22,11 @@ sudo apt-get update
 PGDATABASE=batchertestdb
 PGUSER=btest
 PGPASSWORD=btest
-PGDATA=/tmp/postgres
 sudo apt install postgresql-13 postgresql-client-13
 sudo pg_ctlcluster 13 main start
+sudo pg_ctlcluster 13 main status
+sleep 30
+sudo pg_ctlcluster 13 main status
 cd -
 
 # done

@@ -9,7 +9,7 @@ jobs:
     - stage: test
       script: test/cockroach.sh
     - script: test/mariadb.sh
-    - script: test/mysql.sh
+    # - script: test/mysql.sh
     - script: test/postgres.sh
     - stage: release
       script: ./release.sh

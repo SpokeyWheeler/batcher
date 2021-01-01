@@ -7,8 +7,6 @@ language: go
 os: linux
 jobs:
   include:
-    - stage: build
-      script: ./build.sh
     - stage: test
       script: ./build.sh
     - script: test/create_pops.sh

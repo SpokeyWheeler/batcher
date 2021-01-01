@@ -3,6 +3,8 @@
 # fail fast
 set -eo pipefail
 
+wget -c https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb
+sudo dpkg -i mysql-apt-config_0.8.11-1_all.deb
 sudo apt update
 sudo apt-get install -y mysql-server
 # sudo cp test/my.cnf /etc/my.cnf

@@ -1,3 +1,9 @@
+## v0.7.4 (2021-01-02)
+
+### Fix
+
+- **cz**: remove redundant config
+
 ## v0.7.3 (2021-01-02)
 
 ### Fix

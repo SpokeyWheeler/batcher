@@ -9,6 +9,8 @@ test/create_pops.sh
 . test/libs.sh
 test/install_mariadb.sh
 
+#mariadb mysql -uroot -w --protocol=tcp -P3306 -hlocalhost "
+mariadb -uroot -w --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
 SQLCMD0="mariadb mysql -uroot -w --protocol=tcp -P3306 -hlocalhost "
 SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "

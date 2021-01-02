@@ -22,7 +22,6 @@ brews:
       owner: SpokeyWheeler
       name: homebrew-tap
     caveats: "Execute 'batcher help' to get started"
-    # license: "MIT"
     description: "batcher does concurrent mass updates and deletes in a database-friendly way"
     test: |
       system "#{bin}/batcher version"

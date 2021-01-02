@@ -6,8 +6,7 @@
 # install MariaDB
 sudo apt update
 sudo apt install -y mariadb-server
-sleep 2
-sudo systemctl start mariadb
+mysql_install_db --auth-root-authentication-method=normal --verbose --force
 systemctl status mariadb
 
 # done

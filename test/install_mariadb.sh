@@ -14,8 +14,10 @@ echo "b7519209546e1656e5514c04b4dcffdd9b4123201bcd1875a361ad79eb943bbe mariadb_r
 chmod +x mariadb_repo_setup
 sudo ./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
 sudo apt update
-sudo cp test/maria.cnf /etc/mysql/my.cnf
 sudo apt -y install mariadb-server
+systemctl status mariadb
+sudo cp test/maria.cnf /etc/mysql/my.cnf
+sudo systemctl restart mariadb
 systemctl status mariadb
 mariadbd --print-defaults
 cat /etc/mysql/my.cnf

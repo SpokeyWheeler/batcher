@@ -20,7 +20,6 @@ mariadbd --print-defaults
 systemctl status mariadb
 sudo cp test/maria.cnf /etc/mysql/my.cnf
 sudo systemctl restart mariadb
-journalctl -xe
 netstat -an | grep 3306
 mariadbd --print-defaults
 systemctl status mariadb

@@ -14,7 +14,7 @@ test/install_mariadb.sh
 # SQLCMD0="mariadb mysql -umysql -w --protocol=tcp -P3306 -hlocalhost "
 # SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 # SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
-SQLCMD0="mariadb mysql -umysql -w --protocol=tcp -P3306 -h127.0.0.1 "
+SQLCMD0="sudo mariadb mysql -umysql -w --protocol=tcp -P3306 -h127.0.0.1 "
 SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h127.0.0.1 "
 SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h127.0.0.1 -e "
 

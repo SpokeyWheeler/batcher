@@ -1,3 +1,9 @@
+## v0.7.6 (2021-01-02)
+
+### Fix
+
+- **goreleaser**: remove license from goreleaser
+
 ## v0.7.5 (2021-01-02)
 
 ### Fix

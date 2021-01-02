@@ -8,7 +8,6 @@ jobs:
   include:
     - stage: test
       script: test/cockroach.sh
-    - script: test/mariadb.sh
     - script: test/mysql.sh
     - stage: release
       script: ./release.sh

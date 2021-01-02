@@ -1,3 +1,9 @@
+## v0.7.5 (2021-01-02)
+
+### Fix
+
+- **goreleaser**: always attempt release
+
 ## v0.7.4 (2021-01-02)
 
 ### Fix

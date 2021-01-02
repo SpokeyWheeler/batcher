@@ -9,6 +9,8 @@ test/create_pops.sh
 . test/libs.sh
 test/install_mariadb.sh
 
+netstat -an | grep 3306
+
 #mariadb mysql -uroot -w --protocol=tcp -P3306 -hlocalhost "
 mariadb -uroot -w --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
 SQLCMD0="mariadb mysql -uroot -w --protocol=tcp -P3306 -hlocalhost "

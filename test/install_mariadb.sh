@@ -17,6 +17,7 @@ sudo apt update
 sudo apt -y install mariadb-server
 systemctl status mariadb
 mariadbd --print-defaults
+cat /etc/mysql/my.cnf
 
 # done
 exit 0

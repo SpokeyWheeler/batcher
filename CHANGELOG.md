@@ -1,3 +1,9 @@
+## v0.7.7 (2021-01-02)
+
+### Fix
+
+- **goreleaser**: use the suggested Docker process
+
 ## v0.7.6 (2021-01-02)
 
 ### Fix

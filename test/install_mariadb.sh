@@ -15,11 +15,15 @@ chmod +x mariadb_repo_setup
 sudo ./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
 sudo apt update
 sudo apt -y install mariadb-server
+netstat -an | grep 3306
+mariadbd --print-defaults
 systemctl status mariadb
 sudo cp test/maria.cnf /etc/mysql/my.cnf
 sudo systemctl restart mariadb
-systemctl status mariadb
+journalctl -xe
+netstat -an | grep 3306
 mariadbd --print-defaults
+systemctl status mariadb
 cat /etc/mysql/my.cnf
 
 # done

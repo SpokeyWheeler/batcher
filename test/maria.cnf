@@ -1,5 +1,7 @@
 [client-server]
 # Port or socket location where to connect
-hostname = localhost
 port = 3306
 socket = /run/mysqld/mysqld.sock
+
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/

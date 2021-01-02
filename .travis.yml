@@ -11,4 +11,3 @@ jobs:
     - script: test/mysql.sh
     - stage: release
       script: ./release.sh
-      if: branch = main

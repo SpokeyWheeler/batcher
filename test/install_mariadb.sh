@@ -11,6 +11,7 @@ sudo add-apt-repository 'deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/
 sudo apt update
 sudo apt -y install mariadb-server
 systemctl status mariadb
+mariadbd --print-defaults
 
 # done
 exit 0

@@ -6,8 +6,8 @@
 # install MariaDB
 sudo apt update
 sudo apt install -y mariadb-server
-#sudo systemctl start mariadb
 sleep 2
+sudo systemctl start mariadb
 systemctl status mariadb
 
 # done

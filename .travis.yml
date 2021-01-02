@@ -1,6 +1,6 @@
 before_install:
   - sudo apt update
-dist: bionic
+dist: focal
 go: 1.15.6
 language: go
 os: linux
@@ -9,6 +9,7 @@ jobs:
     - stage: test
       script: test/cockroach.sh
     - script: test/mariadb.sh
+    - script: test/mysql.sh
     - stage: release
       script: ./release.sh
       if: branch = main

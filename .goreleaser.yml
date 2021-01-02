@@ -57,8 +57,6 @@ dockers:
     binaries:
       - batcher
     dockerfile: Dockerfile
-    build_flag_templates:
-      - "--platform=linux/amd64"
 
 release:
   github:

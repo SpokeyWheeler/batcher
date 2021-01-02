@@ -1,13 +1,22 @@
+after_success:
+  - test -n "$TRAVIS_TAG" && docker login -u=spokey -p="$DOCKER_PASSWORD"
 before_install:
   - sudo apt update
+deploy:
+  - provider: script
+    cleanup: false
+    script: curl -sL https://git.io/goreleaser | bash
+    on:
+      tags: true
+      condition: $TRAVIS_OS_NAME = linux
 dist: focal
 go: 1.15.6
-language: go
-os: linux
 jobs:
   include:
     - stage: test
       script: test/cockroach.sh
     - script: test/mysql.sh
-    - stage: release
-      script: ./release.sh
+language: go
+os: linux
+services:
+  - docker

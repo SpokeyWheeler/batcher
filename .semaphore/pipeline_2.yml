@@ -44,7 +44,7 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
-            - docker run -d --name semmaria -e MYSQL_ROOT_PASSWORD=btestroot -e MYSQL_DATABASE=batchertestdb -e MYSQL_USER=btest -e MYSQL_PASSWORD=btest
+            - docker run -d --name semmaria -e MYSQL_ROOT_PASSWORD=btestroot -e MYSQL_DATABASE=batchertestdb -e MYSQL_USER=btest -e MYSQL_PASSWORD=btest mariadb:latest
             - sudo apt-get install -y -qq mariadb-client
             - checkout
             - go get ./...

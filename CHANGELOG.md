@@ -1,3 +1,9 @@
+## v0.7.9 (2021-01-03)
+
+### Fix
+
+- **travis**: need to use their v2 deployer
+
 ## v0.7.8 (2021-01-03)
 
 ### Fix

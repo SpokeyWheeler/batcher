@@ -1,3 +1,9 @@
+## v0.7.25 (2021-01-03)
+
+### Fix
+
+- **buddy**: change scripts for different ci approach
+
 ## v0.7.24 (2021-01-03)
 
 ### Fix

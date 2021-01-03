@@ -1,3 +1,10 @@
+## v0.7.16 (2021-01-03)
+
+### Fix
+
+- **mariadb**: tell docker which image to run
+- **postgres**: provide diagnostics
+
 ## v0.7.14 (2021-01-03)
 
 ### Fix

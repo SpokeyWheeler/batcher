@@ -79,9 +79,13 @@ This can seriously mess up your day if you get it wrong. Please dry run first to
 
 It turns out that SaaS CI across multiple databases is very, very hard! I've tried with CircleCI, GitHub Actions and Travis-CI, and the best I was able to manage was three out of the four I originally aimed for. (Only two are currently supported because I tried Travis last, I could only get two to work and now can't be bothered to go back!)
 
+Must give massive props to CircleCI support - ridiculously prompt and really, really good.
+
 I haven't given up on it, but I'm going to work on that separately because I'm sick of cluttering up this project with hundreds of meaningless CI-related commit messages and version bumps.
 
 Also, from a CI perspective, Cockroach's "download a single binary and put it in your path" approach has been a delight compared to watching hours of APT output before you can test your change. It's not completely PostgreSQL compatible, but if you're considering a new project with lightweight requirements, it could be an interesting option. PostgreSQL itself isn't too bad, but it's still more work. MariaDB is not a drop-in replacement for MySQL, IMHO, because the process followed after an official APT install is different. Both MariaDB and MySQL need to sort out their character set and collation sequence issues, nobody has time for that shit.
+
+My next stop will be to try Semaphore CI.
 
 ## Coming soon
 

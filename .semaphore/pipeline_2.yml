@@ -58,7 +58,7 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
-            - sem-service start mysql 8.0 --username=btest --password=best --db=mysql
+            - sem-service start mysql 8.0 --username=btest --password=best --db=batchertestdb
             - sudo apt-get install -y -qq mysql-client
             - mysql --host=0.0.0.0 -uroot -e "SHOW DATABASES;"
             - checkout
@@ -91,7 +91,7 @@ blocks:
             - 'export PATH=/home/semaphore/go/bin:$PATH'
             - sem-service start postgres 13 --username=btest --password=btest --db=batchertestdb
             - sudo apt-get install -y -qq postgresql-client
-            - psql -h 0.0.0.0 -U postgres -c "\l"
+            - psql -h 0.0.0.0 -U root -c "\l"
             - checkout
             - go get ./...
             - go test ./...

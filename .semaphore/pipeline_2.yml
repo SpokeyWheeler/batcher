@@ -92,6 +92,7 @@ blocks:
             - 'export PATH=/home/semaphore/go/bin:$PATH'
             - sem-service start postgres 9.6 --username=root
             - sudo apt-get install -y -qq postgresql-client
+            - createdb -U root -h 0.0.0.0 batchertestdb
             - psql -h 0.0.0.0 -U root -w -c "\l"
             - checkout
             - go get ./...

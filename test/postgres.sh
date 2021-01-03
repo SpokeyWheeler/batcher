@@ -6,12 +6,12 @@
 ./build.sh
 test/create_pops.sh
 
-test/install_postgres.sh
+# test/install_postgres.sh
 
 . test/libs.sh
 
-export SQLCMD0='psql -w -h localhost -p 5433 -U btest -d batchertestdb '
-export SQLCMD='psql -w -h localhost -p 5433 -U btest -d batchertestdb -t -A -c '
+export SQLCMD0='psql -w -h 0.0.0.0 -p 5432 -U btest -d batchertestdb '
+export SQLCMD='psql -w -h 0.0.0.0 -p 5432 -U btest -d batchertestdb -t -A -c '
 
 $SQLCMD "SELECT version();"
 
@@ -32,7 +32,7 @@ passcount=0
 errorcount=0
 
 printf "Starting tests"
-pgruntests 5433 "sslmode=disable"
+pgruntests 5432 "sslmode=disable"
 echo "done"
 
 echo "PostgreSQL Tests: $testcount Passed: $passcount Failed: $errorcount"

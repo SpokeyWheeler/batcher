@@ -10,7 +10,7 @@ test/create_pops.sh
 # test/install_mariadb.sh
 
 printf "Waiting for MariaDB to come up"
-while :
+for i in {1..10}
 do
 mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;" > /dev/null 2>&1
 if [ $? -eq 0 ]

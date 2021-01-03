@@ -1,3 +1,9 @@
+## v0.7.23 (2021-01-03)
+
+### Fix
+
+- **buddy**: pop scripts still need running
+
 ## v0.7.22 (2021-01-03)
 
 ### Fix

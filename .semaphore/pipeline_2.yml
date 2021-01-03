@@ -19,6 +19,7 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+            - test/cockroach.sh
   - name: Informix
     dependencies: []
     task:
@@ -38,7 +39,15 @@ blocks:
     task:
       jobs:
         - name: Build and test
-          commands: []
+          commands:
+            - sem-version go 1.15
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - go get ./...
+            - go test ./...
+            - go build -v .
   - name: MySQL
     dependencies: []
     task:
@@ -85,8 +94,16 @@ blocks:
     dependencies: []
     task:
       jobs:
-        - name: 'Job #1'
-          commands: []
+        - name: Build and test
+          commands:
+            - sem-version go 1.15
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - go get ./...
+            - go test ./...
+            - go build -v .
   - name: GoReleaser
     dependencies:
       - Cockroach

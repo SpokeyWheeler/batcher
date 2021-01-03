@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ./build.sh
-# test/create_pops.sh
+test/create_pops.sh
 
 . test/libs.sh
 

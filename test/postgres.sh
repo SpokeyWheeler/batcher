@@ -4,7 +4,7 @@
 # set -eo pipefail
 
 # ./build.sh
-# test/create_pops.sh
+test/create_pops.sh
 
 # test/install_postgres.sh
 

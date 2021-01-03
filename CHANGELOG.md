@@ -1,3 +1,10 @@
+## v0.7.10 (2021-01-03)
+
+### Fix
+
+- **postgres**: start implementing postgres tests
+- **mysql**: allow btest to access from any server
+
 ## v0.7.9 (2021-01-03)
 
 ### Fix

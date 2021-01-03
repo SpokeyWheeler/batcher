@@ -19,6 +19,7 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+            - test/cockroach.sh
   - name: Informix
     dependencies: []
     task:
@@ -38,7 +39,15 @@ blocks:
     task:
       jobs:
         - name: Build and test
-          commands: []
+          commands:
+            - sem-version go 1.15
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - go get ./...
+            - go test ./...
+            - go build -v .
   - name: MySQL
     dependencies: []
     task:
@@ -49,6 +58,9 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - sem-service start mysql 8.0 --username=btest --password=best --db=batchertestdb
+            - sudo apt-get install -y -qq mysql-client
+            - mysql --host=0.0.0.0 -uroot -e "SHOW DATABASES;"
             - checkout
             - go get ./...
             - go test ./...
@@ -77,6 +89,9 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - sem-service start postgres 9.6 --username=root
+            - sudo apt-get install -y -qq postgresql-client
+            - psql -h 0.0.0.0 -U root -w -c "\l"
             - checkout
             - go get ./...
             - go test ./...
@@ -85,8 +100,16 @@ blocks:
     dependencies: []
     task:
       jobs:
-        - name: 'Job #1'
-          commands: []
+        - name: Build and test
+          commands:
+            - sem-version go 1.15
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - go get ./...
+            - go test ./...
+            - go build -v .
   - name: GoReleaser
     dependencies:
       - Cockroach
@@ -107,3 +130,7 @@ blocks:
             - checkout
             - go get ./...
             - go test ./...
+      secrets:
+        - name: Docker PAT
+        - name: GitHub Package
+        - name: Tap PAT

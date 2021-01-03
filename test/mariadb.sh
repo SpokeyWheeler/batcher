@@ -3,8 +3,8 @@
 # fail fast
 # set -eo pipefail
 
-./build.sh
-test/create_pops.sh
+# ./build.sh
+# test/create_pops.sh
 
 . test/libs.sh
 # test/install_mariadb.sh

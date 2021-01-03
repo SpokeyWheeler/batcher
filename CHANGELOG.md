@@ -1,3 +1,11 @@
+## v0.7.18 (2021-01-03)
+
+### Fix
+
+- **mariadb**: quit vi
+- **mariadb**: test database access
+- **mariadb**: tell docker which image to run
+
 ## v0.7.15 (2021-01-03)
 
 ### Fix

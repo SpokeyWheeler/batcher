@@ -108,34 +108,34 @@ myruntests() {
 	exptot=900
 	expa=0
 
-	/tmp/batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -table serialtest -set "strcol='b'" -user btest -where "strcol='a'" -execute
+	/tmp/batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -table serialtest -set "strcol='b'" -user btest -where "strcol='a'" -execute
 
 	sera=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Updated serial a" "$expa" "$sera"
 
-	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -table serialtest -user btest -where "intcol<101" -execute
+	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -table serialtest -user btest -where "intcol<101" -execute
 
 	sertot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Small delete serial total" "$exptot" "$sertot"
 
-	/tmp/batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -set "strcol='b'"  -table compositetest -user btest -where "strcol='a'" -execute
+	/tmp/batcher update -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -set "strcol='b'"  -table compositetest -user btest -where "strcol='a'" -execute
 
 	cmpa=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest WHERE strcol = 'a';" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Updated composite a" "$expa" "$cmpa"
 
-	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -table compositetest -user btest -where "intcol<101" -execute
+	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -table compositetest -user btest -where "intcol<101" -execute
 
 	cmptot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Small delete composite total" "$exptot" "$cmptot"
 
 	exptot=0
 
-	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -table serialtest -user btest -where "1=1" -execute
+	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -table serialtest -user btest -where "1=1" -execute
 
 	sertot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM serialtest;" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Full delete serial total" "$exptot" "$sertot"
 
-	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host localhost -opts $opts -password btest -portnum $portnum -table compositetest -user btest -where "1=1" -execute
+	/tmp/batcher delete -concurrency 4 -database batchertestdb -dbtype mysql -host 0.0.0.0 -opts $opts -password btest -portnum $portnum -table compositetest -user btest -where "1=1" -execute
 
 	cmptot=$( $SQLCMD "SET CHARACTER SET 'utf8'; SET NAMES 'utf8' COLLATE 'utf8_general_ci'; SELECT COUNT(*) FROM compositetest;" 2> /dev/null | grep -iv count | grep -iv row )
 	comp "Full delete composite total" "$exptot" "$cmptot"

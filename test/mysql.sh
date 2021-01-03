@@ -6,18 +6,16 @@
 ./build.sh
 test/create_pops.sh
 
-test/install_mysql.sh
-
 . test/libs.sh
 
 testcount=0
 passcount=0
 errorcount=0
 
-# SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
-SQLCMD0="mysql mysql -uroot -w --protocol=tcp -P3306 -hlocalhost "
-SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
-SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
+# SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -h0.0.0.0 "
+SQLCMD0="mysql mysql -uroot -w --protocol=tcp -P3306 -h0.0.0.0 "
+SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 "
+SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 -e "
 
 printf "Creating test database..."
 $SQLCMD0 < test/mysql1.sql # > /dev/null 2>&1

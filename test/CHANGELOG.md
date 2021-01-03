@@ -1,3 +1,9 @@
+## v0.7.21 (2021-01-03)
+
+### Fix
+
+- **buddy**: build no longer needed
+
 ## v0.7.20 (2021-01-03)
 
 ### Fix

@@ -1,3 +1,11 @@
+## v0.7.20 (2021-01-03)
+
+### Fix
+
+- **mariadb**: quit vi, again
+- **mariadb**: bind to 0.0.0.0
+- **mariadb**: quit vi
+
 ## v0.7.17 (2021-01-03)
 
 ### Fix

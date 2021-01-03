@@ -9,11 +9,11 @@ test/create_pops.sh
 . test/libs.sh
 # test/install_mariadb.sh
 
-# mariadb -uroot -pbtestroot --protocol=tcp -P3306 -h0.0.0.0 mysql -e "SHOW DATABASES;"
+# mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hmysql mysql -e "SHOW DATABASES;"
 mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
-SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -h0.0.0.0 "
-SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 "
-SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 -e "
+SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hmysql "
+SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql "
+SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql -e "
 
 testcount=0
 passcount=0

@@ -1,3 +1,9 @@
+## v0.7.17 (2021-01-03)
+
+### Fix
+
+- **mariadb**: test database access
+
 ## v0.7.16 (2021-01-03)
 
 ### Fix

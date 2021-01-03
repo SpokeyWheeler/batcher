@@ -1,3 +1,9 @@
+## v0.7.8 (2021-01-03)
+
+### Fix
+
+- **docker**: use a multi-stage build of the Docker image for portability
+
 ## v0.7.7 (2021-01-02)
 
 ### Fix

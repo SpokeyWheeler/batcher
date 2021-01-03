@@ -12,7 +12,7 @@ test/create_pops.sh
 printf "Waiting for MariaDB to come up"
 for i in {1..10}
 do
-mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;" > /dev/null 2>&1
+mariadb -hmysql -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;" > /dev/null 2>&1
 if [ $? -eq 0 ]
 then
 break
@@ -24,7 +24,7 @@ echo "done"
 
 
 # mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hmysql mysql -e "SHOW DATABASES;"
-mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
+mariadb -hmysql -P3306 -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
 SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hmysql "
 SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql "
 SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql -e "

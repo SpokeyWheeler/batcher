@@ -9,14 +9,11 @@ test/create_pops.sh
 . test/libs.sh
 # test/install_mariadb.sh
 
-docker info 
-docker inspect semmaria
-
-# mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
-mariadb -uroot -pbtestroot mysql -e "SHOW DATABASES;"
-SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
-SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
-SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
+# mariadb -uroot -pbtestroot --protocol=tcp -P3306 -h0.0.0.0 mysql -e "SHOW DATABASES;"
+mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
+SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -h0.0.0.0 "
+SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 "
+SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -h0.0.0.0 -e "
 
 testcount=0
 passcount=0
@@ -27,9 +24,9 @@ $SQLCMD0 < test/mysql1.sql # > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database."
-$SQLCMD1 < /tmp/pop_serial.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_serial.sql # > /dev/null 2>&1
 printf "."
-$SQLCMD1 < /tmp/pop_composite.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_composite.sql # > /dev/null 2>&1
 echo ".done"
 
 printf "Starting tests"

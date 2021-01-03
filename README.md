@@ -8,6 +8,23 @@ After testing many different approaches, I've created this, which generates sing
 
 No names, no packdrill.
 
+## Installation
+
+Binaries for Mac, Linux and Windows, as well as the source code in zip and tar.gz  can be found [here](https://github.com/SpokeyWheeler/batcher/releases/latest).
+
+If you want to build the source, I used Go 1.15.6.
+
+On Mac, you can also:
+```bash
+brew tap SpokeyWheeler/tap
+brew install batcher
+```
+
+If you're into Docker, you can:
+```bash
+docker run -it spokey/batcher:latest
+```
+
 ## Usage
 
 ```bash

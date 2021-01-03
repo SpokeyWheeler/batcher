@@ -1,3 +1,9 @@
+## v0.7.12 (2021-01-03)
+
+### Fix
+
+- **postgres**: simplify initial sql
+
 ## v0.7.11 (2021-01-03)
 
 ### Fix

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/SpokeyWheeler/batcher.svg?branch=main)](https://travis-ci.com/SpokeyWheeler/batcher)  [![Go Report Card](https://goreportcard.com/badge/github.com/SpokeyWheeler/batcher)](https://goreportcard.com/report/github.com/SpokeyWheeler/batcher)  [![PkgGoDev](https://pkg.go.dev/badge/github.com/SpokeyWheeler/batcher)](https://pkg.go.dev/github.com/SpokeyWheeler/batcher)  ![Go](https://github.com/SpokeyWheeler/batcher/workflows/Go/badge.svg?branch=main) [![Total alerts](https://img.shields.io/lgtm/alerts/g/SpokeyWheeler/batcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SpokeyWheeler/batcher/alerts/)  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/132d19460c42416bb371f98bb0c94fc6)](https://www.codacy.com/gh/SpokeyWheeler/batcher/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SpokeyWheeler/batcher&amp;utm_campaign=Badge_Grade)  [![code-inspector Badge](https://www.code-inspector.com/project/17296/score/svg)](https://www.code-inspector.com/project/17296/score/svg)  [![GuardRails badge](https://api.guardrails.io/v2/badges/SpokeyWheeler/batcher.svg?token=d09c361974cb1acab7d58f925c6a7dd6f9fc6c05dfd43904043a06f382cdc4d7&provider=github)](https://dashboard.guardrails.io/gh/SpokeyWheeler/52652)  [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/SpokeyWheeler/batcher.svg)](http://isitmaintained.com/project/SpokeyWheeler/batcher "Average time to resolve an issue")  [![Percentage of issues still open](http://isitmaintained.com/badge/open/SpokeyWheeler/batcher.svg)](http://isitmaintained.com/project/SpokeyWheeler/batcher "Percentage of issues still open")
+[![Build Status](https://travis-ci.com/SpokeyWheeler/batcher.svg?branch=main)](https://travis-ci.com/SpokeyWheeler/batcher)  [![Go Report Card](https://goreportcard.com/badge/github.com/SpokeyWheeler/batcher)](https://goreportcard.com/report/github.com/SpokeyWheeler/batcher)  [![PkgGoDev](https://pkg.go.dev/badge/github.com/SpokeyWheeler/batcher)](https://pkg.go.dev/github.com/SpokeyWheeler/batcher)  [![Total alerts](https://img.shields.io/lgtm/alerts/g/SpokeyWheeler/batcher.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SpokeyWheeler/batcher/alerts/)  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/132d19460c42416bb371f98bb0c94fc6)](https://www.codacy.com/gh/SpokeyWheeler/batcher/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SpokeyWheeler/batcher&amp;utm_campaign=Badge_Grade)  [![code-inspector Badge](https://www.code-inspector.com/project/17296/score/svg)](https://www.code-inspector.com/project/17296/score/svg)  [![GuardRails badge](https://api.guardrails.io/v2/badges/SpokeyWheeler/batcher.svg?token=d09c361974cb1acab7d58f925c6a7dd6f9fc6c05dfd43904043a06f382cdc4d7&provider=github)](https://dashboard.guardrails.io/gh/SpokeyWheeler/52652)  [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/SpokeyWheeler/batcher.svg)](http://isitmaintained.com/project/SpokeyWheeler/batcher "Average time to resolve an issue")  [![Percentage of issues still open](http://isitmaintained.com/badge/open/SpokeyWheeler/batcher.svg)](http://isitmaintained.com/project/SpokeyWheeler/batcher "Percentage of issues still open")
 
 # batcher
 
@@ -7,6 +7,18 @@ A utility to perform large updates or deletes in batches to improve performance.
 After testing many different approaches, I've created this, which generates singleton updates or deletes of the rows in question. If you want to, you can output the generated SQL to a flat file and process it in some other way. If you use the `-execute` option, batcher will use Go's internal concurrency to perform your mass update without having to worry about long transactions or the excruciating slowness of some databases when doing set operations.
 
 No names, no packdrill.
+
+## Supported Databases
+
+| Database | Version | Supported | CI Test Status | Notes |
+| -------- | ------- | --------- | -------------- | ----- |
+| Cockroach | 20.1.3+ | Yes | 20.2.3  | Versions 19.0+ should work |
+| Informix | 12.10+ | No | No | Next on the list |
+| MariaDB | 10.5+ | Yes | No | CI is an ongoing project |
+| MySQL | 8.0+ | Yes | 8.0.19 | Earlier versions don't work |
+| Oracle | 12+ | No | No | After Informix |
+| PostgreSQL | 13.1+ | Yes | No | CI is an ongoing project |
+| SQLServer | 2019 | No | No | Linux will be first, then Windows (maybe!) |
 
 ## Installation
 
@@ -62,3 +74,15 @@ flags:
 ## CAUTION
 
 This can seriously mess up your day if you get it wrong. Please dry run first to make sure the statement that will run is the one you want!
+
+## A word about CI
+
+It turns out that SaaS CI across multiple databases is very, very hard! I've tried with CircleCI, GitHub Actions and Travis-CI, and the best I was able to manage was three out of the four I originally aimed for. (Only two are currently supported because I tried Travis last, I could only get two to work and now can't be bothered to go back!)
+
+I haven't given up on it, but I'm going to work on that separately because I'm sick of cluttering up this project with hundreds of meaningless CI-related commit messages and version bumps.
+
+Also, from a CI perspective, Cockroach's "download a single binary and put it in your path" approach has been a delight compared to watching hours of APT output before you can test your change. It's not completely PostgreSQL compatible, but if you're considering a new project with lightweight requirements, it could be an interesting option. PostgreSQL itself isn't too bad, but it's still more work. MariaDB is not a drop-in replacement for MySQL, IMHO, because the process followed after an official APT install is different. Both MariaDB and MySQL need to sort out their character set and collation sequence issues, nobody has time for that shit.
+
+## Coming soon
+
+Commercial databases!

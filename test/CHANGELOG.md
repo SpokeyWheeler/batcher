@@ -1,3 +1,9 @@
+## v0.7.24 (2021-01-03)
+
+### Fix
+
+- **buddy**: executable is now in current directory
+
 ## v0.7.23 (2021-01-03)
 
 ### Fix

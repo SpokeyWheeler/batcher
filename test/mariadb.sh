@@ -9,11 +9,11 @@ test/create_pops.sh
 . test/libs.sh
 # test/install_mariadb.sh
 
-netstat -an | grep 3306
-docker ps
-docker info semmaria
+docker info 
+docker inspect semmaria
 
-mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
+# mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
+mariadb -uroot -pbtestroot mysql -e "SHOW DATABASES;"
 SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
 SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "

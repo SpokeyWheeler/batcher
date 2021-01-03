@@ -1,3 +1,9 @@
+## v0.7.14 (2021-01-03)
+
+### Fix
+
+- **postgres**: grant more permissions
+
 ## v0.7.13 (2021-01-03)
 
 ### Fix

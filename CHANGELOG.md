@@ -1,3 +1,13 @@
+## v0.7.15 (2021-01-03)
+
+### Fix
+
+- **postgres**: provide diagnostics
+- **postgres**: grant more permissions
+- **postgres**: grant permissions
+- **postgres**: simplify initial sql
+- **postgres**: run first script as root
+
 ## v0.7.10 (2021-01-03)
 
 ### Fix

@@ -98,6 +98,7 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+            - test/postgres.sh
   - name: SQL Server
     dependencies: []
     task:

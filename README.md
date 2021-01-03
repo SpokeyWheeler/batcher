@@ -15,7 +15,7 @@ No names, no packdrill.
 | Cockroach | 20.1.3+ | Yes | 20.2.3  | Versions 19.0+ should work |
 | Informix | 12.10+ | No | No | Next on the list |
 | MariaDB | 10.5+ | Yes | No | CI is an ongoing project |
-| MySQL | 8.0+ | Yes | 8.0.19 | Earlier versions don't work |
+| MySQL | 8.0+ | Yes | 8.0.19 | Earlier (5.x) versions don't work |
 | Oracle | 12+ | No | No | After Informix |
 | PostgreSQL | 13.1+ | Yes | No | CI is an ongoing project |
 | SQLServer | 2019 | No | No | Linux will be first, then Windows (maybe!) |

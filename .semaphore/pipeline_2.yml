@@ -89,9 +89,9 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
-            - sem-service start postgres 13 --username=btest --password=btest --db=batchertestdb
+            - sem-service start postgres 9.6 --username=btest --password=btest --db=batchertestdb
             - sudo apt-get install -y -qq postgresql-client
-            - psql -h 0.0.0.0 -U root -c "\l"
+            - psql -h 0.0.0.0 -U btest -w -c "\l"
             - checkout
             - go get ./...
             - go test ./...

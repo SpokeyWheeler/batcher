@@ -9,6 +9,20 @@ test/create_pops.sh
 . test/libs.sh
 # test/install_mariadb.sh
 
+printf "Waiting for MariaDB to come up"
+while :
+do
+mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;" > /dev/null 2>&1
+if [ $? -eq 0 ]
+then
+break
+fi
+printf "."
+sleep 1
+done
+echo "done"
+
+
 # mariadb -uroot -pbtestroot --protocol=tcp -P3306 -hmysql mysql -e "SHOW DATABASES;"
 mariadb -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
 SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hmysql "

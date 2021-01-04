@@ -18,12 +18,12 @@ SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql "
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hmysql -e "
 
 printf "Creating test database..."
-$SQLCMD0 < test/mysql1.sql # > /dev/null 2>&1
+$SQLCMD0 < test/mysql1.sql > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database..."
-$SQLCMD1 < /tmp/pop_serial.sql # > /dev/null 2>&1
-$SQLCMD1 < /tmp/pop_composite.sql # > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_serial.sql > /dev/null 2>&1
+$SQLCMD1 < /tmp/pop_composite.sql > /dev/null 2>&1
 echo "done"
 
 printf "Starting tests"

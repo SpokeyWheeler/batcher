@@ -1,3 +1,9 @@
+## v0.7.38 (2021-01-04)
+
+### Fix
+
+- **version**: just to bump the version
+
 ## v0.7.37 (2021-01-04)
 
 ### Fix

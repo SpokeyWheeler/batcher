@@ -1,3 +1,10 @@
+## v0.7.30 (2021-01-04)
+
+### Fix
+
+- **postgres**: fix PGPASS
+- **postgres**: run queries as btest
+
 ## v0.7.29 (2021-01-04)
 
 ### Fix

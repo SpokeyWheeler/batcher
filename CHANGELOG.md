@@ -1,3 +1,9 @@
+## v0.7.31 (2021-01-04)
+
+### Fix
+
+- **postgres**: Use correct variable
+
 ## v0.7.30 (2021-01-04)
 
 ### Fix

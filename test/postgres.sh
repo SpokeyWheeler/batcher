@@ -10,21 +10,21 @@ test/create_pops.sh
 
 . test/libs.sh
 
-export SQLCMD0='psql -w -h postgres -p 5432 -U root -d batchertestdb '
-export SQLCMD='psql -w -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
+export SQLCMD0='PGPASS=btest psql -w -h postgres -p 5432 -U btest -d batchertestdb '
+export SQLCMD='PGPASS=btest psql -w -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
 
 $SQLCMD "SELECT version();"
 
 printf "Creating test database..."
-$SQLCMD0 < test/postgres1.sql > /dev/null 2>&1
+$SQLCMD0 < test/postgres1.sql # > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database."
-$SQLCMD0 < /tmp/pop_serial.sql > /dev/null 2>&1
+$SQLCMD0 < /tmp/pop_serial.sql # > /dev/null 2>&1
 printf "."
-$SQLCMD0 < /tmp/pop_uuid.sql > /dev/null 2>&1
+$SQLCMD0 < /tmp/pop_uuid.sql # > /dev/null 2>&1
 printf "."
-$SQLCMD0 < /tmp/pop_composite.sql > /dev/null 2>&1
+$SQLCMD0 < /tmp/pop_composite.sql # > /dev/null 2>&1
 echo "done"
 
 testcount=0

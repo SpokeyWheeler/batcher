@@ -1,3 +1,9 @@
+## v0.7.33 (2021-01-04)
+
+### Fix
+
+- **goreleaser**: hard reset of git
+
 ## v0.7.32 (2021-01-04)
 
 ### Fix

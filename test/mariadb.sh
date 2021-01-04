@@ -44,7 +44,7 @@ $SQLCMD1 < /tmp/pop_composite.sql # > /dev/null 2>&1
 echo ".done"
 
 printf "Starting tests"
-myruntests 3306 "collation=utf8_general_ci"
+myruntests 3306 "collation=utf8_general_ci" mariadb
 echo "done"
 
 echo "MariaDB Tests: $testcount Passed: $passcount Failed: $errorcount"

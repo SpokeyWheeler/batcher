@@ -10,9 +10,9 @@ test/create_pops.sh
 
 . test/libs.sh
 
-export PGPASS=btest
-export SQLCMD0='psql -w -h postgres -p 5432 -U btest -d batchertestdb '
-export SQLCMD='psql -w -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
+export PGPASSWORD=btest
+export SQLCMD0='psql -h postgres -p 5432 -U btest -d batchertestdb '
+export SQLCMD='psql -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
 
 $SQLCMD "SELECT version();"
 

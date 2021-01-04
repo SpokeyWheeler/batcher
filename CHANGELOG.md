@@ -1,3 +1,9 @@
+## v0.7.29 (2021-01-04)
+
+### Fix
+
+- **mysql**: use password for first sql
+
 ## v0.7.28 (2021-01-03)
 
 ### Fix

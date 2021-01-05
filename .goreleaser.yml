@@ -51,13 +51,6 @@ changelog:
 checksum:
   name_template: 'checksums.txt'
 
-dockers:
-  - image_templates:
-      - spokey/batcher:latest
-    binaries:
-      - batcher
-    dockerfile: Dockerfile
-
 release:
   github:
     owner: SpokeyWheeler

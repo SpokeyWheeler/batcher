@@ -1,3 +1,9 @@
+## v0.7.40 (2021-01-05)
+
+### Fix
+
+- **goreleaser**: remove docker build
+
 ## v0.7.39 (2021-01-04)
 
 ### Fix

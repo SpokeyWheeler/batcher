@@ -1,3 +1,9 @@
+## v0.8.5 (2021-01-09)
+
+### Fix
+
+- **postgres**: create new runner for version query
+
 ## v0.8.4 (2021-01-09)
 
 ### Fix

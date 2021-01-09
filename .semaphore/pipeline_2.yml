@@ -20,6 +20,8 @@ blocks:
             - go test ./...
             - go build -v .
             - test/cockroach.sh
+    skip:
+      when: 1=1
   - name: Informix
     dependencies: []
     task:
@@ -34,6 +36,8 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+    skip:
+      when: 1=1
   - name: MariaDB
     dependencies: []
     task:
@@ -83,6 +87,8 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+    skip:
+      when: 1=1
   - name: PostgreSQL
     dependencies: []
     task:
@@ -102,6 +108,8 @@ blocks:
             - go test ./...
             - go build -v .
             - test/postgres.sh
+    skip:
+      when: 1=1
   - name: SQL Server
     dependencies: []
     task:
@@ -116,6 +124,8 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+    skip:
+      when: 1=1
   - name: GoReleaser
     dependencies:
       - Cockroach

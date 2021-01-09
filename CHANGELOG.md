@@ -1,3 +1,9 @@
+## v0.8.4 (2021-01-09)
+
+### Fix
+
+- **postgres**: first script has to run as root
+
 ## v0.8.3 (2021-01-09)
 
 ### Fix

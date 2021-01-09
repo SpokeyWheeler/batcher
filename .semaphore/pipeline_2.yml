@@ -65,9 +65,9 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
-            - sem-service start mysql 8.0 --username='btest'@'%' --password=best --db=batchertestdb
+            - sem-service start mysql 8.0
             - sudo apt-get install -y -qq mysql-client
-            - mysql --host=0.0.0.0 -uroot -e "SHOW DATABASES;"
+            - mysql --host=localhost -uroot -e "SHOW DATABASES;"
             - checkout
             - go get ./...
             - go test ./...

@@ -8,7 +8,7 @@ cd /tmp
 
 # official install instructions
 wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.linux-amd64.tgz | tar xvz
-cp -i cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
+sudo cp cockroach-v20.2.3.linux-amd64/cockroach /usr/local/bin/
 
 # make the certificates
 mkdir -p /tmp/certs

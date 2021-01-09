@@ -1,3 +1,9 @@
+## v0.8.7 (2021-01-09)
+
+### Fix
+
+- **mysql**: make hostname changes to mysql runner and driver
+
 ## v0.8.6 (2021-01-09)
 
 ### Fix

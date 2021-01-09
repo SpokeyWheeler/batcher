@@ -1,3 +1,9 @@
+## v0.8.0 (2021-01-09)
+
+### Feat
+
+- **informix**: start adding support
+
 ## v0.7.40 (2021-01-05)
 
 ### Fix

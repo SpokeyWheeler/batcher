@@ -17,7 +17,7 @@ SQLCMD1="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhos
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
 
 printf "Creating test database..."
-$SQLCMD0 < test/mysql1.sql > /dev/null 2>&1
+$SQLCMD0 < test/mysql1.sql # > /dev/null 2>&1
 echo "done"
 
 printf "Populating test database..."

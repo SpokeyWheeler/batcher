@@ -1,3 +1,9 @@
+## v0.8.2 (2021-01-09)
+
+### Fix
+
+- **postgres**: change script from buddy to semaphore
+
 ## v0.8.1 (2021-01-09)
 
 ### Fix

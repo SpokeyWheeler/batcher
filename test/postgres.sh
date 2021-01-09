@@ -1,16 +1,12 @@
 #!/bin/bash
 
 # fail fast
-# set -eo pipefail
+set -eo pipefail
 
-# ./build.sh
 test/create_pops.sh
-
-# test/install_postgres.sh
 
 . test/libs.sh
 
-export PGPASSWORD=btest
 export SQLCMD0='psql -h postgres -p 5432 -U btest -d batchertestdb '
 export SQLCMD='psql -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
 

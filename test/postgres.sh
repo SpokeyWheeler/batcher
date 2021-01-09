@@ -7,8 +7,8 @@ test/create_pops.sh
 
 . test/libs.sh
 
-export SQLCMD0='psql -h postgres -p 5432 -U btest -d batchertestdb '
-export SQLCMD='psql -h postgres -p 5432 -U btest -d batchertestdb -t -A -c '
+export SQLCMD0='psql -h localhost -p 5432 -U btest -d batchertestdb '
+export SQLCMD='psql -h localhost -p 5432 -U btest -d batchertestdb -t -A -c '
 
 $SQLCMD "SELECT version();"
 

@@ -1,3 +1,9 @@
+## v0.8.3 (2021-01-09)
+
+### Fix
+
+- **postgres**: another script had the wrong hostname
+
 ## v0.8.2 (2021-01-09)
 
 ### Fix

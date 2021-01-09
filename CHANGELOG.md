@@ -1,3 +1,9 @@
+## v0.8.6 (2021-01-09)
+
+### Fix
+
+- **postgres**: batcher driver needs changing too
+
 ## v0.8.5 (2021-01-09)
 
 ### Fix

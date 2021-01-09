@@ -93,7 +93,7 @@ pgruntests() {
 myruntests() {
 	portnum=$1
 	opts=$2
-	hosts=$3
+	host=$3
 
 	exptot=1000
 	expa=100

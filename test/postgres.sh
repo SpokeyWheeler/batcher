@@ -30,7 +30,7 @@ passcount=0
 errorcount=0
 
 printf "Starting tests"
-pgruntests 5432 "sslmode=disable" postgres
+pgruntests 5432 "sslmode=disable" localhost
 echo "done"
 
 echo "PostgreSQL Tests: $testcount Passed: $passcount Failed: $errorcount"

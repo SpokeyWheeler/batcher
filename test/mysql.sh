@@ -11,9 +11,9 @@ testcount=0
 passcount=0
 errorcount=0
 
-# SQLCMD0="mysql mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD0="mysql mysql -uroot --protocol=tcp -P3306 -hlocalhost "
 # SQLCMD0="mysql mysql -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
-SQLCMD0="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
+# SQLCMD0="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mysql batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
 
 printf "Creating test database..."

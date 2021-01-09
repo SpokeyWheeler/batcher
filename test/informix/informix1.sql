@@ -1,0 +1,10 @@
+CREATE DATABASE batchertestdb;
+CREATE TABLE IF NOT EXISTS serialtest (pk SERIAL NOT NULL, intcol INT, strcol CHAR(20));
+CREATE UNIQUE INDEX ixserkey ON serialtest(pk);
+ALTER TABLE serialtest ADD CONSTRAINT PRIMARY KEY (pk) CONSTRAINT pkserkey;
+CREATE TABLE IF NOT EXISTS compositetest (pk1 INT NOT NULL, pk2 CHAR(10) NOT NULL, intcol INT, strcol CHAR(20));
+CREATE UNIQUE INDEX ixcompkey ON compositetest(pk1, pk2);
+ALTER TABLE compositetest ADD CONSTRAINT PRIMARY KEY (pk1, pk2) CONSTRAINT pkcompkey;
+GRANT RESOURCE TO PUBLIC;
+GRANT ALL ON serialtest TO PUBLIC;
+GRANT ALL ON compositetest TO PUBLIC;

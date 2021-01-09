@@ -269,7 +269,7 @@ func doCmd(db *sql.DB, pk []primaryKey, jc jobConfig) {
 
 				colvals := make([]interface{}, len(cols))
 				colassoc := make(map[string]interface{}, len(cols))
-				for i, _ := range colvals {
+				for i := range colvals {
 					colvals[i] = new(interface{})
 				}
 				if err := rows.Scan(colvals...); err != nil {

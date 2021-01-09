@@ -8,9 +8,10 @@ test/create_pops.sh
 . test/libs.sh
 
 export SQLCMD0='psql -h localhost -p 5432 -U root -w -d batchertestdb '
+export SQLCMD1='psql -h localhost -p 5432 -U root -w -d batchertestdb -t -A -c '
 export SQLCMD='psql -h localhost -p 5432 -U btest -d batchertestdb -t -A -c '
 
-$SQLCMD "SELECT version();"
+$SQLCMD1 "SELECT version();"
 
 printf "Creating test database..."
 $SQLCMD0 < test/postgres1.sql > /dev/null 2>&1

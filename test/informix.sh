@@ -73,7 +73,7 @@ ixruntests() {
 	comp "Full delete composite total" "$exptot" "$cmptot"
 }
 
-export SQLCMD='docker exec -i --network host informix dbaccess batchertestdb '
+export SQLCMD='docker exec -i informix dbaccess batchertestdb '
 
 testcount=0
 passcount=0

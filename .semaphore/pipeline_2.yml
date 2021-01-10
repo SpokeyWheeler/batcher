@@ -48,6 +48,7 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - chmod 777 /run/mysqld
             - 'docker run --net=host --rm -d -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v /var/tmp/mysql:/var/lib/mysql --name mariadb -v /var/run/mysqld:/var/run/mysqld mariadb:latest'
             - sem-dockerize 3306 mariadb
             - sudo apt-get install -y -qq mariadb-client

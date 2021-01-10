@@ -36,6 +36,7 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+            - test/informix.sh
   - name: MariaDB
     dependencies: []
     task:

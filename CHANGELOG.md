@@ -1,3 +1,9 @@
+## v0.8.13 (2021-01-10)
+
+### Fix
+
+- **ci**: implement learnings from running in container
+
 ## v0.8.12 (2021-01-10)
 
 ### Fix

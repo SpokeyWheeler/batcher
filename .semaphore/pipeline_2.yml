@@ -36,8 +36,6 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
-    skip:
-      when: 'true'
   - name: MariaDB
     dependencies: []
     task:

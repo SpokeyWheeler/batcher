@@ -9,7 +9,7 @@ test/create_pops.sh
 
 mariadb -uroot --protocol=tcp -P3306 -hlocalhost mysql -e "SHOW DATABASES;"
 # mariadb -hmysql -P3306 -uroot -pbtestroot --protocol=tcp mysql -e "SHOW DATABASES;"
-SQLCMD0="mariadb mysql -uroot -pbtestroot --protocol=tcp -P3306 -hlocalhost "
+SQLCMD0="mariadb mysql -uroot --protocol=tcp -P3306 -hlocalhost "
 SQLCMD1="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost "
 SQLCMD="mariadb batchertestdb -s -ubtest -pbtest --protocol=tcp -P3306 -hlocalhost -e "
 

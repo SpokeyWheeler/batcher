@@ -20,8 +20,6 @@ blocks:
             - go test ./...
             - go build -v .
             - test/cockroach.sh
-    skip:
-      when: 'true'
   - name: Informix
     dependencies: []
     task:
@@ -32,6 +30,8 @@ blocks:
             - export GO111MODULE=on
             - export GOPATH=~/go
             - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - 'docker run --net=host -td --name informix --privileged -p 9088:9088 -p 9089:9089 -p 27017:27017 -p 27018:27018 -p 27883:27883 spokey/informix-ci:latest'
+            - sem-dockerize 9088 informix
             - checkout
             - go get ./...
             - go test ./...
@@ -111,8 +111,9 @@ blocks:
             - go test ./...
             - go build -v .
             - test/postgres.sh
-    skip:
-      when: 'true'
+      env_vars:
+        - name: FOO_1
+          value: BAR_1
   - name: SQL Server
     dependencies: []
     task:

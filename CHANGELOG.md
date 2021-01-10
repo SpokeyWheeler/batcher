@@ -1,3 +1,9 @@
+## v0.8.9 (2021-01-10)
+
+### Fix
+
+- **ci**: remove root password from create database script
+
 ## v0.8.8 (2021-01-09)
 
 ### Fix

@@ -9,11 +9,11 @@ export SQLCMD='docker exec -i informix dbaccess batchertestdb '
 # check for race condition, I suspect Informix is accepting connections
 # before the test database exists
 
-printf "Waiting for database to be avaoilable"
+printf "Waiting for database to be available"
 ok=1
 for i in {1..60}
 do
-        "DATABASE batchertestdb;" | docker exec -i informix dbaccess - > /dev/null 2>&1
+        echo "DATABASE batchertestdb;" | docker exec -i informix dbaccess - > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
 		ok=0

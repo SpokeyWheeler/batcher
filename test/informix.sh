@@ -15,7 +15,7 @@ for j in 1 2 3 4 5 6
 do
 	for i in 1 2 3 4 5 6 7 8 9 0
 	do
-		echo "DATABASE batchertestdb;" | docker exec -i informix dbaccess - # > /dev/null 2>&1
+		echo "DATABASE batchertestdb;" | docker exec -i informix dbaccess - > /dev/null 2>&1
 		if [ $? -eq 0 ]
 		then
 			echo "UP!"

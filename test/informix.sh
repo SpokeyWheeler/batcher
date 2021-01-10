@@ -11,17 +11,20 @@ export SQLCMD='docker exec -i informix dbaccess batchertestdb '
 
 printf "Waiting for database to be available"
 ok=1
-for i in {1..60}
+for j in 1 2 3 4 5 6
 do
-        echo "DATABASE batchertestdb;" | docker exec -i informix dbaccess - # > /dev/null 2>&1
-	if [ $? -eq 0 ]
-	then
-		echo "UP!"
-		ok=0
-		break
-	fi
-	printf "."
-	sleep 1
+	for i in 1 2 3 4 5 6 7 8 9 0
+	do
+		echo "DATABASE batchertestdb;" | docker exec -i informix dbaccess - # > /dev/null 2>&1
+		if [ $? -eq 0 ]
+		then
+			echo "UP!"
+			ok=0
+			break 2
+		fi
+		printf "."
+		sleep 1
+	done
 done
 
 if [ $ok -eq 1 ]

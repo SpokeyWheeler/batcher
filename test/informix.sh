@@ -3,6 +3,12 @@
 # fail fast
 # set -eo pipefail
 
+export SQLCMD='docker exec -i informix dbaccess batchertestdb '
+
+testcount=0
+passcount=0
+errorcount=0
+
 
 comp() {
 	if [ "$2" != "$3" ]
@@ -25,7 +31,7 @@ ixruntests() {
 	exptot=1000
 	expa=100
 
-	sertot=$( echo "SELECT COUNT(1) FROM serialtest;" | $SQLCMD 2> /dev/null | grep -iv count | grep -iv row | grep -v "^$" | awk '{print $1}' )
+	sertot=$( echo "SELECT COUNT(1) FROM serialtest;" | $SQLCMD | grep -iv count | grep -iv row | grep -v "^$" | awk '{print $1}' )
 	comp "Initial serial total" "$exptot" "$sertot"
 
 	sera=$( echo "SELECT COUNT(1) FROM serialtest WHERE strcol = 'a';" | $SQLCMD 2> /dev/null | grep -iv count | grep -iv row | grep -v "^$" | awk '{print $1}' )
@@ -72,12 +78,6 @@ ixruntests() {
 	cmptot=$( echo "SELECT COUNT(1) FROM compositetest;" | $SQLCMD 2> /dev/null | grep -iv count | grep -iv row | grep -v "^$" | awk '{print $1}' )
 	comp "Full delete composite total" "$exptot" "$cmptot"
 }
-
-export SQLCMD='docker exec -i informix dbaccess batchertestdb '
-
-testcount=0
-passcount=0
-errorcount=0
 
 printf "Starting tests"
 ixruntests 9088 "" localhost

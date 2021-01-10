@@ -3,7 +3,32 @@
 # fail fast
 # set -eo pipefail
 
+export SQLCMD0='docker exec -i informix dbaccess - '
 export SQLCMD='docker exec -i informix dbaccess batchertestdb '
+
+# check for race condition, I suspect Informix is accepting connections
+# before the test database exists
+
+printf "Waiting for database to be avaoilable"
+ok=1
+for i in {1..60}
+do
+        "DATABASE batchertestdb;" | docker exec -i informix dbaccess - > /dev/null 2>&1
+	if [ $? -eq 0 ]
+	then
+		ok=0
+		break
+	fi
+	printf "."
+	sleep 1
+done
+
+if [ $ok -ne 0 ]
+then
+	echo "Database unavailable"
+	exit 1
+fi
+echo "done"
 
 testcount=0
 passcount=0

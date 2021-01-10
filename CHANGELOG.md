@@ -1,3 +1,9 @@
+## v0.8.11 (2021-01-10)
+
+### Fix
+
+- **ci**: implement the host network for dbaccess
+
 ## v0.8.10 (2021-01-10)
 
 ### Fix

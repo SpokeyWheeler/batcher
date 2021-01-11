@@ -8,5 +8,6 @@ excluded_files:
 
 excluded_words:
   - gomod
+  - batchertestdb
 
 spellcheck_filenames: true

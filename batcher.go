@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/jackc/pgx/stdlib"
+	_ "github.com/lib/pq"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"os"
@@ -158,11 +158,7 @@ func getConnection(dbtype string, database string, user string, password string,
 	var db *sql.DB
 	var err error
 	connStr := buildConnectionString(dbtype, database, user, password, host, portnum, opts)
-	if dbtype == "postgres" {
-		db, err = sql.Open("pgx", connStr)
-	} else {
-		db, err = sql.Open(dbtype, connStr)
-	}
+	db, err = sql.Open(dbtype, connStr)
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}

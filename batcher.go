@@ -5,10 +5,11 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	_ "github.com/jackc/pgx/stdlib"
 	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/lib/pq"
 	"log"
 	"os"
+	"strings"
 	"sync"
 )
 
@@ -38,7 +39,21 @@ var (
 	version = "undefined"
 )
 
+func getStringInBetween(str string, start string, end string) (result string) {
+    s := strings.Index(str, start)
+    if s == -1 {
+        return
+    }
+    s += len(start)
+    e := strings.Index(str, end)
+    if e == -1 {
+        return
+    }
+    return str[s:e]
+}
+
 func parseArgs() *jobConfig {
+	var tmpuser string
 
 	fs := flag.NewFlagSet("update or delete", flag.ExitOnError)
 
@@ -48,8 +63,8 @@ func parseArgs() *jobConfig {
 	concurrencyPtr := fs.Int("concurrency", 20, "concurrency")
 	executePtr := fs.Bool("execute", false, "execute the operation ('dry-run' only by default)")
 	verbosePtr := fs.Bool("verbose", false, "provide detailed output (will output all statements to the screen)")
-	userPtr := fs.String("user", "", "user name")
-	passwordPtr := fs.String("password", "", "password")
+	userPtr := fs.String("user", "${USER}", "user name")
+	passwordPtr := fs.String("password", "none", "password")
 	databasePtr := fs.String("database", "", "database name")
 	hostPtr := fs.String("host", "localhost", "host name or IP")
 	dbtypePtr := fs.String("dbtype", "postgres", "database type, e.g. postgres, informix, oracle, mysql")
@@ -79,6 +94,22 @@ func parseArgs() *jobConfig {
 		if jc.dbtype == "postgresql" {
 			jc.dbtype = "postgres"
 		}
+
+		if jc.user == "" {
+			if strings.Contains(jc.opts, "sslcert") {
+				if strings.Contains(jc.opts, "&") {
+					optslice:=strings.Split(jc.opts, "&")
+					for _, value := range optslice {
+						if strings.Contains(value, "sslcert") {
+							tmpuser = getStringInBetween(value, "client.", ".crt")
+						}
+					}
+				} else {
+					tmpuser = getStringInBetween(jc.opts, "client.", ".crt")
+				}
+			}
+			jc.user = tmpuser
+		}
 	}
 
 	switch jc.command {
@@ -102,7 +133,15 @@ func buildConnectionString(dbtype string, database string, user string, password
 	var builtStr string
 	switch dbtype {
 	case "postgres":
-		builtStr = fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?%s", user, password, host, portnum, database, opts)
+		if user == "" {
+			builtStr = fmt.Sprintf("postgresql://%s:%s/%s?%s", host, portnum, database, opts)
+		} else {
+			if password == "" {
+				builtStr = fmt.Sprintf("postgresql://%s@%s:%s/%s?%s", user, host, portnum, database, opts)
+			} else {
+				builtStr = fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?%s", user, password, host, portnum, database, opts)
+			}
+		}
 	case "mysql":
 		builtStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, portnum, database, opts)
 	case "informix":
@@ -116,8 +155,14 @@ func buildConnectionString(dbtype string, database string, user string, password
 }
 
 func getConnection(dbtype string, database string, user string, password string, host string, portnum string, opts string) (*sql.DB, error) {
+	var db *sql.DB
+	var err error
 	connStr := buildConnectionString(dbtype, database, user, password, host, portnum, opts)
-	db, err := sql.Open(dbtype, connStr)
+	if dbtype == "postgres" {
+		db, err = sql.Open("pgx", connStr)
+	} else {
+		db, err = sql.Open(dbtype, connStr)
+	}
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
@@ -400,6 +445,8 @@ func doMain() int {
 }
 
 func main() {
+	// sql.Register("pgx", stdlib.GetDefaultDriver())
+
 	ok := doMain()
 	if ok != 0 {
 		fmt.Println("Something went wrong")

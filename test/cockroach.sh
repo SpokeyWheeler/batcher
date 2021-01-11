@@ -32,7 +32,9 @@ errorcount=0
 
 printf "Starting tests"
 
-pgruntests 26257 "sslmode=verify-ca&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" localhost
+pgruntests 26257 "sslmode=verify-ca&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" localhost "" ""
+pgruntests 26257 "sslmode=verify-ca&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" localhost btest ""
+pgruntests 26257 "sslmode=verify-ca&sslrootcert=/tmp/certs/ca.crt&sslcert=/tmp/certs/client.btest.crt&sslkey=/tmp/certs/client.btest.key" localhost btest btest
 
 echo "done"
 echo "CockroachDB Tests: $testcount Passed: $passcount Failed: $errorcount"

@@ -9,8 +9,8 @@ rm -rf /tmp/certs
 rm -rf /tmp/cockroach*
 
 # official install instructions
-wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.darwin-10.9-amd64.tgz | tar xvz 2> /dev/null
-sudo cp cockroach-v20.2.3.darwin-10.9-amd64/cockroach /usr/local/bin/
+# wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.3.darwin-10.9-amd64.tgz | tar xvz 2> /dev/null
+# sudo cp cockroach-v20.2.3.darwin-10.9-amd64/cockroach /usr/local/bin/
 
 # make the certificates
 mkdir -p /tmp/certs

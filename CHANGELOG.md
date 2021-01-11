@@ -1,3 +1,9 @@
+## v0.10.5 (2021-01-11)
+
+### Fix
+
+- **readme**: buff build badge branch
+
 ## v0.10.4 (2021-01-11)
 
 ### Fix

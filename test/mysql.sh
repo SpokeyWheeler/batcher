@@ -27,7 +27,7 @@ $SQLCMD1 < /tmp/pop_composite.sql # > /dev/null 2>&1
 echo "done"
 
 printf "Starting tests"
-myruntests 3306 "collation=utf8_general_ci" localhost
+myruntests 3306 "collation=utf8_general_ci" localhost btest btest
 echo "done"
 
 echo "MySQL Tests: $testcount Passed: $passcount Failed: $errorcount"

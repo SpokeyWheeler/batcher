@@ -105,6 +105,9 @@ func buildConnectionString(dbtype string, database string, user string, password
 		builtStr = fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?%s", user, password, host, portnum, database, opts)
 	case "mysql":
 		builtStr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, password, host, portnum, database, opts)
+	case "informix":
+		fmt.Printf("Not implemented yet - %s\n", dbtype)
+		os.Exit(1)
 	default:
 		fmt.Printf("Unknown database type (or not implemented yet) - %s\n", dbtype)
 		os.Exit(1)
@@ -378,6 +381,9 @@ func doMain() int {
 		pk = pgGetPrimaryKey(db, jc.database, jc.table)
 	case "mysql":
 		pk = myGetPrimaryKey(db, jc.database, jc.table)
+	case "informix":
+		fmt.Printf("Not implemented yet - %s\n", jc.dbtype)
+		os.Exit(1)
 	default:
 		fmt.Printf("Unknown database type (or not implemented yet) - %s\n", jc.dbtype)
 		os.Exit(1)

@@ -20,8 +20,6 @@ blocks:
             - go test ./...
             - go build -v .
             - test/cockroach.sh
-    skip:
-      when: 'true'
   - name: Informix
     dependencies: []
     task:
@@ -39,6 +37,8 @@ blocks:
             - go test ./...
             - go build -v .
             - sh test/informix.sh
+    skip:
+      when: 'true'
   - name: MariaDB
     dependencies: []
     task:
@@ -59,8 +59,6 @@ blocks:
             - go test ./...
             - go build -v .
             - test/mariadb.sh
-    skip:
-      when: 'true'
   - name: MySQL
     dependencies: []
     task:
@@ -79,8 +77,6 @@ blocks:
             - go test ./...
             - go build -v .
             - test/mysql.sh
-    skip:
-      when: 'true'
   - name: Oracle
     dependencies: []
     task:
@@ -119,8 +115,6 @@ blocks:
       env_vars:
         - name: FOO_1
           value: BAR_1
-    skip:
-      when: 'true'
   - name: SQL Server
     dependencies: []
     task:
@@ -161,5 +155,3 @@ blocks:
         - name: Docker PAT
         - name: GitHub Package
         - name: Tap PAT
-    skip:
-      when: 'true'

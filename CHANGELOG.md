@@ -1,3 +1,9 @@
+## v0.9.1 (2021-01-11)
+
+### Fix
+
+- **readme**: basically, I want to force a version bump
+
 ## v0.9.0 (2021-01-11)
 
 ### Feat

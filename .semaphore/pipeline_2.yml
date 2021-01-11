@@ -151,6 +151,7 @@ blocks:
             - checkout
             - go get ./...
             - go test ./...
+            - ./release.sh
       secrets:
         - name: Docker PAT
         - name: GitHub Package

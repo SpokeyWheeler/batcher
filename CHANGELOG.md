@@ -1,3 +1,9 @@
+## v0.10.1 (2021-01-11)
+
+### Fix
+
+- **cockroach**: revert test changes
+
 ## v0.10.0 (2021-01-11)
 
 ### Feat

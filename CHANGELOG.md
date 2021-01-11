@@ -1,3 +1,9 @@
+## v0.10.4 (2021-01-11)
+
+### Fix
+
+- **security**: revert to pq driver as pgx has vulnerabilities
+
 ## v0.10.3 (2021-01-11)
 
 ### Fix

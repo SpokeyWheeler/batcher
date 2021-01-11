@@ -85,8 +85,11 @@ I haven't given up on it, but I'm going to work on that separately because I'm s
 
 Also, from a CI perspective, Cockroach's "download a single binary and put it in your path" approach has been a delight compared to watching hours of APT output before you can test your change. It's not completely PostgreSQL compatible, but if you're considering a new project with lightweight requirements, it could be an interesting option. PostgreSQL itself isn't too bad, but it's still more work. MariaDB is not a drop-in replacement for MySQL, IMHO, because the process followed after an official APT install is different. Both MariaDB and MySQL need to sort out their character set and collation sequence issues, nobody has time for that shit.
 
-My next stop will be to try Semaphore CI.
+-My next stop will be to try Semaphore CI.-
+Semaphore CI is amazing: stunningly fast and I managed to get everything working!
 
 ## Coming soon
 
-Commercial databases!
+  - Commercial databases!
+  - Examples
+

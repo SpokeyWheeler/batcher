@@ -1,3 +1,9 @@
+## v0.10.0 (2021-01-11)
+
+### Feat
+
+- **cockroach**: get user name from sslcert if empty user is giver
+
 ## v0.9.1 (2021-01-11)
 
 ### Fix

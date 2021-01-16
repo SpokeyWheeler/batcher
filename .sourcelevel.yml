@@ -13,7 +13,7 @@ engines:
   gofmt:
     enabled: true
   govet:
-    enabled: true
+    enabled: false
   golint:
     enabled: true
   remark-lint:

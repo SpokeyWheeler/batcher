@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	_ "github.com/lib/pq"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"log"
 	"os"
 	"strings"
@@ -40,16 +40,16 @@ var (
 )
 
 func getStringInBetween(str string, start string, end string) (result string) {
-    s := strings.Index(str, start)
-    if s == -1 {
-        return
-    }
-    s += len(start)
-    e := strings.Index(str, end)
-    if e == -1 {
-        return
-    }
-    return str[s:e]
+	s := strings.Index(str, start)
+	if s == -1 {
+		return
+	}
+	s += len(start)
+	e := strings.Index(str, end)
+	if e == -1 {
+		return
+	}
+	return str[s:e]
 }
 
 func parseArgs() *jobConfig {
@@ -98,7 +98,7 @@ func parseArgs() *jobConfig {
 		if jc.user == "" {
 			if strings.Contains(jc.opts, "sslcert") {
 				if strings.Contains(jc.opts, "&") {
-					optslice:=strings.Split(jc.opts, "&")
+					optslice := strings.Split(jc.opts, "&")
 					for _, value := range optslice {
 						if strings.Contains(value, "sslcert") {
 							tmpuser = getStringInBetween(value, "client.", ".crt")

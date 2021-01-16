@@ -90,6 +90,6 @@ Semaphore CI is amazing: stunningly fast and I managed to get everything working
 
 ## Coming soon
 
-  - Commercial databases!
-  - Examples
+- Commercial databases!
+- Examples
 

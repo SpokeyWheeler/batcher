@@ -8,6 +8,10 @@ After testing many different approaches, I've created this, which generates sing
 
 No names, no packdrill.
 
+## Inspired by
+
+[pg-batch](https://github.com/gabfl/pg-batch) - Thank you!
+
 ## Supported Databases
 
 | Database | Version | Supported | CI Test Status | Notes |

@@ -1,3 +1,4 @@
+#!/bin/bash
 rm -f split.sh
 git describe
 cd /tmp

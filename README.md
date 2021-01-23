@@ -96,3 +96,4 @@ Semaphore CI is amazing: stunningly fast and I managed to get everything working
 
   - Commercial databases!
   - Examples
+  - Trickle truncation?

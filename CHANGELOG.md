@@ -1,3 +1,16 @@
+## v0.10.7 (2021-01-23)
+
+### Fix
+
+- **release.sh**: stop goreleaser if this isn't a version bump
+
+### Refactor
+
+- **globbing**: remove ambiguity
+- **globbing**: make it unambiguous
+- **shebang**: add another
+- **shebang**: add some
+
 ## v0.10.6 (2021-01-11)
 
 ### Fix

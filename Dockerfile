@@ -1,4 +1,4 @@
-FROM golang:1.16 AS goer
+FROM golang:1.17 AS goer
 RUN go get github.com/SpokeyWheeler/batcher
 WORKDIR /go/src/github.com/SpokeyWheeler/batcher
 RUN go get -d -t -v ./...

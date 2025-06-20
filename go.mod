@@ -1,9 +1,11 @@
 module github.com/SpokeyWheeler/batcher
 
-go 1.19
+go 1.21.0
+
+toolchain go1.24.4
 
 require (
-	github.com/go-sql-driver/mysql v1.8.0
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/lib/pq v1.10.9
 )
 
